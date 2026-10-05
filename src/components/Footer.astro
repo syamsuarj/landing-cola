@@ -1,0 +1,95 @@
+---
+import fs from 'node:fs';
+import path from 'node:path';
+
+// Kredit foto dibaca dari CREDITS.md saat build, jadi baris yang ditambahkan T5b/T5c ikut tampil otomatis.
+type Credit = { section: string; url: string; who: string; license: string };
+let credits: Credit[] = [];
+try {
+  const md = fs.readFileSync(path.join(process.cwd(), 'CREDITS.md'), 'utf8');
+  credits = md.split('\n')
+    .filter((l) => /^\|\s*[a-z]/i.test(l) && !/^\|\s*Section\s*\|/i.test(l))
+    .map((l) => l.split('|').slice(1, -1).map((c) => c.trim()))
+    .filter((c) => c.length >= 5 && /^https?:\/\//.test(c[2]))
+    .map((c) => ({ section: c[0], url: c[2], who: c[3].replace(/\s*\([^)]*\)\s*$/, ''), license: c[4].replace(/\s*\(.*\)\s*$/, '') }));
+} catch { credits = []; }
+// kelompokkan per fotografer (satu nama bisa punya beberapa foto)
+const byWho = new Map<string, Credit[]>();
+credits.forEach((c) => byWho.set(c.who, [...(byWho.get(c.who) ?? []), c]));
+const people = [...byWho.entries()];
+const sources = [...new Set(credits.map((c) => (c.url.includes('pexels') ? 'Pexels' : 'Unsplash')))];
+const licenses = [...new Set(credits.map((c) => c.license))];
+const year = new Date().getFullYear();
+---
+<footer class="site-foot grain" aria-labelledby="judul-footer">
+  <h2 id="judul-footer" class="sr-only">Informasi situs</h2>
+  <div class="container">
+    <div class="top">
+      <div class="disclaimer">
+        <p class="eyebrow">Disclaimer</p>
+        <p class="big"><strong>Situs demo non-resmi.</strong> Halaman ini dibuat untuk tujuan latihan/edukasi dan tidak berafiliasi dengan, disponsori, atau didukung oleh The Coca-Cola Company.</p>
+        <p class="muted">Coca-Cola adalah merek dagang terdaftar milik The Coca-Cola Company. Untuk informasi resmi, kunjungi situs resmi Coca-Cola. Ilustrasi botol dan objek 3D di halaman ini dibuat sendiri dari geometri sederhana, bukan logo atau model resmi.</p>
+      </div>
+      <nav class="foot-nav" aria-label="Navigasi footer">
+        <p class="eyebrow">Jelajahi</p>
+        <ul>
+          <li><a href="#sejarah">Sejarah</a></li>
+          <li><a href="#produk">Produk</a></li>
+          <li><a href="#botol">Botol ikonik</a></li>
+          <li><a href="#indonesia">Indonesia</a></li>
+          <li><a href="#faq">FAQ</a></li>
+          <li><a href="#utama">Kembali ke atas ↑</a></li>
+        </ul>
+      </nav>
+      <div class="credits">
+        <p class="eyebrow">Kredit foto</p>
+        {credits.length ? (
+          <>
+            <p class="muted small">Foto oleh{' '}
+              {people.map(([who, list], i) => (
+                <>
+                  {list.length === 1 ? (
+                    <a href={list[0].url} rel="noopener" target="_blank">{who}<span class="sr-only"> (foto {list[0].section}, tab baru)</span></a>
+                  ) : (
+                    <>{who} ({list.map((c, j) => (<>{j > 0 && ', '}<a href={c.url} rel="noopener" target="_blank">{j + 1}<span class="sr-only"> foto {c.section} oleh {who}, tab baru</span></a></>))})</>
+                  )}{i < people.length - 2 ? ', ' : i === people.length - 2 ? ' dan ' : ''}
+                </>
+              ))}
+              {' '}via {sources.join(' & ')} ({licenses.join(', ')}). Daftar lengkap ada di CREDITS.md.
+            </p>
+          </>
+        ) : (
+          <p class="muted small">Belum ada foto stok yang dipakai.</p>
+        )}
+      </div>
+    </div>
+    <p class="wordmark" aria-hidden="true">Dunia<span class="wm-dot"></span>Cola</p>
+    <div class="legal">
+      <span>© {year} Dunia Cola — proyek demo</span>
+      <span>Bukan materi resmi · Tanpa logo resmi</span>
+    </div>
+  </div>
+</footer>
+<style>
+  .site-foot { background: var(--c-ink); color: var(--c-cream); border-top: 1px solid var(--c-line); padding: clamp(4rem, 8vw, 7rem) 0 1.5rem; }
+  .top { display: grid; gap: 3rem; grid-template-columns: 1fr; position: relative; z-index: 2; }
+  .big { font-size: clamp(1.05rem, 1rem + .4vw, 1.3rem); line-height: 1.5; max-width: 36rem; }
+  .muted { color: var(--c-muted); }
+  .small { font-size: .9rem; line-height: 1.7; }
+  .credits a, .disclaimer a { color: var(--c-cream); text-underline-offset: 3px; text-decoration-color: rgba(245, 239, 230, .4); }
+  .credits a:hover { text-decoration-color: var(--c-red); }
+  .foot-nav ul { list-style: none; margin: 0; padding: 0; display: grid; gap: .1rem; }
+  .foot-nav a { display: inline-flex; align-items: center; min-height: 40px; text-decoration: none; font-weight: 600; }
+  .foot-nav a:hover { color: var(--c-red); }
+  .wordmark {
+    font-family: var(--font-display); text-transform: uppercase; font-weight: 400;
+    font-size: clamp(4rem, 17.5vw, 17rem); line-height: .8; letter-spacing: -.01em; margin: clamp(3rem, 7vw, 6rem) 0 1.5rem;
+    color: transparent; -webkit-text-stroke: 1px rgba(245, 239, 230, .35);
+    white-space: nowrap; text-align: center; position: relative; z-index: 2;
+  }
+  .wm-dot { display: inline-block; width: .14em; height: .14em; border-radius: 50%; background: var(--c-red); margin: 0 .12em; vertical-align: .32em; box-shadow: 0 0 .3em rgba(244, 0, 9, .6); }
+  .legal { display: flex; flex-wrap: wrap; justify-content: space-between; gap: .5rem 2rem; font-size: .8rem; color: var(--c-muted); border-top: 1px solid var(--c-line); padding-top: 1.25rem; position: relative; z-index: 2; }
+  @media (min-width: 900px) {
+    .top { grid-template-columns: 1.5fr .7fr 1fr; gap: 4rem; }
+  }
+</style>

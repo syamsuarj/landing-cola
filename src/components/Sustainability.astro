@@ -1,0 +1,153 @@
+---
+import { Image } from 'astro:assets';
+import kaleng from '../assets/photos/keberlanjutan-kaleng-daur-ulang.jpg';
+import botol from '../assets/photos/keberlanjutan-botol.jpg';
+
+const pillars = [
+  { h: 'Kemasan', t: 'Banyak kemasan minuman, seperti botol PET dan kaleng aluminium, dapat didaur ulang jika dikumpulkan dan dipilah dengan benar.' },
+  { h: 'Air', t: 'Air adalah bahan utama minuman. Perusahaan minuman besar, termasuk Coca-Cola, secara publik menyatakan upaya efisiensi dan pengelolaan air.' },
+  { h: 'Iklim', t: 'Pengurangan emisi dari produksi, distribusi, dan pendinginan menjadi salah satu topik keberlanjutan yang disorot industri minuman.' },
+];
+---
+<section id="keberlanjutan" class="sus" aria-labelledby="judul-lestari">
+  <div class="container sus-grid">
+    <header class="sus-head" data-sus-reveal>
+      <p class="eyebrow">Bab · Lingkungan</p>
+      <h2 id="judul-lestari" class="sus-title">
+        <span class="display-l">Keberlanjutan</span>
+        <span class="sus-amp serif">&amp; Komitmen</span>
+      </h2>
+      <p class="sus-intro">Komitmen dan target perusahaan dapat berubah dari waktu ke waktu. Untuk angka dan target terkini, rujuk laporan keberlanjutan resmi The Coca-Cola Company.</p>
+    </header>
+
+    <figure class="sus-hero">
+      <div class="sus-hero-clip">
+        <Image
+          src={kaleng}
+          alt="Tumpukan kaleng aluminium bekas yang sudah dipres untuk didaur ulang"
+          widths={[640, 960, 1280, 1600]}
+          sizes="(min-width: 960px) 58vw, 100vw"
+          quality={70}
+          loading="lazy"
+          decoding="async"
+          data-sus-zoom
+        />
+      </div>
+      <figcaption>Kaleng aluminium bekas siap daur ulang. Foto: Engin Akyurt / Unsplash</figcaption>
+    </figure>
+
+    <div class="sus-body">
+      {pillars.map((p, n) => (
+        <article class="sus-pillar" data-sus-reveal>
+          <p class="sus-idx" aria-hidden="true">{String(n + 1).padStart(2, '0')} / 03</p>
+          <h3 class="sus-h">{p.h}</h3>
+          <p class="sus-t">{p.t}</p>
+        </article>
+      ))}
+    </div>
+
+    <figure class="sus-side" data-sus-reveal>
+      <Image
+        src={botol}
+        alt="Keranjang plastik hijau berisi botol plastik kosong yang dikumpulkan"
+        widths={[400, 640, 900]}
+        sizes="(min-width: 960px) 30vw, 100vw"
+        quality={70}
+        loading="lazy"
+        decoding="async"
+      />
+      <figcaption>Foto: Muki Pan / Unsplash</figcaption>
+    </figure>
+
+    <blockquote class="sus-quote" data-sus-reveal>
+      <p><strong>Peran kita:</strong> buang kemasan pada tempatnya, pisahkan sampah yang bisa didaur ulang, dan gunakan kembali bila memungkinkan.</p>
+    </blockquote>
+  </div>
+</section>
+
+<script>
+  import '../scripts/sections/sustainability';
+</script>
+
+<style>
+  .sus {
+    position: relative;
+    overflow-x: clip;
+    background: var(--c-ink-2);
+    color: var(--c-cream);
+    padding: clamp(88px, 12vw, 168px) 0;
+  }
+  .sus-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: clamp(32px, 5vw, 64px);
+  }
+  .sus-title { margin: 0 0 1.5rem; }
+  .sus-title .display-l { display: block; color: var(--c-cream); }
+  @media (min-width: 960px) {
+    /* Muat di kolom kiri (5/12) tanpa menabrak kolom kanan */
+    .sus-title .display-l { font-size: clamp(3rem, 5.4vw, 5.25rem); }
+  }
+  .sus-amp {
+    display: block;
+    font-size: clamp(2rem, 4.5vw, 4rem); line-height: 1;
+    color: var(--c-red);
+    margin-top: .1em;
+  }
+  .sus-intro { max-width: 32rem; color: var(--c-muted); margin: 0; }
+
+  .sus-hero { margin: 0; }
+  .sus-hero-clip { overflow: hidden; border-radius: var(--radius); aspect-ratio: 4 / 3; }
+  .sus-hero-clip :global(img) { width: 100%; height: 100%; object-fit: cover; }
+  .sus-hero figcaption, .sus-side figcaption { margin-top: .75rem; font-size: .8rem; color: var(--c-muted); }
+
+  .sus-body { display: grid; gap: 0; border-top: 1px solid rgba(245,239,230,.18); }
+  .sus-pillar {
+    display: grid; grid-template-columns: minmax(0, 1fr);
+    padding: 28px 0;
+    border-bottom: 1px solid rgba(245,239,230,.18);
+  }
+  .sus-idx { margin: 0 0 .75rem; font-size: .75rem; font-weight: 700; letter-spacing: .2em; color: var(--c-muted); }
+  .sus-h {
+    font-family: var(--font-serif); font-style: italic; font-weight: 400;
+    font-size: clamp(2.5rem, 5vw, 4.5rem); line-height: .95; margin: 0 0 .75rem;
+    color: var(--c-cream);
+  }
+  .sus-t { margin: 0; max-width: 36rem; color: var(--c-muted); font-size: 1.05rem; }
+
+  .sus-side { margin: 0; }
+  .sus-side :global(img) { width: 100%; height: auto; aspect-ratio: 3 / 2; object-fit: cover; border-radius: var(--radius); }
+
+  .sus-quote {
+    margin: 0;
+    padding: clamp(28px, 4vw, 48px);
+    border-radius: var(--radius);
+    background: var(--c-red-deep);
+    color: var(--c-cream);
+    font-size: clamp(1.35rem, 1.1rem + 1.2vw, 2.25rem);
+    line-height: 1.25;
+    font-weight: 600;
+    letter-spacing: -.01em;
+  }
+  .sus-quote p { margin: 0; }
+  .sus-quote strong { font-family: var(--font-display); font-weight: 400; text-transform: uppercase; letter-spacing: .02em; color: #fff; }
+
+  @media (min-width: 960px) {
+    .sus-grid {
+      grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+      column-gap: clamp(40px, 6vw, 96px);
+      row-gap: 72px;
+      align-items: start;
+    }
+    .sus-head { position: sticky; top: calc(var(--header-h, 64px) + 32px); grid-row: 1 / span 2; }
+    .sus-hero { grid-column: 2; }
+    .sus-hero-clip { aspect-ratio: 16 / 11; }
+    .sus-body { grid-column: 2; }
+    .sus-pillar { grid-template-columns: 9rem minmax(0, 1fr); column-gap: 24px; padding: 36px 0; }
+    .sus-idx { padding-top: 1rem; }
+    .sus-h, .sus-t { grid-column: 2; }
+    .sus-idx { grid-row: span 2; }
+    .sus-side { grid-column: 1; grid-row: 3; align-self: end; }
+    .sus-quote { grid-column: 2; grid-row: 3; align-self: end; }
+  }
+</style>

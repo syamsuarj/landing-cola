@@ -1,0 +1,88 @@
+---
+const links = [
+  { href: '#sejarah', t: 'Sejarah' },
+  { href: '#produk', t: 'Produk' },
+  { href: '#indonesia', t: 'Indonesia' },
+  { href: '#faq', t: 'FAQ' },
+  { href: '#cta', t: 'Mulai' },
+];
+---
+<header class="site-head" id="top">
+  <div class="container bar">
+    <a href="#utama" class="brand">
+      <span class="mark" aria-hidden="true"></span>
+      <span class="name">Dunia Cola</span>
+      <span class="tag">demo</span>
+    </a>
+    <button class="menu-btn" type="button" aria-expanded="false" aria-controls="nav-utama">
+      <span class="menu-label">Menu</span>
+      <span class="menu-icon" aria-hidden="true"><i></i><i></i></span>
+    </button>
+    <nav id="nav-utama" class="nav" aria-label="Navigasi utama">
+      <ul>
+        {links.map((l, i) => (
+          <li><a href={l.href}><span class="idx" aria-hidden="true">0{i + 1}</span>{l.t}</a></li>
+        ))}
+      </ul>
+    </nav>
+  </div>
+</header>
+<style>
+  .site-head {
+    position: fixed; inset: 0 0 auto; z-index: 100;
+    color: var(--c-cream);
+    border-bottom: 1px solid transparent;
+    transition: background-color .4s var(--ease), border-color .4s var(--ease);
+  }
+  .site-head.scrolled { background: rgba(10, 10, 11, .92); border-bottom-color: var(--c-line); }
+  .site-head.open { background: var(--c-ink); border-bottom-color: var(--c-line); }
+  .bar { display: flex; align-items: center; justify-content: space-between; gap: 1rem; min-height: var(--header-h); }
+
+  .brand { display: inline-flex; align-items: center; gap: .6rem; text-decoration: none; min-height: 44px; }
+  .mark { width: 12px; height: 12px; border-radius: 50%; background: var(--c-red); box-shadow: 0 0 14px 2px rgba(244, 0, 9, .6); }
+  .name { font-family: var(--font-display); text-transform: uppercase; font-size: 1.35rem; letter-spacing: .02em; line-height: 1; }
+  .tag { font-size: .66rem; font-weight: 700; letter-spacing: .16em; text-transform: uppercase; color: var(--c-muted); border: 1px solid var(--c-line); border-radius: 999px; padding: .2rem .55rem; }
+
+  .nav ul { display: flex; gap: clamp(1rem, 2.4vw, 2.2rem); list-style: none; margin: 0; padding: 0; }
+  .nav a {
+    display: inline-flex; align-items: baseline; gap: .4rem; min-height: 44px; align-items: center;
+    text-decoration: none; font-size: .9rem; font-weight: 600; letter-spacing: .02em; color: var(--c-cream);
+    position: relative;
+  }
+  .nav a::after {
+    content: ""; position: absolute; left: 0; right: 0; bottom: 8px; height: 1px; background: var(--c-red);
+    transform: scaleX(0); transform-origin: left; transition: transform .35s var(--ease);
+  }
+  .nav a:hover::after, .nav a:focus-visible::after { transform: scaleX(1); }
+  .idx { font-size: .68rem; color: var(--c-muted); font-variant-numeric: tabular-nums; }
+
+  .menu-btn { display: none; }
+
+  @media (max-width: 760px) {
+    /* Tanpa JS: menu tampil sebagai baris link di bawah brand */
+    .bar { flex-wrap: wrap; align-content: flex-start; }
+    .brand { height: var(--header-h); }
+    .nav { width: 100%; }
+    .nav ul { flex-wrap: wrap; gap: 0 1.1rem; padding-bottom: .4rem; }
+    :global(html:not(.js)) .site-head { position: relative; background: var(--c-ink); }
+
+    /* Dengan JS: tombol Menu + panel */
+    :global(html.js) .menu-btn {
+      display: inline-flex; align-items: center; gap: .7rem; min-height: 44px; padding: 0 .2rem 0 .9rem;
+      background: none; border: 1px solid var(--c-line); border-radius: 999px; color: var(--c-cream);
+      font: 700 .8rem/1 var(--font-body); letter-spacing: .14em; text-transform: uppercase; cursor: pointer;
+    }
+    .menu-icon { position: relative; width: 36px; height: 36px; }
+    .menu-icon i { position: absolute; left: 10px; right: 10px; height: 1.5px; background: currentColor; transition: transform .35s var(--ease); }
+    .menu-icon i:first-child { top: 14px; } .menu-icon i:last-child { top: 21px; }
+    .open .menu-icon i:first-child { transform: translateY(3.5px) rotate(45deg); }
+    .open .menu-icon i:last-child { transform: translateY(-3.5px) rotate(-45deg); }
+
+    :global(html.js) .nav { display: none; }
+    :global(html.js) .open .nav { display: block; height: calc(100svh - var(--header-h)); padding-top: 1.5rem; }
+    :global(html.js) .open .nav ul { flex-direction: column; gap: .2rem; }
+    :global(html.js) .open .nav a { font-family: var(--font-display); text-transform: uppercase; font-size: clamp(2.6rem, 13vw, 4rem); font-weight: 400; line-height: 1.05; gap: .8rem; }
+    :global(html.js) .open .nav a::after { display: none; }
+    :global(html.js) .open .idx { font-family: var(--font-body); font-size: .8rem; }
+  }
+</style>

@@ -1,0 +1,39 @@
+---
+import '../styles/global.css';
+import antonWoff2 from '@fontsource/anton/files/anton-latin-400-normal.woff2?url';
+import manropeWoff2 from '@fontsource-variable/manrope/files/manrope-latin-wght-normal.woff2?url';
+const { title, description } = Astro.props;
+---
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content={description} />
+    <meta name="theme-color" content="#0A0A0B" />
+    <meta name="color-scheme" content="dark" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="preload" href={antonWoff2} as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href={manropeWoff2} as="font" type="font/woff2" crossorigin />
+    <title>{title}</title>
+    <!--
+      html.js     : JS aktif (komponen boleh menyembunyikan elemen untuk animasi HANYA di bawah class ini)
+      html.motion : JS aktif + tidak prefers-reduced-motion (pin/scrub hero hanya di bawah class ini)
+      Pengaman: bila animations.ts gagal (tidak memasang html.hero-ready dalam 3 dtk), .motion dicabut agar konten tampil statis.
+    -->
+    <script is:inline>
+      (function () {
+        var d = document.documentElement;
+        d.classList.add('js');
+        if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+          d.classList.add('motion');
+          setTimeout(function () { if (!d.classList.contains('hero-ready')) d.classList.remove('motion'); }, 3000);
+        }
+      })();
+    </script>
+  </head>
+  <body>
+    <a class="skip" href="#utama">Lewati ke konten utama</a>
+    <slot />
+  </body>
+</html>

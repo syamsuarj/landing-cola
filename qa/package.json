@@ -1,0 +1,10 @@
+{
+  "name": "coca-cola-landing-qa",
+  "private": true,
+  "type": "module",
+  "description": "QA harness (terpisah dari package.json proyek). Jalankan: node qa/run.mjs",
+  "dependencies": {
+    "playwright-core": "^1.48.0",
+    "lighthouse": "^12.0.0"
+  }
+}

@@ -1,0 +1,104 @@
+---
+const faqs = [
+  { q: 'Siapa penemu Coca-Cola?', a: 'Coca-Cola diracik pertama kali pada 1886 oleh apoteker John Pemberton di Atlanta, Georgia, Amerika Serikat.' },
+  { q: 'Apakah resepnya benar-benar rahasia?', a: 'Perusahaan menyatakan formula aslinya sebagai rahasia dagang dan tidak mempublikasikannya.' },
+  { q: 'Apa beda Zero Sugar dan Original?', a: 'Original mengandung gula, sedangkan Zero Sugar tidak mengandung gula dan memakai pemanis pengganti. Cek label kemasan untuk komposisi dan informasi gizi yang akurat.' },
+  { q: 'Apakah minuman ini mengandung kafein?', a: 'Varian cola umumnya mengandung kafein. Kandungan tepatnya tercantum pada label produk. Jika sensitif terhadap kafein atau punya kondisi kesehatan tertentu, konsultasikan dengan tenaga kesehatan.' },
+  { q: 'Apakah ini situs resmi?', a: 'Bukan. Ini situs demo non-resmi untuk latihan dan edukasi, tidak berafiliasi dengan The Coca-Cola Company.' },
+  { q: 'Bagaimana cara menyimpan sebaiknya?', a: 'Simpan di tempat sejuk dan terhindar dari sinar matahari langsung, dan sajikan dingin sesuai selera. Ikuti petunjuk pada kemasan.' },
+];
+---
+<section id="faq" class="faq" aria-labelledby="judul-faq">
+  <div class="container faq-grid">
+    <div class="faq-aside" data-faq-head>
+      <p class="faq-big display-xl" aria-hidden="true">FAQ</p>
+      <h2 id="judul-faq" class="faq-title">Pertanyaan yang Sering Diajukan</h2>
+    </div>
+
+    <div class="faq-list">
+      {faqs.map((f, i) => (
+        <details class="faq-item" data-faq-item>
+          <summary>
+            <span class="faq-n" aria-hidden="true">{String(i + 1).padStart(2, '0')}</span>
+            <span class="faq-q">{f.q}</span>
+            <span class="faq-ico" aria-hidden="true"></span>
+          </summary>
+          <div class="faq-a"><p>{f.a}</p></div>
+        </details>
+      ))}
+    </div>
+  </div>
+</section>
+
+<script>
+  import '../scripts/sections/faq';
+</script>
+
+<style>
+  .faq {
+    position: relative;
+    overflow-x: clip;
+    background: var(--c-ink-2);
+    color: var(--c-cream);
+    padding: clamp(88px, 12vw, 160px) 0;
+  }
+  .faq-grid { display: grid; grid-template-columns: minmax(0, 1fr); gap: clamp(28px, 4vw, 48px); }
+  .faq-big {
+    color: var(--c-red);
+    margin: 0 0 .1em;
+    line-height: .8;
+  }
+  .faq-title {
+    font-family: var(--font-serif); font-style: italic; font-weight: 400;
+    font-size: clamp(1.75rem, 1.4rem + 1.4vw, 2.75rem); line-height: 1.05;
+    margin: 0; max-width: 16ch;
+  }
+
+  .faq-list { border-top: 1px solid rgba(245,239,230,.2); }
+  .faq-item { border-bottom: 1px solid rgba(245,239,230,.2); }
+  summary {
+    list-style: none;
+    display: grid; grid-template-columns: 2.25rem minmax(0, 1fr) 2.75rem; align-items: center; column-gap: .75rem;
+    min-height: 64px; padding: 1.25rem 0;
+    cursor: pointer;
+    border-radius: 8px;
+  }
+  summary::-webkit-details-marker { display: none; }
+  summary::marker { content: ""; }
+  summary:focus-visible { outline: 2px solid var(--c-cream); outline-offset: 4px; }
+  .faq-n { font-family: var(--font-display); color: var(--c-red); font-size: 1rem; }
+  .faq-q {
+    font-size: clamp(1.1rem, 1rem + .6vw, 1.5rem); font-weight: 700; line-height: 1.3;
+    transition: color .3s var(--ease);
+  }
+  summary:hover .faq-q { color: #fff; }
+  .faq-ico {
+    position: relative; justify-self: end;
+    width: 44px; height: 44px; border-radius: 50%;
+    border: 1px solid rgba(245,239,230,.35);
+    transition: background-color .35s var(--ease), border-color .35s var(--ease), transform .45s var(--ease);
+  }
+  .faq-ico::before, .faq-ico::after {
+    content: ""; position: absolute; left: 50%; top: 50%;
+    width: 14px; height: 2px; margin: -1px 0 0 -7px;
+    background: var(--c-cream); border-radius: 2px;
+  }
+  .faq-ico::after { transform: rotate(90deg); }
+  details[open] .faq-ico { transform: rotate(45deg); background: #D6000A; border-color: #D6000A; }
+  .faq-a { padding: 0 3.5rem 1.5rem 3rem; }
+  .faq-a p { margin: 0; color: var(--c-muted); max-width: 44rem; font-size: 1.05rem; }
+  details[open] .faq-a { animation: faq-in .45s var(--ease) both; }
+  @keyframes faq-in { from { opacity: 0; transform: translateY(-6px); } to { opacity: 1; transform: none; } }
+
+  @media (max-width: 599px) {
+    .faq-a { padding: 0 0 1.5rem 3rem; }
+  }
+  @media (min-width: 960px) {
+    .faq-grid { grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); column-gap: clamp(40px, 6vw, 96px); align-items: start; }
+    .faq-aside { position: sticky; top: calc(var(--header-h, 64px) + 32px); }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    details[open] .faq-a { animation: none; }
+    .faq-ico { transition: none; }
+  }
+</style>

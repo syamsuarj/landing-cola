@@ -1,0 +1,9 @@
+<!doctype html><html lang="id"><head><meta charset="utf-8"><title>QA self-test (sengaja rusak)</title></head>
+<body>
+<!-- Fixture self-test harness: setiap cek di bawah HARUS FAIL. Jalankan: node qa/run.mjs --selftest -->
+<section id="hero"><h1>Hero</h1><p style="opacity:0">Teks tersembunyi (harus terdeteksi)</p></section>
+<section id="lebar"><div style="width:2000px;height:20px;background:red">elemen terlalu lebar (harus terdeteksi)</div></section>
+<footer><p>footer</p></footer>
+<img src="/tidak-ada.png" alt="x">
+<script>console.error('error disengaja'); console.warn('warn disengaja'); setTimeout(() => { throw new Error('pageerror disengaja'); });</script>
+</body></html>
