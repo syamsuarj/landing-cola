@@ -1,9 +1,9 @@
 #!/usr/bin/env node
-// QA harness T6 — coca-cola-landing.  Bukan kode produksi.
+// QA harness — agrinas-landing (konsep redesign Agrinas Palma).  Bukan kode produksi.
 //
 // Pakai (dari root proyek):
-//   node qa/run.mjs                              # dev server http://localhost:3000 (cek 2,3,4,5,7)
-//   node qa/run.mjs --url http://localhost:3000  # idem, URL eksplisit
+//   node qa/run.mjs                              # dev server http://localhost:3001 (cek 2,3,4,5,7)
+//   node qa/run.mjs --url http://localhost:3001  # idem, URL eksplisit
 //   node qa/run.mjs --prod                       # npm run build + astro preview :4399 + SEMUA cek (incl. Lighthouse)
 //   node qa/run.mjs --selftest                   # uji harness pada qa/fixtures (sengaja rusak); exit 0 = detektor bekerja
 // Opsi: --widths 375,768,1280  --out qa/out  --no-lighthouse  --lighthouse (paksa LH di mode dev)
@@ -14,6 +14,7 @@
 import { spawn } from 'node:child_process';
 import fs from 'node:fs';
 import path from 'node:path';
+import zlib from 'node:zlib';
 import { fileURLToPath } from 'node:url';
 
 const QA_DIR = path.dirname(fileURLToPath(import.meta.url));
@@ -26,7 +27,7 @@ const opt = (n, d) => { const i = argv.indexOf(`--${n}`); return i >= 0 && argv[
 const PROD = flag('prod');
 const SELFTEST = flag('selftest'); // fixture sengaja rusak → overflow/console/variants WAJIB FAIL
 const PREVIEW_PORT = Number(opt('port', 4399));
-let BASE_URL = SELFTEST ? 'http://127.0.0.1:4398/' : PROD ? `http://127.0.0.1:${PREVIEW_PORT}/` : opt('url', 'http://localhost:3000/');
+let BASE_URL = SELFTEST ? 'http://127.0.0.1:4398/' : PROD ? `http://127.0.0.1:${PREVIEW_PORT}/` : opt('url', 'http://localhost:3001/');
 const WIDTHS = opt('widths', '375,768,1280').split(',').map(Number);
 const OUT = path.resolve(ROOT, opt('out', SELFTEST ? 'qa/out-selftest' : 'qa/out'));
 const SKIP = new Set(opt('skip', '').split(',').filter(Boolean));
@@ -34,10 +35,10 @@ if (SELFTEST) SKIP.add('credits');
 const RUN_LH = !flag('no-lighthouse') && (PROD || flag('lighthouse')) && !SKIP.has('lighthouse');
 const RUN_BUILD = (PROD || flag('build')) && !SKIP.has('build');
 const CHROME_PATH = process.env.CHROME_PATH || '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome';
-const EXPECTED_IDS = ['utama|hero', 'sejarah', 'produk', 'botol', 'indonesia', 'fakta', 'keberlanjutan', 'galeri', 'kutipan', 'faq', 'cta', 'footer'];
+const EXPECTED_IDS = ['beranda', 'apresiasi', 'tentang', 'filosofi', 'milestones', 'visi-misi', 'kepemimpinan', 'bisnis', 'angka', 'kemitraan', 'karir', 'berita', 'keterbukaan', 'kontak|footer'];
 // Ambang Lighthouse (skor 0-100). Ubah di sini bila PM menetapkan target lain.
 const LH_THRESHOLDS = {
-  mobile: { performance: 80, accessibility: 95, 'best-practices': 95, seo: 95 },
+  mobile: { performance: 90, accessibility: 95, 'best-practices': 95, seo: 95 },
   desktop: { performance: 90, accessibility: 95, 'best-practices': 95, seo: 95 },
 };
 const VARIANT_WIDTHS = [375, 1280];
@@ -91,7 +92,14 @@ async function startStaticDist(port) {
     if (fs.existsSync(f) && fs.statSync(f).isDirectory()) f = path.join(f, 'index.html');
     if (!fs.existsSync(f)) { const nf = path.join(DIST, '404.html'); r.writeHead(404, { 'content-type': MIME['.html'] }); return r.end(fs.existsSync(nf) ? fs.readFileSync(nf) : 'Not found'); }
     const ext = path.extname(f).toLowerCase();
-    r.writeHead(200, { 'content-type': MIME[ext] || 'application/octet-stream', 'cache-control': p.startsWith('/_astro/') ? 'public, max-age=31536000, immutable' : 'no-cache' });
+    const headers = { 'content-type': MIME[ext] || 'application/octet-stream', 'cache-control': p.startsWith('/_astro/') ? 'public, max-age=31536000, immutable' : 'no-cache' };
+    // gzip untuk teks (html/css/js/svg/json) seperti hosting statis produksi; tanpa ini Lighthouse menghukum transfer tak terkompresi
+    if (/\.(html|css|m?js|svg|json|txt|xml)$/.test(ext) && /\bgzip\b/.test(q.headers['accept-encoding'] || '')) {
+      headers['content-encoding'] = 'gzip'; headers.vary = 'Accept-Encoding';
+      r.writeHead(200, headers);
+      return r.end(zlib.gzipSync(fs.readFileSync(f)));
+    }
+    r.writeHead(200, headers);
     fs.createReadStream(f).pipe(r);
   });
   await new Promise((res) => staticServer.listen(port, '127.0.0.1', res));
@@ -386,18 +394,22 @@ async function lighthouse() {
 }
 
 // ---------- (7) CREDITS ----------
+// Agrinas: semua aset gambar di src/assets/agrinas/ harus tercatat di tabel CREDITS.md (kolom File = path relatif repo)
+// dan setiap baris tabel harus menunjuk file yang ada. Sisa direktori foto Coca-Cola (src/assets/photos) = FAIL.
 function checkCredits() {
-  const photosDir = path.join(ROOT, 'src/assets/photos');
-  const files = fs.existsSync(photosDir) ? fs.readdirSync(photosDir).filter((f) => !f.startsWith('.') && /\.(jpe?g|png|webp|avif|gif|svg)$/i.test(f)) : [];
-  const candidates = ['CREDITS.md', 'src/assets/photos/CREDITS.md', 'public/CREDITS.md'].map((p) => path.join(ROOT, p));
-  const credits = candidates.find((p) => fs.existsSync(p));
-  if (!credits) return setResult('credits', 'FAIL', `CREDITS.md tidak ditemukan (dicari: ${candidates.map((p) => path.relative(ROOT, p)).join(', ')}); ${files.length} foto tidak tercatat`, { photos: files, missingInCredits: files });
+  const assetDir = path.join(ROOT, 'src/assets/agrinas');
+  const files = fs.existsSync(assetDir) ? fs.readdirSync(assetDir).filter((f) => !f.startsWith('.') && /\.(jpe?g|png|webp|avif|gif|svg)$/i.test(f)).map((f) => `src/assets/agrinas/${f}`) : [];
+  const credits = path.join(ROOT, 'CREDITS.md');
+  if (!fs.existsSync(credits)) return setResult('credits', 'FAIL', `CREDITS.md tidak ditemukan; ${files.length} aset tidak tercatat`, { assets: files, missingInCredits: files });
   const txt = fs.readFileSync(credits, 'utf8');
-  const missingInCredits = files.filter((f) => !txt.includes(f));
-  const mentioned = [...new Set([...txt.matchAll(/(?:^|[\s`|(\/])([A-Za-z0-9][\w.-]*\.(?:jpe?g|png|webp|avif|gif|svg))\b/gim)].map((m) => m[1]))];
-  const orphanInCredits = mentioned.filter((m) => !files.includes(m));
-  const ok = !missingInCredits.length && !orphanInCredits.length && files.length > 0;
-  setResult('credits', ok ? 'PASS' : 'FAIL', `${files.length} foto, ${missingInCredits.length} tak tercatat di ${path.relative(ROOT, credits)}, ${orphanInCredits.length} entri CREDITS tanpa file`, { creditsFile: path.relative(ROOT, credits), photos: files, missingInCredits, orphanInCredits });
+  const rows = txt.split('\n').filter((l) => /^\|/.test(l)).map((l) => l.split('|').map((c) => c.trim())).filter((c) => /^src\//.test(c[2] || ''));
+  const listed = [...new Set(rows.map((c) => c[2].replace(/`/g, '')))];
+  const missingInCredits = files.filter((f) => !listed.includes(f));
+  const orphanInCredits = listed.filter((f) => !fs.existsSync(path.join(ROOT, f)));
+  const badRows = rows.filter((c) => !/^https?:\/\//.test(c[3] || '') || !c[4]).map((c) => c[2]);
+  const legacy = fs.existsSync(path.join(ROOT, 'src/assets/photos')) || /unsplash/i.test(txt);
+  const ok = !missingInCredits.length && !orphanInCredits.length && !badRows.length && !legacy && files.length > 0;
+  setResult('credits', ok ? 'PASS' : 'FAIL', `${files.length} aset di src/assets/agrinas, ${listed.length} baris CREDITS; ${missingInCredits.length} aset tak tercatat, ${orphanInCredits.length} baris tanpa file, ${badRows.length} baris tanpa URL sumber/pemilik${legacy ? ', SISA Unsplash/src/assets/photos terdeteksi' : ''}`, { creditsFile: 'CREDITS.md', assets: files, missingInCredits, orphanInCredits, badRows, legacy });
 }
 
 // ---------- (8) laporan ----------

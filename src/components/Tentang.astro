@@ -1,0 +1,132 @@
+---
+// T1b — Tentang Perusahaan. Teks resmi: docs/reference/t1b-content.md (agrinaspalma.co.id).
+import { Image } from 'astro:assets';
+import fotoGedung from '../assets/agrinas/tentang-gedung.webp';
+import fotoPabrik from '../assets/agrinas/tentang-pabrik.webp';
+---
+<section id="tentang" class="tt grain" aria-labelledby="judul-tentang">
+  <div class="container">
+    <header class="tt-head">
+      <p class="eyebrow" data-tt-reveal>Tentang Kami</p>
+      <h2 id="judul-tentang" class="display-l tt-title" data-tt-reveal>Tentang <span class="accent">Perusahaan</span></h2>
+      <p class="lead muted tt-sub" data-tt-reveal>Langkah strategis mewujudkan visi kedaulatan Nusantara.</p>
+    </header>
+
+    <div class="tt-visual">
+      <figure class="tt-main" data-tt-photo>
+        <div class="tt-frame">
+          <Image
+            src={fotoGedung}
+            alt="Gedung kantor PT Agrinas Palma Nusantara dengan logo Agrinas di fasad"
+            widths={[640, 960, 1400, 1900]}
+            sizes="(min-width: 1280px) 1000px, 92vw"
+            loading="lazy"
+          />
+        </div>
+        <figcaption class="tt-badge" data-tt-reveal>
+          <span class="tt-badge-k">Kemandirian Energi &amp; Pangan</span>
+          <span class="tt-badge-v">BUMN Persero · Berdiri Februari 2025</span>
+        </figcaption>
+      </figure>
+      <figure class="tt-sub-photo" data-tt-photo2>
+        <div class="tt-frame">
+          <Image
+            src={fotoPabrik}
+            alt="Foto udara pabrik kelapa sawit di tengah hamparan perkebunan"
+            widths={[400, 640, 900]}
+            sizes="(min-width: 900px) 30vw, 60vw"
+            loading="lazy"
+          />
+        </div>
+      </figure>
+    </div>
+
+    <div class="tt-grid">
+      <article class="tt-block" data-tt-block>
+        <span class="tt-idx" aria-hidden="true">01</span>
+        <h3 class="tt-h">Semangat Patriot</h3>
+        <p class="tt-motto" aria-hidden="true"><span class="accent">Patriot · Loyal · Profesional</span></p>
+        <p class="tt-p">Dengan semangat <strong>“Patriot, Loyal, Profesional”</strong>, PT Agrinas Palma Nusantara (Persero) berperan aktif menciptakan kemandirian energi sekaligus membuka lapangan kerja, mengurangi pengangguran, dan menghadirkan manfaat nyata bagi masyarakat.</p>
+      </article>
+      <article class="tt-block" data-tt-block>
+        <span class="tt-idx" aria-hidden="true">02</span>
+        <h3 class="tt-h">Mandat Swasembada Nasional</h3>
+        <p class="tt-p tt-strong"><strong>PT Agrinas Palma Nusantara (Persero)</strong> hadir untuk negeri atas mandat Presiden Republik Indonesia, Bapak Prabowo Subianto, dalam mewujudkan Asta Cita swasembada energi nasional.</p>
+        <p class="tt-p">Resmi berdiri pada Februari 2025, PT Agrinas Palma Nusantara (Persero) berkomitmen menjaga produktivitas, mendukung ketahanan energi, serta mengelola perkebunan sawit secara berkelanjutan dengan tata kelola yang transparan dan ramah lingkungan.</p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<style>
+  .tt {
+    background:
+      radial-gradient(50% 40% at 0% 10%, rgba(26, 127, 55, .28), transparent 70%),
+      var(--c-ink);
+    padding-block: clamp(88px, 12vw, 168px);
+    overflow-x: clip;
+  }
+  .tt > * { position: relative; z-index: 2; }
+  .tt-title { margin: .15em 0 .3em; }
+  .tt-sub { margin: 0; max-width: 34rem; }
+
+  /* ---------- Foto ---------- */
+  .tt-visual { position: relative; margin-top: clamp(40px, 6vw, 88px); }
+  .tt-main { margin: 0; position: relative; }
+  .tt-frame { overflow: hidden; border-radius: var(--radius); position: relative; }
+  .tt-main .tt-frame::after {
+    content: ""; position: absolute; inset: 0; pointer-events: none;
+    background: linear-gradient(180deg, transparent 35%, rgba(7, 21, 14, .85) 100%);
+  }
+  .tt-main :global(img) {
+    width: 100%; height: auto; aspect-ratio: 4 / 5; object-fit: cover; object-position: 50% 40%;
+  }
+  .tt-badge {
+    position: absolute; left: clamp(16px, 3vw, 40px); bottom: clamp(16px, 3vw, 40px); right: 16px;
+    display: flex; flex-direction: column; gap: .5rem;
+    z-index: 1;
+  }
+  .tt-badge-k { font-family: var(--font-display); font-size: clamp(1.5rem, 1rem + 2.4vw, 3.25rem); line-height: 1.05; color: var(--c-cream); }
+  .tt-badge-v {
+    align-self: flex-start;
+    font-size: .72rem; font-weight: 700; letter-spacing: .14em; text-transform: uppercase;
+    color: var(--c-ink); background: var(--c-mint);
+    padding: .45rem .85rem; border-radius: 999px;
+  }
+  .tt-sub-photo { margin: 16px 0 0 auto; width: 62%; }
+  .tt-sub-photo :global(img) { width: 100%; height: auto; aspect-ratio: 4 / 3; object-fit: cover; object-position: 50% 30%; }
+  @media (min-width: 768px) {
+    .tt-main :global(img) { aspect-ratio: 16 / 8; }
+  }
+  @media (min-width: 900px) {
+    .tt-main { width: 82%; }
+    .tt-sub-photo {
+      position: absolute; right: 0; bottom: -12%;
+      width: 30%; margin: 0;
+      z-index: 2;
+      box-shadow: 0 30px 60px -20px rgba(0, 0, 0, .7);
+      border-radius: var(--radius);
+      outline: 6px solid var(--c-ink);
+    }
+  }
+
+  /* ---------- Teks ---------- */
+  .tt-grid {
+    display: grid; gap: clamp(40px, 5vw, 72px);
+    margin-top: clamp(48px, 8vw, 140px);
+  }
+  .tt-block { border-top: 1px solid var(--c-line); padding-top: 1.5rem; }
+  .tt-idx { display: block; font-family: var(--font-display); font-style: italic; color: var(--c-mint); margin-bottom: .5rem; }
+  .tt-h { font-family: var(--font-display); font-weight: 500; font-size: clamp(1.6rem, 1.1rem + 1.6vw, 2.5rem); color: var(--c-cream); margin: 0 0 .5em; }
+  .tt-motto { font-family: var(--font-display); font-size: clamp(1.25rem, 1rem + 1vw, 1.75rem); margin: 0 0 .9em; }
+  .tt-p { color: var(--c-muted); line-height: 1.7; max-width: 36rem; }
+  .tt-p strong { color: var(--c-cream); font-weight: 700; }
+  .tt-strong { color: var(--c-cream); font-size: 1.08rem; }
+  @media (min-width: 900px) {
+    .tt-grid { grid-template-columns: 1fr 1fr; width: 82%; }
+  }
+</style>
+
+<script>
+  import '../scripts/sections/tentang';
+</script>

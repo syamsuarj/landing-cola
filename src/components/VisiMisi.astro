@@ -1,0 +1,113 @@
+---
+// T1b — Visi & Misi. Teks resmi: docs/reference/t1b-content.md (agrinaspalma.co.id).
+import { Image } from 'astro:assets';
+import fotoVisi from '../assets/agrinas/visimisi-asset5.webp';
+
+const visi = 'Menjadi Perusahaan Kontributor Utama Energi Baru dan Terbarukan Dalam Mewujudkan Swasembada Energi Nasional.';
+const visiWords = visi.split(' ');
+const misi = [
+  'Menerapkan tata kelola perusahaan yang baik (Good Corporate Governance) dan profesional.',
+  'Mengembangkan Sumber Daya Manusia yang berkarakter, patriotik, profesional, berintegritas dan loyalitas tinggi.',
+  'Menjalankan praktik pengelolaan perkebunan yang baik (good agricultural practices) secara efektif, efisien, transparan, dan berkelanjutan.',
+  'Intensif melaksanakan riset variasi produk turunan (hilirisasi), dan pengembangan bisnis Perusahaan dengan mengedepankan aspek lingkungan.',
+  'Meningkatkan produktivitas dan kualitas produk perkebunan yang memberikan nilai tambah bagi negara serta berdampak positif bagi kesejahteraan masyarakat.',
+];
+const pad = (n: number) => String(n).padStart(2, '0');
+---
+<section id="visi-misi" class="vm" aria-labelledby="judul-visi-misi">
+  <div class="vm-visi grain">
+    <div class="vm-bg" aria-hidden="true">
+      <Image src={fotoVisi} alt="" widths={[640, 960, 1280]} sizes="100vw" loading="lazy" data-vm-bg />
+    </div>
+    <div class="container vm-visi-inner">
+      <p class="eyebrow" data-vm-reveal>Visi &amp; Misi</p>
+      <h2 id="judul-visi-misi" class="display-l vm-title" data-vm-reveal>Arah Strategis <span class="accent">Perusahaan</span></h2>
+      <figure class="vm-quote">
+        <figcaption class="vm-label" data-vm-reveal><span class="logo-stripe" aria-hidden="true"></span>Visi Kami</figcaption>
+        <blockquote>
+          <p class="vm-visi-text" data-vm-words>“{visiWords.map((w, i) => <span class="vm-w">{i < visiWords.length - 1 ? w + ' ' : w}</span>)}”</p>
+        </blockquote>
+      </figure>
+    </div>
+  </div>
+
+  <div class="vm-misi section-light">
+    <div class="container vm-misi-inner">
+      <div class="vm-misi-head">
+        <span class="logo-stripe vm-misi-stripe" aria-hidden="true"></span>
+        <h3 class="display-m vm-misi-title" data-vm-reveal>Misi <span class="accent">Strategis</span></h3>
+      </div>
+      <ol class="vm-list" role="list">
+        {misi.map((m, i) => (
+          <li class="vm-item" data-vm-item>
+            <span class="vm-n" aria-hidden="true">{pad(i + 1)}</span>
+            <p>{m}</p>
+          </li>
+        ))}
+      </ol>
+    </div>
+  </div>
+</section>
+
+<style>
+  .vm { overflow-x: clip; }
+
+  /* ---------- Visi: foto full-bleed gelap ---------- */
+  .vm-visi {
+    position: relative;
+    background: var(--c-ink);
+    padding-block: clamp(96px, 14vw, 200px);
+    overflow: hidden;
+  }
+  .vm-bg { position: absolute; inset: 0; z-index: 0; }
+  .vm-bg :global(img) { width: 100%; height: 100%; object-fit: cover; object-position: 50% 30%; filter: saturate(.75); }
+  .vm-bg::after {
+    content: ""; position: absolute; inset: 0;
+    background:
+      linear-gradient(180deg, rgba(7, 21, 14, .92) 0%, rgba(7, 21, 14, .72) 45%, rgba(7, 21, 14, .94) 100%),
+      radial-gradient(60% 60% at 20% 80%, rgba(26, 127, 55, .35), transparent 70%);
+  }
+  .vm-visi-inner { position: relative; z-index: 2; }
+  .vm-title { margin: .15em 0 0; }
+  .vm-quote { margin: clamp(48px, 7vw, 96px) 0 0; }
+  .vm-label {
+    display: flex; align-items: center; gap: 1rem;
+    font-size: .8rem; font-weight: 700; letter-spacing: .18em; text-transform: uppercase; color: var(--c-mint);
+    margin-bottom: 1.5rem;
+  }
+  .vm-label .logo-stripe { width: 56px; }
+  .vm-quote blockquote { margin: 0; }
+  .vm-visi-text {
+    font-family: var(--font-display); font-weight: 400;
+    font-size: clamp(1.9rem, 1rem + 3.6vw, 4.6rem);
+    line-height: 1.12; letter-spacing: -.015em;
+    color: var(--c-cream);
+    max-width: 18em; margin: 0;
+  }
+
+  /* ---------- Misi: section terang ---------- */
+  .vm-misi { padding-block: clamp(80px, 11vw, 152px); }
+  .vm-misi-inner { display: grid; gap: clamp(32px, 5vw, 64px); }
+  .vm-misi-title { margin: .15em 0 0; }
+  .vm-misi-stripe { width: 72px; margin-bottom: 1.25rem; }
+  .vm-list { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--c-line-dark); }
+  .vm-item {
+    display: grid; grid-template-columns: auto minmax(0, 1fr); gap: clamp(16px, 3vw, 40px); align-items: start;
+    padding: clamp(20px, 2.8vw, 32px) 0;
+    border-bottom: 1px solid var(--c-line-dark);
+  }
+  .vm-n {
+    font-family: var(--font-display); font-style: italic; font-weight: 500;
+    font-size: clamp(2rem, 1.4rem + 2.4vw, 4rem); line-height: 1;
+    color: var(--c-green); min-width: 1.25em;
+  }
+  .vm-item p { margin: 0; padding-top: .35em; font-size: clamp(1.02rem, .95rem + .4vw, 1.3rem); line-height: 1.55; color: var(--c-forest); max-width: 40rem; }
+  @media (min-width: 900px) {
+    .vm-misi-inner { grid-template-columns: minmax(0, 1fr) minmax(0, 2fr); align-items: start; }
+    .vm-misi-head { position: sticky; top: calc(var(--header-h) + 32px); }
+  }
+</style>
+
+<script>
+  import '../scripts/sections/visimisi';
+</script>

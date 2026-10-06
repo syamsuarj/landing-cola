@@ -1,0 +1,132 @@
+---
+// T1b — Milestones: Penyerahan Lahan Tahap I–VI. Teks & foto resmi: docs/reference/t1b-content.md (agrinaspalma.co.id).
+import { Image } from 'astro:assets';
+import tahap1 from '../assets/agrinas/milestones-tahap1.webp';
+import tahap2 from '../assets/agrinas/milestones-tahap2.webp';
+import tahap3 from '../assets/agrinas/milestones-tahap3.webp';
+import tahap4 from '../assets/agrinas/milestones-tahap4.webp';
+import tahap5 from '../assets/agrinas/milestones-tahap5.webp';
+import tahap6 from '../assets/agrinas/milestones-tahap6.webp';
+
+const tahap = [
+  { iso: '2025-03-10', date: '10 Maret 2025', t: 'Penyerahan Lahan Tahap I', img: tahap1,
+    d: 'Menjadi tonggak sejarah, PT Agrinas Palma Nusantara (Persero) resmi memulai perjalanan pada 10 Maret 2025 dengan menerima mandat pengelolaan 221.868 hektare lahan negara dari Satgas PKH demi kemanfaatan nasional.' },
+  { iso: '2025-03-26', date: '26 Maret 2025', t: 'Penyerahan Lahan Tahap II', img: tahap2,
+    d: 'Pada 26 Maret 2025, PT Agrinas Palma Nusantara (Persero) menerima 216.990,25 hektare lahan hutan hasil Penguasaan Kembali Satuan Tugas (Satgas) Penertiban Kawasan Hutan (PKH).' },
+  { iso: '2025-07-09', date: '9 Juli 2025', t: 'Penyerahan Lahan Tahap III', img: tahap3,
+    d: 'PT Agrinas Palma Nusantara (Persero) resmi menerima mandat pengelolaan lahan seluas 394.547,29 hektare dari Kejaksaan Agung RI melalui Satgas PKH sebagai bagian dari optimalisasi kawasan hutan negara.' },
+  { iso: '2025-09-12', date: '12 September 2025', t: 'Penyerahan Lahan Tahap IV', img: tahap4,
+    d: 'PT Agrinas Palma Nusantara (Persero) menerima mandat pengelolaan lahan seluas 1.507.591,9 hektare dari Satuan Tugas Penertiban Kawasan Hutan (Satgas PKH) pada Jumat, 12 September 2025.' },
+  { iso: '2025-12-24', date: '24 Desember 2025', t: 'Penyerahan Lahan Tahap V', img: tahap5,
+    d: 'PT Agrinas Palma Nusantara (Persero) dipercaya mengelola 204.575,383 hektare lahan sawit hasil penertiban kawasan hutan negara guna mengoptimalkan aset dan kekayaan agroindustri nasional.' },
+  { iso: '2026-04-10', date: '10 April 2026', t: 'Penyerahan Lahan Tahap VI', img: tahap6,
+    d: 'PT Agrinas Palma Nusantara (Persero) resmi menerima amanah pengelolaan 30,5 ribu hektare lahan negara dari Kejaksaan Agung RI untuk optimalisasi aset dan produktivitas perkebunan nasional.' },
+];
+const roman = ['I', 'II', 'III', 'IV', 'V', 'VI'];
+const pad = (n: number) => String(n).padStart(2, '0');
+---
+<section id="milestones" class="ms grain" aria-labelledby="judul-milestones">
+  <div class="container ms-intro">
+    <p class="eyebrow" data-ms-reveal>Perjalanan Kami</p>
+    <h2 id="judul-milestones" class="display-l ms-title" data-ms-reveal>Milestones <span class="accent">Agrinas Palma Nusantara</span></h2>
+  </div>
+
+  <div class="ms-pin" data-ms-pin>
+    <div class="container ms-bar">
+      <p class="eyebrow ms-bar-label" aria-hidden="true">Penyerahan Lahan · Tahap I — VI</p>
+      <div class="ms-progress" aria-hidden="true"><span data-ms-progress></span></div>
+    </div>
+    <div class="ms-viewport" data-ms-viewport>
+      <ol class="ms-track" data-ms-track aria-label="Garis waktu penyerahan lahan Tahap I sampai VI">
+        {tahap.map((m, i) => (
+          <li class="ms-item" data-ms-item>
+            <figure class="ms-photo">
+              <Image src={m.img} alt={`Seremoni ${m.t}`} widths={[400, 640, 960]} sizes="(min-width: 768px) 460px, 92vw" loading="lazy" />
+              <span class="ms-roman" aria-hidden="true">{roman[i]}</span>
+            </figure>
+            <div class="ms-body">
+              <p class="ms-meta"><span class="ms-idx" aria-hidden="true">{pad(i + 1)} / {pad(tahap.length)}</span><time datetime={m.iso}>{m.date}</time></p>
+              <h3 class="ms-t">{m.t}</h3>
+              <blockquote class="ms-q"><p>“{m.d}”</p></blockquote>
+            </div>
+          </li>
+        ))}
+      </ol>
+    </div>
+  </div>
+</section>
+
+<style>
+  .ms {
+    background:
+      radial-gradient(60% 45% at 90% 0%, rgba(26, 127, 55, .3), transparent 70%),
+      var(--c-ink);
+    padding-block: clamp(88px, 12vw, 168px) clamp(56px, 8vw, 120px);
+    overflow-x: clip;
+  }
+  .ms > * { position: relative; z-index: 2; }
+  .ms-title { margin: .15em 0 0; max-width: 14em; }
+
+  /* ---------- Bar progres ---------- */
+  .ms-pin { margin-top: clamp(48px, 7vw, 96px); }
+  .ms-bar { display: flex; align-items: center; gap: 1.25rem; }
+  .ms-bar-label { margin: 0; white-space: nowrap; }
+  @media (max-width: 479.98px) { .ms-bar-label { white-space: normal; max-width: 60%; } }
+  .ms-progress { flex: 1; min-width: 40px; height: 3px; background: var(--c-line); border-radius: 2px; overflow: hidden; }
+  .ms-progress span {
+    display: block; height: 100%; width: 100%;
+    background: linear-gradient(90deg, var(--c-green) 0 25%, var(--c-yellow) 25% 50%, var(--c-blue) 50% 75%, var(--c-red) 75% 100%);
+    transform-origin: left center;
+  }
+
+  /* ---------- Default (tanpa JS / reduced-motion / < 768px): daftar vertikal ---------- */
+  .ms-viewport { width: 100%; max-width: var(--container); margin-inline: auto; padding-inline: var(--gutter); }
+  .ms-track { list-style: none; margin: 0; padding: 0; }
+  .ms-item {
+    display: grid; gap: 1.25rem;
+    padding: clamp(28px, 4vw, 44px) 0;
+    border-bottom: 1px solid var(--c-line);
+  }
+  .ms-photo { position: relative; margin: 0; overflow: hidden; border-radius: var(--radius); background: var(--c-forest); }
+  .ms-photo::after { content: ""; position: absolute; inset: 0; background: linear-gradient(180deg, transparent 50%, rgba(7, 21, 14, .7)); pointer-events: none; }
+  .ms-photo :global(img) { width: 100%; height: auto; aspect-ratio: 16 / 10; object-fit: cover; }
+  .ms-roman {
+    position: absolute; right: 16px; bottom: 4px; z-index: 1;
+    font-family: var(--font-display); font-weight: 500; font-size: clamp(3rem, 6vw, 4.5rem); line-height: 1;
+    color: var(--c-cream); text-shadow: 0 4px 24px rgba(0, 0, 0, .5);
+  }
+  .ms-meta { display: flex; flex-wrap: wrap; align-items: baseline; gap: .4rem 1rem; margin: 0 0 .4rem; }
+  .ms-idx { font-size: .72rem; letter-spacing: .2em; font-weight: 700; color: var(--c-muted); }
+  .ms-meta time { font-size: .8rem; font-weight: 700; letter-spacing: .16em; text-transform: uppercase; color: var(--c-mint); }
+  .ms-t { font-family: var(--font-display); font-weight: 500; font-size: clamp(1.45rem, 1.1rem + 1vw, 2rem); color: var(--c-cream); margin: 0 0 .5em; }
+  .ms-q { margin: 0; }
+  .ms-q p { margin: 0; color: var(--c-muted); line-height: 1.65; font-size: .98rem; max-width: 34rem; }
+  @media (min-width: 640px) {
+    .ms-item { grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr); align-items: center; gap: 1.5rem clamp(24px, 4vw, 56px); }
+  }
+
+  /* ---------- Horizontal ter-pin (class .is-h dipasang JS, hanya >= 768px & tanpa reduced-motion) ---------- */
+  .ms.is-h .ms-pin {
+    height: 100vh; height: 100svh;
+    margin-top: clamp(16px, 3vw, 40px);
+    display: flex; flex-direction: column; justify-content: center; gap: clamp(24px, 4.5vh, 56px);
+    padding-top: var(--header-h);
+  }
+  .ms.is-h .ms-viewport { max-width: none; padding: 0; overflow: hidden; }
+  .ms.is-h .ms-track {
+    display: flex; flex-wrap: nowrap; width: max-content;
+    padding-inline: max(var(--gutter), calc((100vw - var(--container)) / 2 + var(--gutter)));
+    gap: clamp(24px, 3vw, 48px);
+  }
+  .ms.is-h .ms-item {
+    width: clamp(320px, 34vw, 460px);
+    grid-template-columns: minmax(0, 1fr); align-content: start;
+    border-bottom: 0; padding: 0;
+  }
+  .ms.is-h .ms-photo :global(img) { aspect-ratio: 16 / 10; max-height: 38vh; }
+  .ms.is-h .ms-q p { font-size: .93rem; }
+</style>
+
+<script>
+  import '../scripts/sections/milestones';
+</script>

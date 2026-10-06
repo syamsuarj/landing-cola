@@ -1,0 +1,150 @@
+---
+// T1c — Kepemimpinan. Nama, jabatan & foto: beranda agrinaspalma.co.id (#leadership, 12 orang),
+// teks mentah di docs/reference/t1c-content.md. Foto dari cms.agrinaspalma.app (lokal).
+import { Image } from 'astro:assets';
+import ghani from '../assets/agrinas/kepemimpinan-ghani.webp';
+import kusdi from '../assets/agrinas/kepemimpinan-kusdi.webp';
+import tuhu from '../assets/agrinas/kepemimpinan-tuhu.webp';
+import nyoman from '../assets/agrinas/kepemimpinan-nyoman.webp';
+import erry from '../assets/agrinas/kepemimpinan-erry.jpg';
+import sucipto from '../assets/agrinas/kepemimpinan-sucipto.webp';
+import nurhidayat from '../assets/agrinas/kepemimpinan-nurhidayat.webp';
+import wais from '../assets/agrinas/kepemimpinan-wais.webp';
+import nofil from '../assets/agrinas/kepemimpinan-nofil.webp';
+import gagah from '../assets/agrinas/kepemimpinan-gagah.webp';
+import cucu from '../assets/agrinas/kepemimpinan-cucu.webp';
+import seger from '../assets/agrinas/kepemimpinan-seger.webp';
+
+const direksi = [
+  { n: 'Kusdi Sastro Kidjan', j: 'Wakil Direktur Utama', img: kusdi },
+  { n: 'Tuhu Bangun', j: 'Direktur Operasional', img: tuhu },
+  { n: 'I Nyoman Suparta', j: 'Direktur Hukum', img: nyoman },
+  { n: 'Erry Herman', j: 'Direktur SDM dan Umum', img: erry },
+  { n: 'Sucipto Prayitno', j: 'Direktur Keuangan dan Manajemen Risiko', img: sucipto },
+  { n: 'Nurhidayat', j: 'Direktur Bisnis', img: nurhidayat },
+  { n: 'Mohammad Wais Fansuri', j: 'Direktur Pemasaran', img: wais },
+  { n: 'Nofil Anoverta', j: 'Direktur Kepatuhan dan Keberlanjutan', img: nofil },
+  { n: 'Gagah Guntur Aribowo', j: 'Direktur Konsultan Konstruksi', img: gagah },
+  { n: 'Cucu Somantri', j: 'Direktur Hubungan Kelembagaan', img: cucu },
+  { n: 'Seger Budiarjo', j: 'Direktur Kemitraan dan Plasma', img: seger },
+];
+---
+<section id="kepemimpinan" class="kp grain" aria-labelledby="judul-kepemimpinan">
+  <div class="container">
+    <header class="kp-head">
+      <p class="eyebrow" data-kp-reveal>Kepemimpinan</p>
+      <h2 id="judul-kepemimpinan" class="display-l" data-kp-reveal>Kepemimpinan <span class="accent">Perusahaan</span></h2>
+      <p class="lead muted kp-lead" data-kp-reveal>Dipimpin oleh jajaran profesional yang berpengalaman dan berdedikasi untuk mencapai visi perusahaan.</p>
+    </header>
+
+    <article class="kp-lead-card" aria-labelledby="kp-dirut">
+      <div class="kp-lead-photo" data-kp-photo>
+        <Image
+          src={ghani}
+          alt="Foto Mohammad Abdul Ghani, Direktur Utama PT Agrinas Palma Nusantara (Persero)"
+          widths={[320, 502]}
+          sizes="(min-width: 900px) 420px, 80vw"
+          loading="lazy"
+        />
+      </div>
+      <div class="kp-lead-copy">
+        <p class="eyebrow" data-kp-reveal>Jajaran Direksi</p>
+        <span class="kp-num" aria-hidden="true" data-kp-reveal>01</span>
+        <h3 id="kp-dirut" class="display-m" data-kp-reveal>Mohammad Abdul <span class="accent">Ghani</span></h3>
+        <p class="kp-role-lg" data-kp-reveal>Direktur Utama</p>
+        <span class="logo-stripe kp-stripe" aria-hidden="true" data-kp-reveal></span>
+      </div>
+    </article>
+
+    <ul class="kp-grid" role="list" aria-label="Anggota Direksi lainnya">
+      {direksi.map((d, i) => (
+        <li class="kp-card" data-kp-card>
+          <div class="kp-photo">
+            <Image src={d.img} alt={`Foto ${d.n}`} widths={[200, 360]} sizes="(min-width: 1200px) 260px, (min-width: 768px) 30vw, 45vw" loading="lazy" />
+          </div>
+          <span class="kp-idx" aria-hidden="true">{String(i + 2).padStart(2, '0')}</span>
+          <h3 class="kp-name">{d.n}</h3>
+          <p class="kp-role">{d.j}</p>
+        </li>
+      ))}
+    </ul>
+  </div>
+</section>
+
+<script>
+  import '../scripts/sections/kepemimpinan';
+</script>
+
+<style>
+  .kp {
+    background:
+      radial-gradient(70% 50% at 85% 0%, rgba(26, 127, 55, .22), transparent 70%),
+      var(--c-ink);
+    padding: clamp(88px, 12vw, 168px) 0 clamp(72px, 10vw, 140px);
+  }
+  .kp > .container { position: relative; z-index: 2; }
+  .kp-head { max-width: 860px; margin-bottom: clamp(40px, 6vw, 80px); }
+  .kp-lead { max-width: 640px; margin-top: 1.25rem; }
+
+  .kp-lead-card {
+    display: grid; gap: clamp(24px, 4vw, 64px);
+    grid-template-columns: minmax(0, 1fr);
+    align-items: end;
+    padding-bottom: clamp(40px, 6vw, 72px);
+    margin: 0 0 clamp(40px, 6vw, 72px);
+    border-bottom: 1px solid var(--c-line);
+  }
+  .kp-lead-photo {
+    position: relative; overflow: hidden;
+    border-radius: var(--radius);
+    aspect-ratio: 4 / 5;
+    max-width: 420px; width: 100%;
+    background: linear-gradient(170deg, #1b3a2a, var(--c-ink-2));
+  }
+  .kp-lead-photo img { width: 100%; height: 100%; object-fit: cover; object-position: 50% 15%; }
+  .kp-lead-photo::after {
+    content: ""; position: absolute; inset: auto 0 0; height: 35%;
+    background: linear-gradient(to top, rgba(7, 21, 14, .55), transparent);
+  }
+  .kp-num {
+    display: block;
+    font-family: var(--font-display); font-style: italic;
+    font-size: clamp(4rem, 10vw, 9rem); line-height: .8;
+    color: transparent; -webkit-text-stroke: 1px rgba(161, 219, 179, .5);
+    margin-bottom: .2em;
+  }
+  .kp-role-lg { margin: 1rem 0 1.5rem; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; font-size: .9rem; color: var(--c-mint); }
+  .kp-stripe { max-width: 160px; }
+
+  .kp-grid {
+    list-style: none; margin: 0; padding: 0;
+    display: grid; gap: clamp(28px, 3vw, 40px) clamp(16px, 2vw, 28px);
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .kp-card { position: relative; }
+  .kp-photo {
+    position: relative; overflow: hidden;
+    aspect-ratio: 4 / 5; border-radius: calc(var(--radius) * .7);
+    background: linear-gradient(170deg, #1b3a2a, var(--c-ink-2));
+    margin-bottom: 1rem;
+  }
+  .kp-photo img {
+    width: 100%; height: 100%; object-fit: cover; object-position: 50% 15%;
+    transition: transform .8s var(--ease), filter .8s var(--ease);
+    filter: saturate(.85);
+  }
+  .kp-card:hover .kp-photo img { transform: scale(1.04); filter: saturate(1); }
+  .kp-idx { font: 600 .75rem/1 var(--font-body); letter-spacing: .2em; color: var(--c-mint); }
+  .kp-name { font-family: var(--font-display); font-weight: 500; font-size: clamp(1.1rem, 1rem + .4vw, 1.4rem); margin: .4rem 0 .3rem; }
+  .kp-role { margin: 0; font-size: .88rem; line-height: 1.45; color: var(--c-muted); }
+
+  @media (min-width: 768px) {
+    .kp-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  }
+  @media (min-width: 900px) {
+    .kp-lead-card { grid-template-columns: 420px minmax(0, 1fr); }
+  }
+  @media (min-width: 1200px) {
+    .kp-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+  }
+</style>

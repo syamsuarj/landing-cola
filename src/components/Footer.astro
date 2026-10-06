@@ -1,95 +1,128 @@
 ---
-import fs from 'node:fs';
-import path from 'node:path';
+import { Image } from 'astro:assets';
+import logo from '../assets/agrinas/header-logo-agrinas-light.webp';
+import danantara from '../assets/agrinas/header-logo-danantara-light.webp';
 
-// Kredit foto dibaca dari CREDITS.md saat build, jadi baris yang ditambahkan T5b/T5c ikut tampil otomatis.
-type Credit = { section: string; url: string; who: string; license: string };
-let credits: Credit[] = [];
-try {
-  const md = fs.readFileSync(path.join(process.cwd(), 'CREDITS.md'), 'utf8');
-  credits = md.split('\n')
-    .filter((l) => /^\|\s*[a-z]/i.test(l) && !/^\|\s*Section\s*\|/i.test(l))
-    .map((l) => l.split('|').slice(1, -1).map((c) => c.trim()))
-    .filter((c) => c.length >= 5 && /^https?:\/\//.test(c[2]))
-    .map((c) => ({ section: c[0], url: c[2], who: c[3].replace(/\s*\([^)]*\)\s*$/, ''), license: c[4].replace(/\s*\(.*\)\s*$/, '') }));
-} catch { credits = []; }
-// kelompokkan per fotografer (satu nama bisa punya beberapa foto)
-const byWho = new Map<string, Credit[]>();
-credits.forEach((c) => byWho.set(c.who, [...(byWho.get(c.who) ?? []), c]));
-const people = [...byWho.entries()];
-const sources = [...new Set(credits.map((c) => (c.url.includes('pexels') ? 'Pexels' : 'Unsplash')))];
-const licenses = [...new Set(credits.map((c) => c.license))];
-const year = new Date().getFullYear();
+const quick = [
+  { href: '#tentang', t: 'Tentang Kami' },
+  { href: '#visi-misi', t: 'Visi & Misi' },
+  { href: '#bisnis', t: 'Bisnis' },
+  { href: '#karir', t: 'Karir' },
+];
+const official = [
+  { href: 'https://agrinaspalma.co.id/career', t: 'Karir' },
+  { href: 'https://agrinaspalma.co.id/procurement', t: 'Procurement' },
+  { href: 'https://agrinaspalma.co.id/news', t: 'Berita & Artikel' },
+];
+// Akun media sosial resmi (tautan "Ikuti Kami" di footer agrinaspalma.co.id)
+const socials = [
+  { href: 'https://www.instagram.com/agrinaspalma.id/', t: 'Instagram', d: 'M12 7.2a4.8 4.8 0 1 0 0 9.6 4.8 4.8 0 0 0 0-9.6Zm0 7.9a3.1 3.1 0 1 1 0-6.2 3.1 3.1 0 0 1 0 6.2Zm6.1-8.1a1.1 1.1 0 1 1-2.2 0 1.1 1.1 0 0 1 2.2 0ZM12 3.6c2.7 0 3 0 4.1.1 2.8.1 4 1.4 4.1 4.1.1 1.1.1 1.4.1 4.1s0 3-.1 4.1c-.1 2.7-1.4 4-4.1 4.1-1.1.1-1.4.1-4.1.1s-3 0-4.1-.1c-2.8-.1-4-1.4-4.1-4.1-.1-1.1-.1-1.4-.1-4.1s0-3 .1-4.1C3.9 5.1 5.2 3.8 7.9 3.7c1.1-.1 1.4-.1 4.1-.1Z' },
+  { href: 'https://www.linkedin.com/company/agrinas-palma-nusantara/', t: 'LinkedIn', d: 'M6.9 8.9H3.6V20h3.3V8.9ZM5.2 3.6a1.9 1.9 0 1 0 0 3.9 1.9 1.9 0 0 0 0-3.9ZM20.4 13.6c0-3-.6-5-4-5-1.6 0-2.7.9-3.2 1.7V8.9H10V20h3.3v-5.5c0-1.5.3-2.9 2.1-2.9s1.8 1.7 1.8 3V20h3.3v-6.4Z' },
+  { href: 'https://www.youtube.com/@AgrinasPalmaNusantara', t: 'YouTube', d: 'M21.6 7.2a2.6 2.6 0 0 0-1.8-1.8C18.2 5 12 5 12 5s-6.2 0-7.8.4A2.6 2.6 0 0 0 2.4 7.2C2 8.8 2 12 2 12s0 3.2.4 4.8a2.6 2.6 0 0 0 1.8 1.8C5.8 19 12 19 12 19s6.2 0 7.8-.4a2.6 2.6 0 0 0 1.8-1.8c.4-1.6.4-4.8.4-4.8s0-3.2-.4-4.8ZM10 15V9l5.2 3L10 15Z' },
+  { href: 'https://x.com/agrinas_palma', t: 'X', d: 'M17.8 3.5h3l-6.6 7.6L22 20.5h-6.1l-4.8-6.3-5.5 6.3h-3l7.1-8.1L2.2 3.5h6.2l4.3 5.7 5.1-5.7Zm-1 15.2h1.7L7.3 5.2H5.5l11.3 13.5Z' },
+  { href: 'https://www.tiktok.com/@agrinaspalmanusantara', t: 'TikTok', d: 'M16.6 3h-3.1v12.3a2.7 2.7 0 1 1-2.7-2.7c.3 0 .5 0 .8.1V9.5a5.8 5.8 0 1 0 5 5.8V9a7.4 7.4 0 0 0 4.3 1.4V7.3A4.3 4.3 0 0 1 16.6 3Z' },
+];
 ---
-<footer class="site-foot grain" aria-labelledby="judul-footer">
-  <h2 id="judul-footer" class="sr-only">Informasi situs</h2>
+<footer class="site-foot grain" id="kontak" aria-labelledby="judul-footer">
+  <span class="logo-stripe" aria-hidden="true"></span>
   <div class="container">
-    <div class="top">
-      <div class="disclaimer">
-        <p class="eyebrow">Penafian</p>
-        <p class="big"><strong>Situs demo non-resmi.</strong> Halaman ini dibuat untuk tujuan latihan/edukasi dan tidak berafiliasi dengan, disponsori, atau didukung oleh The Coca-Cola Company.</p>
-        <p class="muted">Coca-Cola adalah merek dagang terdaftar milik The Coca-Cola Company. Untuk informasi resmi, kunjungi situs resmi Coca-Cola. Ilustrasi botol dan objek 3D di halaman ini dibuat sendiri dari geometri sederhana, bukan logo atau model resmi.</p>
+    <div class="hero-line">
+      <p id="judul-footer" class="display-l tagline">Energi Hijau,<br /><span class="accent">Masa Depan Berkelanjutan</span></p>
+    </div>
+
+    <div class="grid">
+      <div class="col brand">
+        <Image src={logo} alt="PT Agrinas Palma Nusantara (Persero)" width={220} height={64} />
+        <p class="muted small">BUMN Persero · Berdiri Februari 2025</p>
+        <a class="dnt" href="https://www.danantaraindonesia.co.id/" target="_blank" rel="noopener">
+          <Image src={danantara} alt="Danantara Indonesia (tautan eksternal)" width={128} height={32} />
+        </a>
       </div>
-      <nav class="foot-nav" aria-label="Navigasi footer">
-        <p class="eyebrow">Jelajahi</p>
+
+      <nav class="col" aria-labelledby="f-cepat">
+        <h2 id="f-cepat" class="eyebrow">Tautan Cepat</h2>
         <ul>
-          <li><a href="#sejarah">Sejarah</a></li>
-          <li><a href="#produk">Produk</a></li>
-          <li><a href="#botol">Botol ikonik</a></li>
-          <li><a href="#indonesia">Indonesia</a></li>
-          <li><a href="#faq">FAQ</a></li>
-          <li><a href="#utama">Kembali ke atas ↑</a></li>
+          {quick.map((l) => <li><a href={l.href}>{l.t}</a></li>)}
+        </ul>
+        <h2 class="eyebrow sub" id="f-resmi">Halaman Resmi</h2>
+        <ul aria-labelledby="f-resmi">
+          {official.map((l) => <li><a href={l.href} target="_blank" rel="noopener">{l.t} <span aria-hidden="true">↗</span><span class="sr-only"> (tab baru)</span></a></li>)}
         </ul>
       </nav>
-      <div class="credits">
-        <p class="eyebrow">Kredit foto</p>
-        {credits.length ? (
-          <>
-            <p class="muted small">Foto oleh{' '}
-              {people.map(([who, list], i) => (
-                <>
-                  {list.length === 1 ? (
-                    <a href={list[0].url} rel="noopener" target="_blank">{who}<span class="sr-only"> (foto {list[0].section}, tab baru)</span></a>
-                  ) : (
-                    <>{who} ({list.map((c, j) => (<>{j > 0 && ', '}<a href={c.url} rel="noopener" target="_blank">{j + 1}<span class="sr-only"> foto {c.section} oleh {who}, tab baru</span></a></>))})</>
-                  )}{i < people.length - 2 ? ', ' : i === people.length - 2 ? ' dan ' : ''}
-                </>
-              ))}
-              {' '}via {sources.join(' & ')} ({licenses.join(', ')}). Daftar lengkap ada di CREDITS.md.
-            </p>
-          </>
-        ) : (
-          <p class="muted small">Belum ada foto stok yang dipakai.</p>
-        )}
+
+      <div class="col">
+        <h2 class="eyebrow">Kontak</h2>
+        <ul class="contact">
+          <li><a href="tel:+62218192636">021-819-2636</a></li>
+          <li><a href="mailto:agrinaspalma@agrinaspalma.co.id">agrinaspalma@agrinaspalma.co.id</a></li>
+          <li><address>Jl. H. R. Rasuna Said Kavling VI No.9 Blok X2, RT.9/RW.4, Kuningan Tim., Kecamatan Setiabudi, Kota Jakarta Selatan, Daerah Khusus Ibukota Jakarta 12950</address></li>
+        </ul>
+      </div>
+
+      <div class="col">
+        <h2 class="eyebrow">Ikuti Kami</h2>
+        <ul class="social">
+          {socials.map((s) => (
+            <li>
+              <a href={s.href} target="_blank" rel="noopener" aria-label={`${s.t} Agrinas Palma Nusantara (tab baru)`}>
+                <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path fill="currentColor" d={s.d} /></svg>
+              </a>
+            </li>
+          ))}
+        </ul>
       </div>
     </div>
-    <p class="wordmark" aria-hidden="true">Dunia<span class="wm-dot"></span>Cola</p>
-    <div class="legal">
-      <span>© {year} Dunia Cola — proyek demo</span>
-      <span>Bukan materi resmi · Tanpa logo resmi</span>
+
+    <div class="bottom">
+      <p>© 2026 PT Agrinas Palma Nusantara (Persero). All rights reserved.</p>
+      <p class="note">Konsep redesign — bukan situs produksi. Konten & aset dari situs resmi <a href="https://agrinaspalma.co.id" target="_blank" rel="noopener">agrinaspalma.co.id</a>.</p>
     </div>
   </div>
 </footer>
+
 <style>
-  .site-foot { background: var(--c-ink); color: var(--c-cream); border-top: 1px solid var(--c-line); padding: clamp(4rem, 8vw, 7rem) 0 1.5rem; }
-  .top { display: grid; gap: 3rem; grid-template-columns: 1fr; position: relative; z-index: 2; }
-  .big { font-size: clamp(1.05rem, 1rem + .4vw, 1.3rem); line-height: 1.5; max-width: 36rem; }
-  .muted { color: var(--c-muted); }
-  .small { font-size: .9rem; line-height: 1.7; }
-  .credits a, .disclaimer a { color: var(--c-cream); text-underline-offset: 3px; text-decoration-color: rgba(245, 239, 230, .4); }
-  .credits a:hover { text-decoration-color: var(--c-red); }
-  .foot-nav ul { list-style: none; margin: 0; padding: 0; display: grid; gap: .1rem; }
-  .foot-nav a { display: inline-flex; align-items: center; min-height: 40px; text-decoration: none; font-weight: 600; }
-  .foot-nav a:hover { color: var(--c-red); }
-  .wordmark {
-    font-family: var(--font-display); text-transform: uppercase; font-weight: 400;
-    font-size: clamp(4rem, 17.5vw, 17rem); line-height: .8; letter-spacing: -.01em; margin: clamp(3rem, 7vw, 6rem) 0 1.5rem;
-    color: transparent; -webkit-text-stroke: 1px rgba(245, 239, 230, .35);
-    white-space: nowrap; text-align: center; position: relative; z-index: 2;
+  .site-foot { background: var(--c-ink); color: var(--c-cream); border-top: 1px solid var(--c-line); }
+  .site-foot > .container { position: relative; z-index: 2; }
+  .hero-line { padding: clamp(4rem, 9vw, 7.5rem) 0 clamp(2.5rem, 5vw, 4rem); border-bottom: 1px solid var(--c-line); }
+  .tagline { font-size: clamp(2.3rem, 6vw, 5.75rem); margin: 0; }
+
+  .grid {
+    display: grid; grid-template-columns: 1.3fr 1fr 1.5fr .9fr; gap: 2.5rem 3rem;
+    padding: clamp(2.5rem, 5vw, 4rem) 0;
   }
-  .wm-dot { display: inline-block; width: .14em; height: .14em; border-radius: 50%; background: var(--c-red); margin: 0 .12em; vertical-align: .32em; box-shadow: 0 0 .3em rgba(244, 0, 9, .6); }
-  .legal { display: flex; flex-wrap: wrap; justify-content: space-between; gap: .5rem 2rem; font-size: .8rem; color: var(--c-muted); border-top: 1px solid var(--c-line); padding-top: 1.25rem; position: relative; z-index: 2; }
-  @media (min-width: 900px) {
-    .top { grid-template-columns: 1.5fr .7fr 1fr; gap: 4rem; }
+  .col .eyebrow { display: block; font-size: .72rem; margin-bottom: 1.1rem; }
+  .col .eyebrow.sub { margin-top: 1.8rem; }
+  .col ul { list-style: none; margin: 0; padding: 0; display: grid; gap: .25rem; }
+  .col a { text-decoration: none; color: var(--c-cream); display: inline-flex; align-items: center; min-height: 40px; gap: .35rem; transition: color .25s var(--ease); }
+  .col a:hover, .col a:focus-visible { color: var(--c-mint); }
+  .brand :global(img) { width: 200px; height: auto; }
+  .small { font-size: .85rem; margin-top: 1.2rem; }
+  .dnt { margin-top: .4rem; }
+  .dnt :global(img) { width: 128px; height: auto; opacity: .9; }
+
+  .contact { font-size: .95rem; }
+  .contact a { overflow-wrap: anywhere; }
+  .contact address { font-style: normal; color: var(--c-muted); font-size: .9rem; line-height: 1.65; margin-top: .4rem; max-width: 26rem; }
+
+  .social { display: flex !important; flex-wrap: wrap; gap: .6rem !important; }
+  .social a {
+    width: 44px; height: 44px; justify-content: center; border-radius: 50%;
+    border: 1px solid var(--c-line); transition: background-color .25s var(--ease), color .25s var(--ease), border-color .25s var(--ease);
+  }
+  .social a:hover, .social a:focus-visible { background: var(--c-mint); border-color: var(--c-mint); color: var(--c-ink); }
+
+  .bottom {
+    display: flex; flex-wrap: wrap; justify-content: space-between; gap: .5rem 2rem;
+    padding: 1.6rem 0 2rem; border-top: 1px solid var(--c-line); font-size: .82rem; color: var(--c-muted);
+  }
+  .bottom p { margin: 0; }
+  .bottom a { color: var(--c-cream); text-underline-offset: 3px; }
+  .bottom a:hover { color: var(--c-mint); }
+
+  @media (max-width: 1023px) {
+    .grid { grid-template-columns: 1fr 1fr; }
+  }
+  @media (max-width: 600px) {
+    .grid { grid-template-columns: 1fr; gap: 2.2rem; }
   }
 </style>

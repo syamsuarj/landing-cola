@@ -1,0 +1,170 @@
+---
+// T1c — Bisnis Kami / Produk & Layanan. Teks & gambar: beranda agrinaspalma.co.id (#business).
+// Situs resmi hanya memuat nama tiap produk/layanan + label "Produk & Layanan Agrinas" (tanpa deskripsi per item),
+// jadi slide hanya menampilkan nama resmi; paragraf pengantar = teks resmi apa adanya.
+// Pengelompokan "Industri Kelapa Sawit" vs "Jasa Konsultansi Teknis" mengikuti kalimat pengantar resmi.
+// Pola slide sticky diadaptasi dari Products.astro (landing Coca-Cola, branch main).
+import { Image } from 'astro:assets';
+import tbs from '../assets/agrinas/bisnis-tbs.webp';
+import cpo from '../assets/agrinas/bisnis-cpo.webp';
+import cpko from '../assets/agrinas/bisnis-cpko.webp';
+import pk from '../assets/agrinas/bisnis-pk.webp';
+import pkm from '../assets/agrinas/bisnis-pkm.webp';
+import pks from '../assets/agrinas/bisnis-pks.webp';
+import engineering from '../assets/agrinas/bisnis-engineering.webp';
+import geo from '../assets/agrinas/bisnis-georesources.webp';
+import lab from '../assets/agrinas/bisnis-support.webp';
+
+const SAWIT = 'Industri Kelapa Sawit';
+const JASA = 'Jasa Konsultansi Teknis';
+// tone = warna latar/glow slide (palet kontrak); zoom = pembesaran gambar yang objeknya kecil di kanvas.
+const items = [
+  { id: 'tbs', abbr: 'TBS', name: 'Tandan Buah Segar', group: SAWIT, img: tbs, tone: 'ember', zoom: 1 },
+  { id: 'cpo', abbr: 'CPO', name: 'Crude Palm Oil', group: SAWIT, img: cpo, tone: 'gold', zoom: 1.1 },
+  { id: 'cpko', abbr: 'CPKO', name: 'Crude Palm Kernel Oil', group: SAWIT, img: cpko, tone: 'forest', zoom: 1.1 },
+  { id: 'pk', abbr: 'PK', name: 'Palm Kernel', group: SAWIT, img: pk, tone: 'ember', zoom: 1.2 },
+  { id: 'pkm', abbr: 'PKM', name: 'Palm Kernel Meal', group: SAWIT, img: pkm, tone: 'gold', zoom: 1.5 },
+  { id: 'pks', abbr: 'PKS', name: 'Palm Kernel Shell', group: SAWIT, img: pks, tone: 'forest', zoom: 1.6 },
+  { id: 'engineering', abbr: 'Engineering', name: '', group: JASA, img: engineering, tone: 'blue', zoom: 1.5 },
+  { id: 'georesources', abbr: 'GeoResources', name: '', group: JASA, img: geo, tone: 'green', zoom: 1.25 },
+  { id: 'laboratorium-geoteknik', abbr: 'Laboratorium', name: 'Geoteknik', group: JASA, img: lab, tone: 'blue', zoom: 1.2 },
+];
+const pad = (n: number) => String(n).padStart(2, '0');
+const isAbbr = (p: (typeof items)[number]) => p.abbr.length <= 4;
+const fullName = (p: (typeof items)[number]) =>
+  isAbbr(p) ? `${p.name} (${p.abbr})` : [p.abbr, p.name].filter(Boolean).join(' ');
+---
+<section id="bisnis" class="bs" aria-labelledby="judul-bisnis">
+  <header class="bs-head grain">
+    <div class="container bs-head-inner">
+      <p class="eyebrow" data-bs-reveal>Bisnis Kami</p>
+      <h2 id="judul-bisnis" class="display-xl bs-title" data-bs-reveal>Produk <span class="accent">&amp; Layanan</span></h2>
+      <p class="lead bs-intro" data-bs-reveal>PT Agrinas Palma Nusantara (Persero) fokus pada industri kelapa sawit untuk mendukung kemandirian energi dan pangan nasional, diperkuat dengan layanan jasa konsultansi teknis sebagai lini bisnis pendukung yang strategis dan terintegrasi.</p>
+      <nav aria-label="Daftar produk & layanan">
+        <ol class="bs-index">
+          {items.map((p, i) => (
+            <li><a href={`#bisnis-${p.id}`}><span aria-hidden="true">{pad(i + 1)}</span> {isAbbr(p) ? p.abbr : fullName(p)}</a></li>
+          ))}
+        </ol>
+      </nav>
+    </div>
+  </header>
+
+  <ul class="bs-list" role="list">
+    {items.map((p, i) => (
+      <li class={`bs-slide bs-${p.tone}`} id={`bisnis-${p.id}`} data-bs-slide>
+        <article class="bs-inner container" aria-labelledby={`h-bisnis-${p.id}`} data-bs-inner>
+          <div class="bs-copy">
+            <p class="bs-num" aria-hidden="true">{pad(i + 1)} <span>/ {pad(items.length)}</span></p>
+            <p class="bs-group">{p.group}</p>
+            <h3 id={`h-bisnis-${p.id}`} class="bs-name">
+              {isAbbr(p) ? (
+                <Fragment>
+                  <span class="bs-abbr">{p.abbr}</span>
+                  <span class="bs-full accent">{p.name}</span>
+                </Fragment>
+              ) : (
+                <Fragment>
+                  <span class="bs-word">{p.abbr}</span>
+                  {p.name && <span class="bs-full bs-full-lg accent">{p.name}</span>}
+                </Fragment>
+              )}
+            </h3>
+            <p class="bs-tag">Produk &amp; Layanan Agrinas</p>
+          </div>
+          <div class="bs-art">
+            <div class="bs-glow" aria-hidden="true"></div>
+            <div class="bs-img" style={`--zoom:${p.zoom}`} data-bs-img>
+              <Image src={p.img} alt={`Ilustrasi ${fullName(p)}`} widths={[360, 600, 750]} sizes="(min-width: 900px) 40vw, 80vw" loading="lazy" />
+            </div>
+          </div>
+        </article>
+      </li>
+    ))}
+  </ul>
+</section>
+
+<style>
+  .bs { background: var(--c-ink); overflow-x: clip; }
+
+  /* ---------- Header ---------- */
+  .bs-head {
+    position: relative;
+    padding-block: clamp(88px, 12vw, 168px) clamp(48px, 7vw, 96px);
+    background: radial-gradient(60% 70% at 10% 100%, rgba(26, 127, 55, .25), transparent 70%), var(--c-ink);
+  }
+  .bs-head-inner { position: relative; z-index: 2; }
+  .bs-title { margin: .1em 0 .35em; }
+  .bs-intro { max-width: 46rem; color: var(--c-cream); }
+  .bs-index { list-style: none; margin: clamp(32px, 5vw, 56px) 0 0; padding: 0; display: flex; flex-wrap: wrap; gap: .5rem; }
+  .bs-index a {
+    display: inline-flex; align-items: center; gap: .5rem; min-height: 44px; padding: .5rem 1.1rem;
+    border: 1px solid rgba(244, 245, 240, .3); border-radius: 999px;
+    font-weight: 600; font-size: .88rem; text-decoration: none; color: var(--c-cream);
+    transition: background-color .3s var(--ease), border-color .3s var(--ease);
+  }
+  .bs-index a span { color: var(--c-mint); font-size: .72rem; letter-spacing: .1em; }
+  .bs-index a:hover { background: rgba(244, 245, 240, .08); border-color: var(--c-cream); }
+
+  /* ---------- Slide ---------- */
+  .bs-list { list-style: none; margin: 0; padding: 0; }
+  .bs-slide { position: relative; overflow: hidden; scroll-margin-top: var(--header-h); color: var(--c-cream); }
+  .bs-inner {
+    display: grid; grid-template-columns: minmax(0, 1fr); gap: 1rem;
+    padding-block: clamp(56px, 9vw, 112px);
+    position: relative; z-index: 1;
+  }
+  .bs-num { font-weight: 700; letter-spacing: .2em; font-size: .8rem; margin: 0 0 1rem; color: var(--accent); }
+  .bs-num span { font-weight: 500; color: var(--c-muted); }
+  .bs-group { margin: 0 0 1rem; font-size: .78rem; font-weight: 600; letter-spacing: .18em; text-transform: uppercase; color: var(--c-muted); }
+  .bs-name { margin: 0 0 1.5rem; font-weight: 400; }
+  .bs-abbr {
+    display: block; font-family: var(--font-display); font-weight: 500;
+    font-size: clamp(4.5rem, 22vw, 13rem); line-height: .85; letter-spacing: -.02em;
+  }
+  .bs-word {
+    display: block; font-family: var(--font-display); font-weight: 500;
+    font-size: clamp(2.2rem, 9vw, 5.5rem); line-height: .95; letter-spacing: -.02em;
+  }
+  .bs-full { display: block; margin-top: .35em; font-size: clamp(1.5rem, 1.1rem + 2vw, 3rem); line-height: 1.1; color: var(--accent); }
+  .bs-full-lg { font-size: clamp(2.2rem, 1.2rem + 5vw, 5.5rem); margin-top: .05em; }
+  .bs-tag {
+    display: inline-flex; margin: 0; padding: .45rem .9rem; border-radius: 999px;
+    border: 1px solid var(--c-line); font-size: .74rem; font-weight: 600; letter-spacing: .14em; text-transform: uppercase; color: var(--c-muted);
+  }
+
+  .bs-art { position: relative; display: grid; place-items: center; min-height: 300px; }
+  .bs-glow { position: absolute; width: min(92%, 560px); aspect-ratio: 1; border-radius: 50%; background: radial-gradient(circle, var(--glow) 0%, transparent 65%); }
+  .bs-img { position: relative; width: min(78vw, 420px); aspect-ratio: 1; }
+  .bs-img :global(img) {
+    width: 100%; height: 100%; object-fit: contain;
+    transform: scale(var(--zoom, 1));
+    filter: drop-shadow(0 30px 40px rgba(0, 0, 0, .5));
+  }
+
+  /* Tone per slide — teks cream/aksen terang di latar gelap (kontras >= 4.5:1) */
+  .bs-ember  { background: radial-gradient(70% 70% at 75% 50%, #2a1a0d 0%, var(--c-ink) 72%); --accent: #F2B37A; --glow: rgba(215, 90, 38, .42); }
+  .bs-gold   { background: radial-gradient(70% 70% at 75% 50%, #2a2509 0%, #0b140c 72%); --accent: var(--c-yellow); --glow: rgba(242, 194, 48, .34); }
+  .bs-forest { background: radial-gradient(70% 70% at 75% 50%, #1b3a2a 0%, var(--c-ink-2) 72%); --accent: var(--c-mint); --glow: rgba(161, 219, 179, .28); }
+  .bs-blue   { background: radial-gradient(70% 70% at 75% 50%, #10263a 0%, #07120f 72%); --accent: #8EC3F0; --glow: rgba(30, 111, 184, .45); }
+  .bs-green  { background: radial-gradient(70% 70% at 75% 50%, #134a26 0%, var(--c-ink) 72%); --accent: var(--c-mint); --glow: rgba(26, 127, 55, .5); }
+
+  @media (min-width: 900px) {
+    .bs-inner { grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr); align-items: center; min-height: 100vh; min-height: 100svh; }
+    .bs-slide:nth-child(even) .bs-copy { order: 2; }
+    .bs-art { min-height: 520px; }
+    .bs-img { width: min(38vw, 520px); }
+  }
+  /* Efek tumpuk ala halaman produk: tiap slide menempel lalu tertutup slide berikutnya (CSS saja).
+     Hanya bila layar cukup tinggi agar isi slide tidak terpotong. */
+  @media (min-width: 900px) and (min-height: 700px) {
+    .bs-slide { position: sticky; top: 0; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .bs-slide { position: relative; }
+  }
+</style>
+
+<script>
+  import '../scripts/sections/bisnis';
+</script>

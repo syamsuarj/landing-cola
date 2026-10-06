@@ -1,0 +1,87 @@
+---
+// T1c — Angka. HANYA angka yang tertulis/terhitung langsung di agrinaspalma.co.id:
+// - 221.868 hektare & 10 Maret 2025 (Milestones, Penyerahan Lahan Tahap I)
+// - 1.507.591,9 hektare & 12 September 2025 (Milestones, Penyerahan Lahan Tahap IV — tahap terluas)
+// - 6 tahap penyerahan lahan (Tahap I–VI, 10 Maret 2025 – 10 April 2026)
+// - 9 produk & layanan (Bisnis Kami), 12 orang Jajaran Direksi (Kepemimpinan)
+// - Berdiri Februari 2025 (Tentang Perusahaan)
+// Tidak ada total hektare gabungan: situs tidak menuliskannya, jadi tidak dijumlahkan sendiri.
+type Stat = { value: number; decimals?: number; unit?: string; label: string; note: string; wide?: boolean; static?: boolean };
+const stats: Stat[] = [
+  { value: 221868, unit: 'hektare', label: 'Lahan negara diterima pada Penyerahan Lahan Tahap I', note: '10 Maret 2025 · dari Satgas PKH', wide: true },
+  { value: 1507591.9, decimals: 1, unit: 'hektare', label: 'Mandat pengelolaan lahan pada Penyerahan Lahan Tahap IV', note: '12 September 2025 · dari Satgas PKH', wide: true },
+  { value: 6, label: 'Tahap penyerahan lahan', note: 'Tahap I–VI · Maret 2025 – April 2026' },
+  { value: 9, label: 'Produk & layanan', note: 'Industri kelapa sawit & jasa konsultansi teknis' },
+  { value: 12, label: 'Jajaran Direksi', note: 'Dipimpin Direktur Utama' },
+  { value: 2025, label: 'Resmi berdiri', note: 'Februari 2025 · BUMN Persero', static: true },
+];
+const fmt = (v: number, d = 0) => v.toLocaleString('id-ID', { minimumFractionDigits: d, maximumFractionDigits: d });
+---
+<section id="angka" class="ag section-light" aria-labelledby="judul-angka">
+  <div class="container">
+    <header class="ag-head">
+      <p class="eyebrow" data-ag-reveal>Dalam Angka</p>
+      <h2 id="judul-angka" class="display-l" data-ag-reveal>Agrinas dalam <span class="accent">angka</span></h2>
+      <span class="logo-stripe ag-stripe" aria-hidden="true" data-ag-reveal></span>
+    </header>
+
+    <ul class="ag-grid" role="list">
+      {stats.map((s) => (
+        <li class:list={['ag-card', { 'ag-wide': s.wide }]} data-ag-card>
+          <p class="ag-value">
+            <span class="sr-only">{fmt(s.value, s.decimals)}{s.unit ? ` ${s.unit}` : ''}</span>
+            <span
+              class="ag-num"
+              aria-hidden="true"
+              data-ag-count={s.static ? undefined : s.value}
+              data-ag-decimals={s.decimals ?? 0}
+            >{s.static ? String(s.value) : fmt(s.value, s.decimals)}</span>
+            {s.unit && <span class="ag-unit" aria-hidden="true">{s.unit}</span>}
+          </p>
+          <p class="ag-label">{s.label}</p>
+          <p class="ag-note">{s.note}</p>
+        </li>
+      ))}
+    </ul>
+
+    <p class="ag-src">Sumber: agrinaspalma.co.id — Milestones, Tentang Perusahaan, Kepemimpinan, dan Produk &amp; Layanan.</p>
+  </div>
+</section>
+
+<script>
+  import '../scripts/sections/angka';
+</script>
+
+<style>
+  .ag { padding: clamp(88px, 12vw, 160px) 0; overflow-x: clip; }
+  .ag-head { max-width: 860px; margin-bottom: clamp(40px, 6vw, 72px); }
+  .ag-stripe { display: block; max-width: 160px; margin-top: 1.5rem; }
+
+  .ag-grid {
+    list-style: none; margin: 0; padding: 0;
+    display: grid; gap: 1px;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    background: var(--c-line-dark);
+    border: 1px solid var(--c-line-dark); border-radius: var(--radius); overflow: hidden;
+  }
+  .ag-card { background: var(--c-cream); padding: clamp(24px, 3vw, 40px); display: flex; flex-direction: column; min-width: 0; }
+  .ag-wide { grid-column: 1 / -1; }
+  .ag-value { margin: 0 0 1rem; display: flex; flex-wrap: wrap; align-items: baseline; gap: .1em .4em; }
+  .ag-num {
+    font-family: var(--font-display); font-weight: 500; letter-spacing: -.02em; line-height: .95;
+    font-size: clamp(2.75rem, 7vw, 5.5rem); color: var(--c-forest);
+    font-variant-numeric: tabular-nums;
+  }
+  .ag-wide .ag-num { font-size: clamp(2.4rem, 9.5vw, 6.5rem); color: var(--c-green); }
+  .ag-unit { font-family: var(--font-display); font-style: italic; font-size: clamp(1.1rem, 1rem + 1vw, 2rem); color: var(--c-green); }
+  .ag-label { margin: auto 0 .35rem; font-weight: 600; font-size: clamp(.95rem, .9rem + .2vw, 1.1rem); line-height: 1.4; color: var(--c-forest); }
+  .ag-note { margin: 0; font-size: .85rem; line-height: 1.45; color: var(--c-muted-dark); }
+  .ag-src { margin: 1.5rem 0 0; font-size: .8rem; color: var(--c-muted-dark); }
+
+  @media (min-width: 900px) {
+    .ag-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+    .ag-wide { grid-column: span 2; }
+    .ag-wide .ag-num { font-size: clamp(3rem, 5.2vw, 5.5rem); }
+    .ag-card { min-height: 260px; }
+  }
+</style>

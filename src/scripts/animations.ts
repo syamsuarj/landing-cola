@@ -1,6 +1,6 @@
 /**
- * Inti animasi global (T5a): registrasi GSAP, navbar, menu mobile, adegan hero ter-pin, lazy Three.js.
- * Animasi per section ada di src/scripts/sections/<nama>.ts (milik T5b/T5c) dan di-import dari komponennya.
+ * Inti animasi global (T1a): registrasi GSAP, navbar, menu mobile, adegan hero ter-pin, lazy Three.js.
+ * Animasi per section ada di src/scripts/sections/<nama>.ts (milik T1b/T1c) dan di-import dari komponennya.
  * Semua kode di sini aman bila elemen tidak ada.
  */
 import { gsap } from 'gsap';
@@ -12,6 +12,7 @@ gsap.registerPlugin(ScrollTrigger);
 
 const root = document.documentElement;
 const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+const MENU_MQ = '(min-width: 1024px)';
 
 /* ---------- Navbar: state "scrolled" + menu mobile ---------- */
 const header = document.getElementById('top');
@@ -23,7 +24,7 @@ if (header) {
   const btn = header.querySelector<HTMLButtonElement>('.menu-btn');
   const brand = header.querySelector<HTMLElement>('.brand');
   const navLinks = Array.from(header.querySelectorAll<HTMLAnchorElement>('.nav a'));
-  // W1: saat panel layar penuh terbuka, semua di luar header (skip link, main, footer) + brand dibuat inert
+  // W1: saat panel layar penuh terbuka, semua di luar header (skip link, main, footer) + logo dibuat inert
   // agar fokus tidak bisa pindah ke konten yang tertutup panel.
   const outside = () => [
     ...Array.from(document.body.children).filter((el) => el !== header && el.tagName !== 'SCRIPT'),
@@ -34,11 +35,13 @@ if (header) {
     btn?.setAttribute('aria-expanded', String(open));
     const label = btn?.querySelector('.menu-label');
     if (label) label.textContent = open ? 'Tutup' : 'Menu';
+    btn?.setAttribute('aria-label', open ? 'Tutup menu' : 'Buka menu');
     document.body.style.overflow = open ? 'hidden' : '';
     outside().forEach((el) => el.toggleAttribute('inert', open));
   };
+  btn?.setAttribute('aria-label', 'Buka menu');
   btn?.addEventListener('click', () => setOpen(!header.classList.contains('open')));
-  navLinks.forEach((a) => a.addEventListener('click', () => setOpen(false)));
+  navLinks.forEach((a) => a.addEventListener('click', () => { if (header.classList.contains('open')) setOpen(false); }));
   document.addEventListener('keydown', (e) => {
     if (!header.classList.contains('open')) return;
     if (e.key === 'Escape') { setOpen(false); btn?.focus(); return; }
@@ -51,7 +54,7 @@ if (header) {
       ring[next].focus();
     }
   });
-  window.matchMedia('(min-width: 761px)').addEventListener('change', (e) => { if (e.matches) setOpen(false); });
+  window.matchMedia(MENU_MQ).addEventListener('change', (e) => { if (e.matches) setOpen(false); });
 }
 
 /* ---------- Hero: adegan ter-pin 3 babak ---------- */
@@ -61,6 +64,7 @@ if (scene && !reduced && root.classList.contains('motion')) {
   const a1 = scene.querySelector<HTMLElement>('[data-act="1"]');
   const a2 = scene.querySelector<HTMLElement>('[data-act="2"]');
   const a3 = scene.querySelector<HTMLElement>('[data-act="3"]');
+  const bgImg = scene.querySelector<HTMLElement>('[data-hero-bg]');
   const stepEl = scene.querySelector<HTMLElement>('[data-hero-step]');
   const bars = Array.from(scene.querySelectorAll<HTMLElement>('[data-bar]'));
   let lastStep = 0;
@@ -73,10 +77,13 @@ if (scene && !reduced && root.classList.contains('motion')) {
   };
   setStep(0);
 
+  // W2: elemen yang bisa difokus di babak tersembunyi tidak boleh fokus saat tersembunyi.
+  // autoAlpha → visibility:hidden membuat link di babak 2/3 otomatis tidak bisa difokus;
+  // link di babak 1 yang tersembunyi juga visibility:hidden. Bila keyboard memfokus link di babak lain,
+  // gulir ke posisi babak itu agar terlihat.
   if (obj && a1 && a2 && a3) {
-    const title = a1.querySelector('.title');
-    const foot = a1.querySelector('.act1-foot');
-    const kicker = a1.querySelector('.kicker');
+    const main = a1.querySelector('.act1-main');
+    const news = a1.querySelector('.news');
     const cue = scene.querySelector('.scroll-cue');
     const mm = gsap.matchMedia();
     mm.add(
@@ -93,28 +100,46 @@ if (scene && !reduced && root.classList.contains('motion')) {
             pin: true,
             scrub: 0.6,
             anticipatePin: 1,
-            // Pin hero ada paling atas: hitung duluan agar posisi trigger section lain (dibuat lebih awal) ikut benar
+            // Pin hero paling atas: hitung duluan agar posisi trigger section lain ikut benar
             refreshPriority: 10,
             invalidateOnRefresh: true,
             onUpdate: (self) => { heroState.progress = self.progress; setStep(self.progress); },
           },
         });
+        if (bgImg) tl.fromTo(bgImg, { scale: 1.02 }, { scale: 1.14, duration: 3.05 }, 0);
         // Babak 1 -> 2
-        tl.to(title, { yPercent: -18, autoAlpha: 0, duration: 0.9 }, 0)
-          .to([foot, kicker, cue].filter(Boolean), { y: -24, autoAlpha: 0, duration: 0.5 }, 0)
+        tl.to(main, { yPercent: -12, autoAlpha: 0, duration: 0.8 }, 0)
+          .to([news, cue].filter(Boolean), { y: 24, autoAlpha: 0, duration: 0.5 }, 0)
           .to(obj, desk
-            ? { x: () => window.innerWidth * 0.22, rotation: 5, scale: 0.92, duration: 1 }
-            : { y: () => -window.innerHeight * 0.36, scale: 0.62, duration: 1 }, 0)
+            ? { x: () => -window.innerWidth * 0.42, rotation: -8, scale: 1.08, duration: 1 }
+            : { x: () => -window.innerWidth * 0.18, y: () => -window.innerHeight * 0.36, scale: 1.25, opacity: 1, duration: 1 }, 0)
           .to(a2, { autoAlpha: 1, y: 0, duration: 0.6 }, 0.5)
           .to({}, { duration: 0.5 })
           // Babak 2 -> 3
           .to(a2, { autoAlpha: 0, y: -40, duration: 0.5 })
           .to(obj, desk
-            ? { x: () => -window.innerWidth * 0.22, rotation: -5, duration: 1 }
-            : { y: () => -window.innerHeight * 0.41, scale: 0.46, rotation: -6, duration: 1 }, '<')
+            ? { x: () => -window.innerWidth * 0.02, rotation: 6, scale: 0.96, duration: 1 }
+            : { x: () => -window.innerWidth * 0.3, y: () => -window.innerHeight * 0.42, scale: 1, rotation: 8, duration: 1 }, '<')
           .to(a3, { autoAlpha: 1, y: 0, duration: 0.6 }, '-=0.45')
           .to({}, { duration: 0.45 });
-        return () => { heroState.progress = 0; };
+
+        // Fokus keyboard ke link di babak yang sedang tersembunyi → gulir ke babaknya (W2)
+        const st = tl.scrollTrigger!;
+        const goTo = (p: number) => () => {
+          if (Math.abs(st.progress - p) < 0.08) return;
+          const y = st.start + (st.end - st.start) * p;
+          root.style.scrollBehavior = 'auto';
+          window.scrollTo(0, y);
+          root.style.scrollBehavior = '';
+          st.update();
+        };
+        const pairs: [Element, number][] = [[a1, 0], [a3, 1]];
+        const handlers = pairs.map(([el, p]) => {
+          const h = goTo(p);
+          el.addEventListener('focusin', h);
+          return () => el.removeEventListener('focusin', h);
+        });
+        return () => { heroState.progress = 0; handlers.forEach((off) => off()); };
       },
     );
   }

@@ -1,35 +1,41 @@
 /* =========================================================
-   KONTRAK DESAIN T5 — "Premium sinematik"
-   Milik T5a. Section lain: pakai variabel & class di bawah,
+   KONTRAK DESAIN T1 — "Premium sinematik" versi Agrinas Palma
+   Milik T1a. Section lain: pakai variabel & class di bawah,
    gaya spesifik ditaruh di <style> scoped komponen masing-masing.
    Catatan: TIDAK ada padding global untuk <section>; atur sendiri per komponen.
    ========================================================= */
-@import '@fontsource/anton/latin-400.css';
-@import '@fontsource-variable/manrope/wght.css';
-@import '@fontsource/instrument-serif/latin-400-italic.css';
+@import '@fontsource-variable/lora/wght.css';
+@import '@fontsource-variable/lora/wght-italic.css';
+@import '@fontsource-variable/montserrat/wght.css';
 
 :root {
   /* Warna */
-  --c-ink: #0A0A0B;        /* latar utama */
-  --c-ink-2: #141416;      /* latar sekunder */
-  --c-red: #F40009;        /* merah utama: aksen/blok, teks besar */
-  --c-red-deep: #8E0010;   /* merah gelap untuk kedalaman */
-  --c-cream: #F5EFE6;      /* teks utama di gelap (≈17:1 di ink) */
-  --c-muted: #B8B2AA;      /* teks sekunder (≈9.6:1 di ink, ≈8.9:1 di ink-2) */
-  --c-silver: #C9CDD2;
-  --c-line: rgba(245, 239, 230, .14);
+  --c-ink: #07150E;         /* latar utama */
+  --c-ink-2: #0E2218;       /* latar sekunder */
+  --c-forest: #15251C;      /* teks di section terang / panel */
+  --c-green: #1A7F37;       /* hijau merek (tombol, aksen di terang) */
+  --c-mint: #A1DBB3;        /* aksen di gelap */
+  --c-cream: #F4F5F0;       /* teks utama di gelap / latar section terang */
+  --c-paper: #FAFAF7;
+  --c-muted: #A9B8AE;       /* teks sekunder di gelap (≈9.5:1 di ink) */
+  --c-muted-dark: #4B5A50;  /* teks sekunder di terang (≈6.9:1 di cream) */
+  --c-yellow: #F2C230;      /* warna logo — aksen kecil saja */
+  --c-blue: #1E6FB8;
+  --c-red: #D7262E;
+  --c-line: rgba(244, 245, 240, .14);
+  --c-line-dark: rgba(21, 37, 28, .14);
 
   /* Tipografi */
-  --font-display: 'Anton', 'Impact', 'Arial Narrow', sans-serif;
-  --font-body: 'Manrope Variable', 'Manrope', system-ui, -apple-system, 'Segoe UI', sans-serif;
-  --font-serif: 'Instrument Serif', Georgia, 'Times New Roman', serif; /* aksen editorial (italic) */
+  --font-display: 'Lora Variable', 'Lora', Georgia, 'Times New Roman', serif;
+  --font-body: 'Montserrat Variable', 'Montserrat', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --font-serif: var(--font-display); /* alias kompatibilitas */
 
   /* Layout & gerak */
   --container: 1280px;
   --gutter: clamp(20px, 4vw, 48px);
   --radius: 20px;
   --ease: cubic-bezier(.2, .7, .1, 1);
-  --header-h: 64px;
+  --header-h: 72px;
 
   color-scheme: dark;
 }
@@ -37,7 +43,7 @@
 *, *::before, *::after { box-sizing: border-box; }
 html {
   scroll-behavior: smooth;
-  overflow-x: clip;            /* BUG-A: tidak ada scroll horizontal apa pun animasinya */
+  overflow-x: clip;            /* tidak ada scroll horizontal apa pun animasinya */
   -webkit-text-size-adjust: 100%;
 }
 body {
@@ -45,17 +51,17 @@ body {
   overflow-x: clip;
   font-family: var(--font-body);
   font-size: clamp(1rem, .96rem + .2vw, 1.125rem);
-  line-height: 1.6;
+  line-height: 1.65;
   color: var(--c-cream);
   background: var(--c-ink);
   -webkit-font-smoothing: antialiased;
 }
 main, section, footer { overflow-x: clip; }
 img, svg, video, canvas { max-width: 100%; display: block; }
-h1, h2, h3, h4 { line-height: 1.05; margin: 0 0 .5em; font-weight: 700; text-wrap: balance; }
+h1, h2, h3, h4 { line-height: 1.1; margin: 0 0 .5em; font-weight: 600; text-wrap: balance; }
 p { margin: 0 0 1em; text-wrap: pretty; }
 a { color: inherit; }
-::selection { background: var(--c-red); color: #fff; }
+::selection { background: var(--c-mint); color: var(--c-ink); }
 section { scroll-margin-top: var(--header-h); }
 
 /* ---------- Layout ---------- */
@@ -74,42 +80,72 @@ section { scroll-margin-top: var(--header-h); }
   font-weight: 700;
   letter-spacing: .22em;
   text-transform: uppercase;
-  color: var(--c-muted);
+  color: var(--c-mint);
   margin: 0 0 1rem;
 }
 .display-xl, .display-l, .display-m {
   font-family: var(--font-display);
-  font-weight: 400;
-  text-transform: uppercase;
-  letter-spacing: -.005em;
-  line-height: .88;
+  font-weight: 500;
+  letter-spacing: -.02em;
+  line-height: .98;
   margin: 0;
 }
-.display-xl { font-size: clamp(4rem, 13vw, 13rem); }
-.display-l  { font-size: clamp(3rem, 8.5vw, 8rem); }
-.display-m  { font-size: clamp(2.25rem, 5vw, 4.5rem); line-height: .95; }
-.serif { font-family: var(--font-serif); font-style: italic; font-weight: 400; text-transform: none; letter-spacing: 0; }
-.text-red { color: var(--c-red); }
-.lead { font-size: clamp(1.1rem, 1rem + .5vw, 1.4rem); line-height: 1.5; }
+.display-xl { font-size: clamp(3rem, 9vw, 9.5rem); }
+.display-l  { font-size: clamp(2.5rem, 6.5vw, 6.25rem); }
+.display-m  { font-size: clamp(2rem, 4.2vw, 4rem); line-height: 1.04; }
+.accent, .serif {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-weight: 500;
+  color: var(--c-mint);
+  letter-spacing: -.01em;
+}
+.lead { font-size: clamp(1.05rem, 1rem + .45vw, 1.35rem); line-height: 1.6; }
 .muted { color: var(--c-muted); }
+
+/* ---------- Section terang ---------- */
+.section-light {
+  background: var(--c-cream);
+  color: var(--c-forest);
+  color-scheme: light;
+}
+.section-light .accent, .section-light .serif { color: var(--c-green); }
+.section-light .eyebrow { color: var(--c-green); }
+.section-light .muted { color: var(--c-muted-dark); }
+.section-light :focus-visible { outline-color: var(--c-forest); }
 
 /* ---------- Tombol ---------- */
 .btn, .btn-ghost {
   display: inline-flex; align-items: center; justify-content: center; gap: .6em;
   min-height: 48px; padding: .85rem 1.6rem;
   border-radius: 999px;
-  font: 700 .95rem/1 var(--font-body);
-  letter-spacing: .02em;
+  font: 700 .82rem/1 var(--font-body);
+  letter-spacing: .12em;
+  text-transform: uppercase;
   text-decoration: none;
   cursor: pointer;
   transition: background-color .3s var(--ease), color .3s var(--ease), border-color .3s var(--ease), transform .3s var(--ease);
 }
-/* Putih di atas #D6000A = 5.4:1 (lolos AA). #F40009 dipakai untuk blok/teks besar. */
-.btn { background: #D6000A; color: #fff; border: 1px solid #D6000A; }
+/* Putih di atas #1A7F37 = 5.0:1 (lolos AA). */
+.btn { background: var(--c-green); color: #fff; border: 1px solid var(--c-green); }
 .btn:hover { background: var(--c-cream); border-color: var(--c-cream); color: var(--c-ink); }
-.btn-ghost { background: transparent; color: var(--c-cream); border: 1px solid rgba(245, 239, 230, .45); }
-.btn-ghost:hover { border-color: var(--c-cream); background: rgba(245, 239, 230, .08); }
+.btn-ghost { background: transparent; color: var(--c-cream); border: 1px solid rgba(244, 245, 240, .45); }
+.btn-ghost:hover { border-color: var(--c-cream); background: rgba(244, 245, 240, .08); }
+.section-light .btn:hover { background: var(--c-forest); border-color: var(--c-forest); color: var(--c-cream); }
+.section-light .btn-ghost { color: var(--c-forest); border-color: rgba(21, 37, 28, .4); }
+.section-light .btn-ghost:hover { background: rgba(21, 37, 28, .06); border-color: var(--c-forest); }
 .btn:active, .btn-ghost:active { transform: scale(.98); }
+
+/* ---------- Garis 4 warna logo ---------- */
+.logo-stripe {
+  display: block;
+  height: 4px;
+  width: 100%;
+  background: linear-gradient(90deg,
+    var(--c-green) 0 25%, var(--c-yellow) 25% 50%, var(--c-blue) 50% 75%, var(--c-red) 75% 100%);
+  border: 0;
+  margin: 0;
+}
 
 /* ---------- Grain / noise ---------- */
 /* Pasang class .grain pada elemen ber-latar; overlay noise lewat ::after (pointer-events none). */
@@ -119,7 +155,7 @@ section { scroll-margin-top: var(--header-h); }
   position: absolute; inset: 0;
   pointer-events: none;
   z-index: 1;
-  opacity: .09;
+  opacity: .08;
   mix-blend-mode: overlay;
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 .9 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
 }
@@ -134,8 +170,8 @@ section { scroll-margin-top: var(--header-h); }
   background: var(--c-cream); color: var(--c-ink); padding: .6rem 1rem; font-weight: 700;
 }
 .skip:focus { left: 8px; top: 8px; }
-:focus-visible { outline: 2px solid var(--c-cream); outline-offset: 3px; }
-/* T10: saat fokus keyboard menggulir elemen ke tepi bawah, sisakan ruang agar focus ring (offset 3px) tidak terpotong */
+:focus-visible { outline: 2px solid var(--c-mint); outline-offset: 3px; }
+/* saat fokus keyboard menggulir elemen ke tepi bawah, sisakan ruang agar focus ring tidak terpotong */
 :where(a, button, summary, input, select, textarea) { scroll-margin-bottom: 12px; }
 
 @media (prefers-reduced-motion: reduce) {

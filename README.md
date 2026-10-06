@@ -1,30 +1,30 @@
-# landing-cola
+# Agrinas Palma — konsep redesign landing page
 
-Landing page **demo non-resmi** untuk memperkenalkan Coca-Cola, dibuat dengan [Astro](https://astro.build), [GSAP](https://gsap.com) (ScrollTrigger), dan [Three.js](https://threejs.org).
+Konsep **redesign** beranda situs resmi [PT Agrinas Palma Nusantara (Persero)](https://agrinaspalma.co.id) dalam gaya "premium sinematik": mayoritas section gelap hijau-hitam dengan jeda krem, tipografi serif raksasa (Lora) dengan aksen italic mint, foto kebun sawit full-bleed berlapis overlay gelap, dan motion berbasis scroll. Dibuat dengan [Astro](https://astro.build), [GSAP](https://gsap.com) (ScrollTrigger) dan [Three.js](https://threejs.org).
 
-> **Penafian:** Proyek ini adalah demo desain/edukasi **non-resmi** dan **tidak berafiliasi, disponsori, atau disetujui oleh The Coca-Cola Company**. "Coca-Cola" dan merek terkait adalah merek dagang milik The Coca-Cola Company. Tidak ada logo resmi yang dipakai sebagai aset: ilustrasi botol (SVG) dan objek 3D dibuat sendiri secara prosedural, favicon adalah monogram "D" buatan sendiri, dan foto stok berasal dari Unsplash (Unsplash License) — lihat [CREDITS.md](./CREDITS.md).
+> **Catatan:** ini konsep redesign, **bukan situs produksi**. Struktur dan konten (teks, angka, berita, direksi) diambil dari agrinaspalma.co.id tanpa menambah fakta baru. Logo dan foto adalah aset resmi PT Agrinas Palma Nusantara (Persero), disimpan lokal di `src/assets/agrinas/`; sumber tiap file tercatat di [CREDITS.md](./CREDITS.md). Halaman Karir, Procurement, Berita, Annual Report dan WBS ditautkan ke situs resmi.
 
-> **Status:** lulus QA (konten, lisensi foto, visual & interaksi, Lighthouse). Catatan minor yang masih terbuka ada di `TASKS.md` (X1, X2).
+## Konsep
+
+- **Hero ter-pin 3 babak**: "Mengelola Energi Hijau *Nusantara*" → "Energi hijau untuk *negeri*" → "Patriot · Loyal · *Profesional*", dengan objek 3D prosedural (tetes minyak sawit keemasan + butir buah sawit yang mengorbit; bukan logo 3D) di atas foto kebun resmi, serta pita "Kabar terbaru".
+- **Cerita perusahaan**: Apresiasi, Tentang, Filosofi Logo (5 makna warna menyala bergiliran), Milestones (timeline horizontal ter-pin, Penyerahan Lahan Tahap I–VI), Visi & Misi.
+- **Bisnis & publik**: Kepemimpinan, Lini Bisnis, Angka, Kemitraan (Integrated Procurement System), Karir, Berita, Keterbukaan Informasi.
+- Warna & tipografi mengikuti situs resmi (hijau #1A7F37, mint #A1DBB3, krem #F4F5F0; Lora + Montserrat); garis empat warna logo sebagai aksen.
+- Aksesibilitas: menghormati `prefers-reduced-motion` (tanpa pin/animasi), konten tetap utuh tanpa JavaScript/WebGL (fallback SVG), menu mobile dengan focus trap.
 
 ## Menjalankan
 
 ```bash
 npm install
-npm run dev      # http://localhost:4321  (atau: npm run dev -- --port 3000)
-npm run build    # output statis di dist/
+npm run dev -- --port 3001   # http://localhost:3001
+npm run build                # output statis di dist/
 npm run preview
 ```
 
 ## Struktur
 
-- `src/components/` — satu komponen per section (Hero, Sejarah, Produk, Botol, Indonesia, Fakta, Keberlanjutan, Galeri, Kutipan, FAQ, CTA, Footer)
-- `src/scripts/animations.ts` — inti GSAP (navbar, pin hero, lazy-load 3D)
-- `src/scripts/hero3d.ts` — scene Three.js botol prosedural
+- `src/components/` — satu komponen per section (Header, Hero, Apresiasi, Tentang, FilosofiLogo, Milestones, VisiMisi, Kepemimpinan, Bisnis, Angka, Kemitraan, Karir, Berita, Keterbukaan, Footer)
+- `src/styles/global.css` — kontrak desain (variabel warna/tipografi, class global)
+- `src/scripts/animations.ts` — inti GSAP (navbar, menu mobile, pin hero, lazy-load 3D); `hero3d.ts` scene Three.js; `keep-scroll.ts` menjaga posisi scroll lintas breakpoint
 - `src/scripts/sections/` — animasi per section
-- `qa/` — harness QA otomatis (overflow, console, screenshot, Lighthouse)
-
-Aksesibilitas: menghormati `prefers-reduced-motion`, konten tetap terbaca tanpa JavaScript/WebGL.
-
-## Kredit foto
-
-Semua foto stok diunduh dari Unsplash dan dipakai di bawah [Unsplash License](https://unsplash.com/license); disimpan lokal (tanpa hotlink). Nama fotografer dan tautan tiap foto ada di [CREDITS.md](./CREDITS.md). Unsplash License tidak mencakup hak atas merek dagang yang mungkin tampak di foto.
+- `qa/` — harness QA otomatis (`node qa/run.mjs --prod`: build, overflow, console, screenshot, varian no-JS/reduced-motion/no-WebGL, Lighthouse, kredit aset). Setup sekali: `(cd qa && npm install)`.

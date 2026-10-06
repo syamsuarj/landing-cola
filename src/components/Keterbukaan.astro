@@ -1,0 +1,174 @@
+---
+// T1c-2 (Programmer D) — Keterbukaan Informasi: Annual/Sustainability Report (4 laporan resmi, PDF cms),
+// Sarana Pengaduan WBS (teks resmi beranda), pita "Waspadai email palsu" (isi popup resmi, bukan modal).
+import { Image } from 'astro:assets';
+import ar24 from '../assets/agrinas/keterbukaan-ar-2024.jpg';
+import sr24 from '../assets/agrinas/keterbukaan-sr-2024.jpg';
+import ar25 from '../assets/agrinas/keterbukaan-ar-2025.jpg';
+import sr25 from '../assets/agrinas/keterbukaan-sr-2025.jpg';
+
+const CMS = 'https://cms.agrinaspalma.app/uploads';
+const laporan = [
+  {
+    judul: 'Annual Report 2025 Agrinas Palma Nusantara',
+    sub: 'Transformasi Berkelanjutan Menuju Kemandirian Pangan dan Energi Nasional',
+    pdf: `${CMS}/260723_AR_Agrinas_2025_HIRES_compressed_c32a7c8254/260723_AR_Agrinas_2025_HIRES_compressed_c32a7c8254.pdf`,
+    img: ar25,
+  },
+  {
+    judul: 'Sustainability Report 2025 Agrinas Palma Nusantara',
+    sub: 'Driving Transformation Towards Sustainable Agroindustry',
+    pdf: `${CMS}/Full_Book_SR_Agrinas_2025_PT_Agrinas_Palma_Nusantara_Persero_compressed_953710ab72/Full_Book_SR_Agrinas_2025_PT_Agrinas_Palma_Nusantara_Persero_compressed_953710ab72.pdf`,
+    img: sr25,
+  },
+  {
+    judul: 'Annual Report 2024 Indra Karya',
+    sub: 'Meningkatkan Kinerja untuk Infrastruktur Berkelanjutan, Optimizing Performance for Sustainable Infrastructure',
+    pdf: `${CMS}/APN_AR_24_Book_hi_c499f36e22/APN_AR_24_Book_hi_c499f36e22.pdf`,
+    img: ar24,
+  },
+  {
+    judul: 'Sustainability Report 2024 Indra Karya',
+    sub: 'Menciptakan Dampak Nyata untuk Nilai Berkelanjutan — Creating Impact, Delivering Sustainable Value.',
+    pdf: `${CMS}/APN_SR_24_Book_hi_513f1c27d7/APN_SR_24_Book_hi_513f1c27d7.pdf`,
+    img: sr24,
+  },
+];
+---
+<section id="keterbukaan" class="kt grain" aria-labelledby="judul-keterbukaan">
+  <div class="container">
+    <aside class="kt-warn" aria-label="Pengumuman: waspadai email palsu" data-kt-reveal>
+      <span class="kt-warn-badge">Pengumuman</span>
+      <p class="kt-warn-t">
+        <strong>Waspadai email palsu!</strong> Penipu dapat menyamar sebagai Agrinas Palma Nusantara lewat alamat pengirim palsu atau domain mirip (contoh palsu: <s>agrinasspalma.co.id</s>).
+        Domain resmi hanya <strong class="kt-dom">@agrinaspalma.co.id</strong> dan <strong class="kt-dom">@agrinaspalma.id</strong> — jangan memberikan data pribadi atau bertransaksi tanpa konfirmasi resmi.
+      </p>
+    </aside>
+
+    <header class="kt-head">
+      <p class="eyebrow" data-kt-reveal>Transparansi · Laporan Tahunan</p>
+      <h2 id="judul-keterbukaan" class="display-l kt-title" data-kt-reveal>
+        Keterbukaan <span class="accent">Informasi</span>
+      </h2>
+      <p class="lead muted kt-lead" data-kt-reveal>
+        Jejak tahunan Agrinas Palma Nusantara, dirangkum dalam laporan yang merekam kinerja, tata kelola, dan langkah keberlanjutan kami dari waktu ke waktu.
+      </p>
+    </header>
+
+    <h3 class="kt-h3" data-kt-reveal>Annual Report</h3>
+    <ul class="kt-reports">
+      {laporan.map((r) => (
+        <li class="kt-rep" data-kt-rep>
+          <a class="kt-rep-link" href={r.pdf} target="_blank" rel="noopener">
+            <div class="kt-cover">
+              <Image src={r.img} alt={`Sampul ${r.judul}`} widths={[240, 360, 520]} sizes="(min-width: 1100px) 260px, 45vw" loading="lazy" />
+            </div>
+            <span class="kt-rep-h">{r.judul}</span>
+            <span class="kt-rep-sub">{r.sub}</span>
+            <span class="kt-rep-cta">Pratinjau / Unduh PDF <span aria-hidden="true">↗</span></span>
+          </a>
+        </li>
+      ))}
+    </ul>
+
+    <div class="kt-wbs" data-kt-wbs>
+      <div class="kt-wbs-head">
+        <p class="eyebrow">Whistleblowing System</p>
+        <h3 class="display-m kt-wbs-title">Sarana <span class="accent">Pengaduan</span></h3>
+      </div>
+      <div class="kt-mech">
+        <article class="kt-m" data-kt-m>
+          <span class="kt-m-n" aria-hidden="true">01</span>
+          <h4 class="kt-m-h">Mekanisme Tertulis</h4>
+          <p>Pelapor menuliskan pengaduannya secara tertulis dalam Formulir Dugaan Pelanggaran, kemudian mengirimkannya melalui e-mail resmi WBS.</p>
+        </article>
+        <article class="kt-m" data-kt-m>
+          <span class="kt-m-n" aria-hidden="true">02</span>
+          <h4 class="kt-m-h">Mekanisme Lisan</h4>
+          <p>Pelapor menyampaikan pengaduannya kepada Divisi Satuan Pengawas Internal melalui tatap muka atau saluran telepon.</p>
+        </article>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .kt {
+    background:
+      radial-gradient(55% 45% at 0% 100%, rgba(26, 127, 55, .22), transparent 70%),
+      var(--c-ink);
+    padding-block: clamp(64px, 8vw, 112px) clamp(88px, 12vw, 160px);
+  }
+  .kt > * { position: relative; z-index: 2; }
+
+  .kt-warn {
+    display: flex; flex-wrap: wrap; gap: 10px 16px; align-items: center;
+    padding: 14px 18px; border-radius: 14px;
+    background: rgba(242, 194, 48, .08);
+    border: 1px solid rgba(242, 194, 48, .35);
+    border-left: 4px solid var(--c-yellow);
+    margin-bottom: clamp(56px, 8vw, 104px);
+  }
+  .kt-warn-badge {
+    flex: none; padding: 5px 12px; border-radius: 999px;
+    background: var(--c-yellow); color: var(--c-ink);
+    font-size: .68rem; font-weight: 800; letter-spacing: .16em; text-transform: uppercase;
+  }
+  .kt-warn-t { margin: 0; flex: 1 1 320px; font-size: .9rem; line-height: 1.55; color: rgba(244, 245, 240, .9); }
+  .kt-warn-t s { color: var(--c-muted); }
+  .kt-dom { color: var(--c-mint); white-space: nowrap; }
+
+  .kt-head { max-width: 50rem; }
+  .kt-title { margin: .1em 0 .35em; }
+  .kt-lead { margin: 0; }
+
+  .kt-h3 {
+    font-family: var(--font-display); font-style: italic; font-weight: 500; color: var(--c-mint);
+    font-size: clamp(1.4rem, 1.2rem + .8vw, 2rem); margin: clamp(48px, 6vw, 80px) 0 24px;
+  }
+  .kt-reports {
+    list-style: none; margin: 0; padding: 0;
+    display: grid; gap: 12px; grid-template-columns: repeat(2, 1fr);
+  }
+  @media (min-width: 640px) { .kt-reports { gap: 20px; } }
+  @media (min-width: 1100px) { .kt-reports { grid-template-columns: repeat(4, 1fr); } }
+  .kt-rep-link {
+    display: flex; flex-direction: column; height: 100%; gap: 8px;
+    padding: 14px 14px 20px; border-radius: var(--radius);
+    background: var(--c-ink-2); border: 1px solid rgba(161, 219, 179, .12);
+    text-decoration: none; color: var(--c-cream);
+    transition: border-color .35s var(--ease), transform .35s var(--ease);
+  }
+  .kt-rep-link:hover { border-color: rgba(161, 219, 179, .5); transform: translateY(-4px); }
+  .kt-cover { aspect-ratio: 7 / 10; border-radius: 12px; overflow: hidden; margin-bottom: 8px; background: var(--c-forest); }
+  @media (max-width: 639px) {
+    .kt-rep-link { padding: 10px 10px 14px; }
+    .kt-rep-h { font-size: 1rem; }
+    .kt-rep-sub { display: none; }
+    .kt-rep-cta { font-size: .66rem; letter-spacing: .1em; }
+  }
+  .kt-cover :global(img) { width: 100%; height: 100%; object-fit: cover; }
+  .kt-rep-h { font-family: var(--font-display); font-weight: 600; font-size: 1.15rem; line-height: 1.2; }
+  .kt-rep-sub { font-size: .84rem; color: var(--c-muted); line-height: 1.45; flex: 1; }
+  .kt-rep-cta { margin-top: 8px; font-size: .74rem; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: var(--c-mint); }
+
+  .kt-wbs {
+    margin-top: clamp(64px, 9vw, 120px);
+    display: grid; gap: 32px; grid-template-columns: 1fr;
+    padding: clamp(28px, 4vw, 56px); border-radius: calc(var(--radius) + 8px);
+    background: linear-gradient(135deg, var(--c-forest), var(--c-ink-2));
+    border: 1px solid rgba(161, 219, 179, .14);
+  }
+  @media (min-width: 960px) { .kt-wbs { grid-template-columns: .8fr 1.2fr; align-items: center; } }
+  .kt-wbs-title { margin: 0; }
+  .kt-mech { display: grid; gap: 16px; grid-template-columns: 1fr; }
+  @media (min-width: 640px) { .kt-mech { grid-template-columns: 1fr 1fr; } }
+  .kt-m { padding: 24px; border-radius: 16px; background: rgba(7, 21, 14, .55); border: 1px solid rgba(244, 245, 240, .08); }
+  .kt-m-n { font-family: var(--font-display); font-style: italic; color: var(--c-mint); font-size: 1.8rem; line-height: 1; }
+  .kt-m-h { font-family: var(--font-display); font-size: 1.25rem; font-weight: 600; margin: 14px 0 .5em; }
+  .kt-m p { margin: 0; color: var(--c-muted); font-size: .94rem; }
+</style>
+
+<script>
+  import '../scripts/sections/keterbukaan';
+</script>

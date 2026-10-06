@@ -1,0 +1,157 @@
+---
+// T1b — Makna & Filosofi Logo. Teks resmi: docs/reference/t1b-content.md (agrinaspalma.co.id).
+import { Image } from 'astro:assets';
+import logoApn from '../assets/agrinas/filosofi-logo-apn2.webp';
+
+const makna = [
+  { n: '01', k: 'Warna Hijau', t: 'Ekosistem', d: 'Melambangkan warna daun sawit yang sehat, subur, dan lestari.', c: 'var(--c-green)' },
+  { n: '02', k: 'Warna Kuning', t: 'Produktivitas', d: 'Cerminan sejati dari daging kelapa sawit yang kaya akan minyak CPO bernilai tinggi.', c: 'var(--c-yellow)' },
+  { n: '03', k: 'Warna Biru', t: 'Energi Bersih', d: 'Merepresentasikan inovasi CPO berkualitas prima untuk kemandirian energi terbarukan.', c: 'var(--c-blue)' },
+  { n: '04', k: 'Warna Merah', t: 'Semangat', d: 'Pada huruf A membawa makna keberanian, optimisme, dan tekad pantang menyerah.', c: 'var(--c-red)' },
+  { n: '05', k: 'Teks “Nusantara”', t: 'Kedaulatan', d: 'Kemakmuran bumi Nusantara, semangat patriot, loyalitas kepada nusa, dan dedikasi profesional dalam setiap langkah bisnis.', c: 'var(--c-mint)' },
+];
+const kiri = makna.slice(0, 3);
+const kanan = makna.slice(3);
+---
+<section id="filosofi" class="fl grain" aria-labelledby="judul-filosofi">
+  <div class="container">
+    <header class="fl-head">
+      <p class="eyebrow" data-fl-reveal>Identitas Visual</p>
+      <h2 id="judul-filosofi" class="display-l fl-title" data-fl-reveal>Makna &amp; <span class="accent">Filosofi Logo</span></h2>
+      <p class="lead muted fl-lead" data-fl-reveal>Konstruksi logo secara keseluruhan melambangkan buah sawit berkualitas dengan kandungan minyak nabati tinggi, sedangkan surai daun melambangkan pohon kelapa sawit yang subur dan produktif dengan tandan buah segar yang optimal.</p>
+    </header>
+  </div>
+
+  <div class="fl-pin" data-fl-pin>
+    <div class="container fl-stage" data-fl-stage>
+      <div class="fl-logo" data-fl-logo>
+        <span class="fl-ring" aria-hidden="true"></span>
+        <div class="fl-disc">
+          <Image src={logoApn} alt="Logo PT Agrinas Palma Nusantara" widths={[240, 400, 640]} sizes="(min-width: 900px) 320px, 220px" loading="lazy" />
+        </div>
+      </div>
+      <ol class="fl-list fl-left" role="list">
+        {kiri.map((m) => (
+          <li class="fl-item" style={`--fl-c:${m.c}`} data-fl-item>
+            <span class="fl-line" aria-hidden="true"></span>
+            <span class="fl-n" aria-hidden="true">{m.n}</span>
+            <p class="fl-k"><span class="fl-dot" aria-hidden="true"></span>{m.k}</p>
+            <h3 class="fl-t">{m.t}</h3>
+            <p class="fl-d">{m.d}</p>
+          </li>
+        ))}
+      </ol>
+      <ol class="fl-list fl-right" role="list" start="4">
+        {kanan.map((m) => (
+          <li class="fl-item" style={`--fl-c:${m.c}`} data-fl-item>
+            <span class="fl-line" aria-hidden="true"></span>
+            <span class="fl-n" aria-hidden="true">{m.n}</span>
+            <p class="fl-k"><span class="fl-dot" aria-hidden="true"></span>{m.k}</p>
+            <h3 class="fl-t">{m.t}</h3>
+            <p class="fl-d">{m.d}</p>
+          </li>
+        ))}
+      </ol>
+    </div>
+  </div>
+
+  <div class="container fl-foot" data-fl-reveal>
+    <span class="logo-stripe" aria-hidden="true"></span>
+    <p class="fl-org">PT Agrinas Palma Nusantara (Persero)</p>
+    <p class="fl-tag display-m">Simbol Kedaulatan, Kemandirian Pangan &amp; <span class="accent">Energi Hijau</span></p>
+  </div>
+</section>
+
+<style>
+  .fl {
+    background:
+      radial-gradient(45% 50% at 50% 55%, rgba(26, 127, 55, .22), transparent 70%),
+      var(--c-ink-2);
+    padding-block: clamp(88px, 12vw, 168px);
+    overflow-x: clip;
+  }
+  .fl > * { position: relative; z-index: 2; }
+  .fl-head { max-width: 56rem; }
+  .fl-title { margin: .15em 0 .3em; }
+  .fl-lead { margin: 0; max-width: 46rem; }
+
+  /* ---------- Panggung: default (mobile / tanpa JS / reduced-motion) = tumpuk ---------- */
+  .fl-stage {
+    display: grid; gap: 0 clamp(32px, 4vw, 64px);
+    margin-top: clamp(48px, 7vw, 96px);
+  }
+  .fl-logo { position: relative; justify-self: center; width: min(240px, 64vw); aspect-ratio: 1; margin-bottom: 40px; }
+  .fl-disc {
+    position: absolute; inset: 9%;
+    border-radius: 50%;
+    background: var(--c-paper);
+    display: grid; place-items: center;
+    box-shadow: 0 40px 80px -30px rgba(0, 0, 0, .8), inset 0 0 0 1px rgba(21, 37, 28, .08);
+  }
+  .fl-disc :global(img) { width: 78%; height: auto; }
+  .fl-ring {
+    position: absolute; inset: 0; border-radius: 50%;
+    background: conic-gradient(var(--c-green) 0 25%, var(--c-yellow) 0 50%, var(--c-blue) 0 75%, var(--c-red) 0 100%);
+    -webkit-mask: radial-gradient(farthest-side, transparent calc(100% - 3px), #000 calc(100% - 2px));
+            mask: radial-gradient(farthest-side, transparent calc(100% - 3px), #000 calc(100% - 2px));
+    opacity: .9;
+  }
+  .fl-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 0; }
+  .fl-item {
+    position: relative;
+    padding: 1.4rem 0 1.4rem 1.25rem;
+    border-left: 2px solid var(--fl-c);
+    margin-bottom: 1rem;
+    transition: opacity .5s var(--ease);
+  }
+  .fl-line { display: none; }
+  .fl-n { position: absolute; right: 0; top: 1.2rem; font-family: var(--font-display); font-style: italic; font-size: 1rem; color: var(--c-muted); }
+  .fl-k { display: flex; align-items: center; gap: .55rem; margin: 0 0 .35rem; font-size: .75rem; font-weight: 700; letter-spacing: .16em; text-transform: uppercase; color: var(--c-muted); }
+  .fl-dot { width: 10px; height: 10px; border-radius: 50%; background: var(--fl-c); flex: none; box-shadow: 0 0 0 3px rgba(244, 245, 240, .08); }
+  .fl-t { font-family: var(--font-display); font-weight: 500; font-size: clamp(1.6rem, 1.2rem + 1.2vw, 2.25rem); color: var(--c-cream); margin: 0 0 .35em; }
+  .fl-d { margin: 0; color: var(--c-muted); line-height: 1.6; max-width: 26rem; }
+
+  /* ---------- Desktop: logo di tengah, makna di kiri/kanan dengan garis penunjuk ---------- */
+  @media (min-width: 900px) {
+    .fl-stage { grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr); align-items: center; }
+    .fl-logo { grid-column: 2; grid-row: 1; width: clamp(260px, 26vw, 360px); margin: 0; }
+    .fl-left { grid-column: 1; grid-row: 1; }
+    .fl-right { grid-column: 3; grid-row: 1; }
+    .fl-item { border-left: 0; padding: 1.1rem 0; margin: 0; }
+    .fl-left .fl-item { text-align: right; padding-right: 8px; }
+    .fl-left .fl-k { justify-content: flex-end; }
+    .fl-left .fl-d { margin-left: auto; }
+    .fl-left .fl-n { right: auto; left: 0; }
+    .fl-line {
+      display: block; position: absolute; top: 2.05rem;
+      width: clamp(32px, 4vw, 64px); height: 1px;
+      background: linear-gradient(90deg, var(--fl-c), rgba(244, 245, 240, .25));
+    }
+    .fl-line::after {
+      content: ""; position: absolute; top: -3px; width: 7px; height: 7px; border-radius: 50%; background: var(--fl-c);
+    }
+    .fl-left .fl-line { left: 100%; transform-origin: left center; background: linear-gradient(90deg, rgba(244, 245, 240, .25), var(--fl-c)); }
+    .fl-left .fl-line::after { right: -3px; }
+    .fl-right .fl-line { right: 100%; transform-origin: right center; }
+    .fl-right .fl-line::after { left: -3px; }
+    .fl-right .fl-item { padding-left: 8px; }
+    .fl-right .fl-n { right: 0; }
+  }
+
+  /* ---------- Mode langkah (dipasang JS hanya >= 900px & tanpa reduced-motion) ---------- */
+  :global(html.js) .fl.is-steps .fl-pin { min-height: 100vh; min-height: 100svh; display: flex; align-items: center; padding-top: var(--header-h); }
+  :global(html.js) .fl.is-steps .fl-stage { margin-top: 0; width: 100%; }
+  :global(html.js) .fl.is-steps .fl-item { opacity: .22; }
+  :global(html.js) .fl.is-steps .fl-item.is-on { opacity: 1; }
+  :global(html.js) .fl.is-steps .fl-line { transform: scaleX(0); transition: transform .6s var(--ease); }
+  :global(html.js) .fl.is-steps .fl-item.is-on .fl-line { transform: scaleX(1); }
+
+  .fl-foot { margin-top: clamp(48px, 8vw, 112px); text-align: center; }
+  .fl-foot .logo-stripe { width: 120px; margin: 0 auto 1.5rem; }
+  .fl-org { margin: 0 0 .6rem; font-size: .78rem; font-weight: 700; letter-spacing: .16em; text-transform: uppercase; color: var(--c-mint); }
+  .fl-tag { margin: 0 auto; max-width: 20em; color: var(--c-cream); }
+</style>
+
+<script>
+  import '../scripts/sections/filosofi';
+</script>

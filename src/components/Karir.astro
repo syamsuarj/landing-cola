@@ -1,0 +1,133 @@
+---
+// T1c-2 (Programmer D) — Karir. Teks resmi: beranda (KARIR DI AGRINAS) + https://agrinaspalma.co.id/career
+// (5 pilar "Mengapa Agrinas" + kultur AKHLAK). Lihat docs/reference/t1c-content.md.
+import { Image } from 'astro:assets';
+import fotoKarir from '../assets/agrinas/karir-talenta.webp';
+
+const pilar = [
+  { t: 'Budaya Inovatif', d: 'Bekerja dengan teknologi modern di energi terbarukan & agribisnis presisi.' },
+  { t: 'Kolaborasi Tim', d: 'Lingkungan suportif yang menjunjung integritas dan keberagaman.' },
+  { t: 'Pengembangan Diri', d: 'Pelatihan & sertifikasi berkelanjutan untuk menajamkan kompetensi.' },
+  { t: 'Dampak Nyata', d: 'Berkontribusi langsung pada agenda ketahanan energi & pangan.' },
+  { t: 'Keseimbangan Hidup', d: 'Kebijakan kerja fleksibel yang menghormati waktu keluarga Anda.' },
+];
+const akhlak = ['Amanah', 'Kompeten', 'Harmonis', 'Loyal', 'Adaptif', 'Kolaboratif'];
+---
+<section id="karir" class="kr grain" aria-labelledby="judul-karir">
+  <div class="kr-bg" aria-hidden="true">
+    <Image
+      src={fotoKarir}
+      alt=""
+      widths={[640, 960, 1280]}
+      sizes="100vw"
+      loading="lazy"
+      data-kr-bg
+    />
+  </div>
+
+  <div class="container kr-inner">
+    <header class="kr-head">
+      <p class="eyebrow" data-kr-reveal>Karir di Agrinas · Tumbuh · Berkontribusi · Berdampak</p>
+      <h2 id="judul-karir" class="display-xl kr-title" data-kr-reveal>
+        Bangun karir, <span class="accent">bangun negeri.</span>
+      </h2>
+      <p class="kr-sub" data-kr-reveal>Bekerja untuk sesuatu yang lebih besar.</p>
+      <p class="lead kr-lead" data-kr-reveal>
+        Jadilah bagian dari revolusi energi berkelanjutan Indonesia. Kami mengundang putra-putri terbaik bangsa untuk berkolaborasi dalam mengelola masa depan hijau Nusantara.
+      </p>
+      <div class="kr-cta" data-kr-reveal>
+        <a class="btn" href="https://agrinaspalma.co.id/career" target="_blank" rel="noopener">Eksplorasi Karir <span aria-hidden="true">↗</span></a>
+        <a class="btn-ghost" href="https://jobs.talentics.id/pt-agrinas-palma-nusantara?tab=jobs" target="_blank" rel="noopener">Lamar via Portal Karir <span aria-hidden="true">↗</span></a>
+      </div>
+    </header>
+
+    <div class="kr-pilar-head" data-kr-reveal>
+      <p class="eyebrow">Mengapa Agrinas</p>
+      <p class="kr-pilar-t">5 pilar yang menjaga kami <span class="accent">tetap bertumbuh.</span></p>
+    </div>
+    <ol class="kr-grid">
+      {pilar.map((p, i) => (
+        <li class="kr-card" data-kr-card>
+          <span class="kr-n" aria-hidden="true">{String(i + 1).padStart(2, '0')}</span>
+          <h3 class="kr-h">{p.t}</h3>
+          <p class="kr-d">{p.d}</p>
+        </li>
+      ))}
+    </ol>
+
+    <div class="kr-akhlak" data-kr-reveal>
+      <p class="kr-akhlak-k">Kultur <strong>AKHLAK</strong></p>
+      <ul class="kr-akhlak-list">
+        {akhlak.map((a) => <li><span aria-hidden="true">{a[0]}</span>{a.slice(1)}</li>)}
+      </ul>
+    </div>
+  </div>
+</section>
+
+<style>
+  .kr {
+    position: relative;
+    background: var(--c-ink);
+    padding-block: clamp(110px, 14vw, 200px) clamp(80px, 10vw, 140px);
+  }
+  .kr-bg { position: absolute; inset: 0; z-index: 0; overflow: hidden; }
+  .kr-bg :global(img) { width: 100%; height: 100%; object-fit: cover; object-position: center 30%; }
+  .kr-bg::after {
+    content: ""; position: absolute; inset: 0;
+    background:
+      linear-gradient(180deg, rgba(7, 21, 14, .78) 0%, rgba(7, 21, 14, .7) 35%, rgba(7, 21, 14, .96) 70%, var(--c-ink) 100%),
+      radial-gradient(70% 60% at 20% 20%, rgba(26, 127, 55, .25), transparent 70%);
+  }
+  .kr-inner { position: relative; z-index: 2; }
+  .kr-head { max-width: 62rem; }
+  .kr-title { margin: .1em 0 .3em; }
+  .kr-sub {
+    font-family: var(--font-display); font-size: clamp(1.4rem, 1.1rem + 1.2vw, 2.2rem);
+    margin: 0 0 .6em; color: var(--c-cream);
+  }
+  .kr-lead { max-width: 40rem; color: rgba(244, 245, 240, .88); }
+  .kr-cta { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 32px; }
+
+  .kr-pilar-head { margin-top: clamp(72px, 10vw, 140px); }
+  .kr-pilar-t {
+    font-family: var(--font-display); font-size: clamp(1.8rem, 1.2rem + 2.4vw, 3.4rem);
+    line-height: 1.05; margin: 0; max-width: 40rem; letter-spacing: -.01em;
+  }
+  .kr-grid {
+    list-style: none; margin: 40px 0 0; padding: 0;
+    display: grid; gap: 14px;
+    grid-template-columns: 1fr;
+  }
+  @media (min-width: 640px) { .kr-grid { grid-template-columns: repeat(2, 1fr); } }
+  @media (min-width: 1100px) { .kr-grid { grid-template-columns: repeat(5, 1fr); } }
+  .kr-card {
+    padding: 26px 22px 28px;
+    border-radius: var(--radius);
+    background: rgba(14, 34, 24, .78);
+    border: 1px solid rgba(161, 219, 179, .14);
+    transition: border-color .35s var(--ease), transform .35s var(--ease);
+  }
+  .kr-card:hover { border-color: rgba(161, 219, 179, .45); transform: translateY(-4px); }
+  .kr-n {
+    display: block; font-family: var(--font-display); font-style: italic;
+    font-size: 2.4rem; line-height: 1; color: var(--c-mint); margin-bottom: 18px;
+  }
+  .kr-h { font-family: var(--font-display); font-size: 1.3rem; font-weight: 600; margin: 0 0 .5em; }
+  .kr-d { margin: 0; color: var(--c-muted); font-size: .94rem; line-height: 1.55; }
+
+  .kr-akhlak {
+    margin-top: 48px; display: flex; flex-wrap: wrap; align-items: center; gap: 14px 28px;
+    padding-top: 28px; border-top: 1px solid rgba(244, 245, 240, .12);
+  }
+  .kr-akhlak-k { margin: 0; font-size: .78rem; letter-spacing: .22em; text-transform: uppercase; color: var(--c-muted); }
+  .kr-akhlak-k strong { color: var(--c-cream); }
+  .kr-akhlak-list {
+    list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 8px 22px;
+    font-family: var(--font-display); font-size: clamp(1.05rem, 1rem + .4vw, 1.35rem);
+  }
+  .kr-akhlak-list span { color: var(--c-mint); font-style: italic; font-weight: 600; }
+</style>
+
+<script>
+  import '../scripts/sections/karir';
+</script>

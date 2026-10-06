@@ -1,0 +1,137 @@
+---
+// T1c-2 (Programmer D) — Berita. Hardcode statis hasil scrape https://agrinaspalma.co.id/news
+// (4 berita terbaru per 2026-10-06; judul, tanggal, paragraf pembuka, og:image). Lihat docs/reference/t1c-content.md.
+import { Image } from 'astro:assets';
+import imgE20 from '../assets/agrinas/berita-e20.jpg';
+import imgKpk from '../assets/agrinas/berita-kpk.jpg';
+import imgOmb from '../assets/agrinas/berita-ombudsman.jpg';
+import imgPtm from '../assets/agrinas/berita-pertamina.jpg';
+
+const NEWS = 'https://agrinaspalma.co.id/news';
+const utama = {
+  judul: 'Dukung E20, Agrinas Palma dan IPB University Kembangkan Bioetanol Multifeedstock',
+  tanggal: '6 Okt 2026', iso: '2026-10-06',
+  ringkas: 'Bogor — Pengembangan bioetanol berbahan baku singkong, sorgum, dan jagung memasuki tahap yang lebih konkret. Bukan hanya soal membangun pabrik, tetapi bagaimana memastikan bahan baku tersedia, teknologi tepat, rantai pasok terintegrasi, dan produk akhirnya mampu bersaing secara komersial.',
+  href: `${NEWS}/Dukung%20E20,%20Agrinas%20Palma%20dan%20IPB%20University%20Kembangkan%20Bioetanol%20Multifeedstock`,
+  img: imgE20,
+  alt: 'Forum diskusi pengembangan bioetanol multifeedstock Agrinas Palma bersama IPB University di Bogor',
+};
+const lainnya = [
+  {
+    judul: 'Agrinas Palma Perkuat Tata Kelola dan Integritas Pengambilan Keputusan Bersama KPK',
+    tanggal: '2 Okt 2026', iso: '2026-10-02',
+    ringkas: 'Keputusan bisnis tidak hanya dituntut cepat dan tepat, tetapi juga harus dijalankan dengan integritas, kehati-hatian, dan tata kelola yang kuat.',
+    href: `${NEWS}/Agrinas%20Palma%20Perkuat%20Tata%20Kelola%20dan%20Integritas%20Pengambilan%20Keputusan%20Bersama%20KPK`,
+    img: imgKpk, alt: 'FGD Agrinas Palma bersama KPK di Menara Agrinas Palma, Jakarta',
+  },
+  {
+    judul: 'Agrinas Palma dan Ombudsman RI Bahas Pencegahan Maladministrasi dan Tata Kelola Perusahaan',
+    tanggal: '22 Sep 2026', iso: '2026-09-22',
+    ringkas: 'Agrinas Palma menjalin kolaborasi dengan Ombudsman Republik Indonesia untuk mencegah maladministrasi dan memperkuat tata kelola perusahaan.',
+    href: `${NEWS}/agrinas-palma-dan-ombudsman-ri-bahas-pencegahan-maladministrasi-dan-tata-kelola-perusahaan`,
+    img: imgOmb, alt: 'Audiensi Direksi Agrinas Palma dengan delegasi Ombudsman RI',
+  },
+  {
+    judul: 'Agrinas Palma dan Pertamina Bahas Pengembangan Bioenergi Bersama Wakil Menteri Investasi dan Hilirisasi',
+    tanggal: '13 Sep 2026', iso: '2026-09-13',
+    ringkas: 'Pertemuan membahas perluasan kerja sama pengembangan bioenergi yang terintegrasi dari hulu hingga hilir.',
+    href: `${NEWS}/agrinas-palma-dan-pertamina-bahas-pengembangan-bioenergi-bersama-wakil-menteri-investasi-dan-hilirisasi`,
+    img: imgPtm, alt: 'Pertemuan Agrinas Palma, Pertamina, dan Wakil Menteri Investasi dan Hilirisasi',
+  },
+];
+---
+<section id="berita" class="br section-light" aria-labelledby="judul-berita">
+  <div class="container">
+    <header class="br-head">
+      <div>
+        <p class="eyebrow" data-br-reveal>Pusat Informasi · Ruang Media</p>
+        <h2 id="judul-berita" class="display-l br-title" data-br-reveal>
+          Kabar, langkah, dan <span class="accent">dampak terbaru.</span>
+        </h2>
+      </div>
+      <a class="btn-ghost br-all" href={NEWS} target="_blank" rel="noopener" data-br-reveal>Lihat semua berita <span aria-hidden="true">↗</span></a>
+    </header>
+
+    <div class="br-layout">
+      <article class="br-feat" data-br-feat>
+        <a class="br-feat-link" href={utama.href} target="_blank" rel="noopener">
+          <div class="br-feat-img">
+            <Image src={utama.img} alt={utama.alt} widths={[480, 800, 1200, 1599]} sizes="(min-width: 1024px) 720px, 92vw" loading="lazy" />
+            <span class="br-tag">Sorotan utama</span>
+          </div>
+          <div class="br-feat-body">
+            <time class="br-date" datetime={utama.iso}>{utama.tanggal}</time>
+            <h3 class="br-feat-h">{utama.judul}</h3>
+            <p class="br-feat-p">{utama.ringkas}</p>
+            <span class="br-more">Baca selengkapnya <span aria-hidden="true">→</span></span>
+          </div>
+        </a>
+      </article>
+
+      <ul class="br-list">
+        {lainnya.map((b) => (
+          <li class="br-item" data-br-item>
+            <a class="br-item-link" href={b.href} target="_blank" rel="noopener">
+              <div class="br-thumb">
+                <Image src={b.img} alt={b.alt} widths={[240, 400]} sizes="160px" loading="lazy" />
+              </div>
+              <div class="br-item-body">
+                <time class="br-date" datetime={b.iso}>{b.tanggal}</time>
+                <h3 class="br-item-h">{b.judul}</h3>
+                <p class="br-item-p">{b.ringkas}</p>
+              </div>
+            </a>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </div>
+</section>
+
+<style>
+  .br { padding-block: clamp(88px, 12vw, 160px); }
+  .br-head {
+    display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between;
+    gap: 24px; margin-bottom: clamp(36px, 5vw, 64px);
+  }
+  .br-title { margin: .1em 0 0; max-width: 14ch; }
+  .br-all { flex: none; }
+
+  .br-layout { display: grid; gap: clamp(24px, 3vw, 40px); grid-template-columns: 1fr; }
+  @media (min-width: 1024px) { .br-layout { grid-template-columns: 1.25fr 1fr; align-items: start; } }
+
+  .br a { text-decoration: none; color: inherit; }
+  .br-feat-link { display: block; border-radius: var(--radius); overflow: hidden; background: var(--c-ink); color: var(--c-cream) !important; }
+  .br-feat-img { position: relative; aspect-ratio: 16 / 10; overflow: hidden; }
+  .br-feat-img :global(img) { width: 100%; height: 100%; object-fit: cover; transition: transform .8s var(--ease); }
+  .br-feat-link:hover .br-feat-img :global(img) { transform: scale(1.04); }
+  .br-tag {
+    position: absolute; left: 18px; top: 18px; padding: 7px 14px; border-radius: 999px;
+    background: var(--c-mint); color: var(--c-ink);
+    font-size: .7rem; font-weight: 700; letter-spacing: .18em; text-transform: uppercase;
+  }
+  .br-feat-body { padding: clamp(22px, 3vw, 36px); }
+  .br-date { display: block; font-size: .78rem; font-weight: 700; letter-spacing: .16em; text-transform: uppercase; color: var(--c-mint); margin-bottom: 10px; }
+  .br-feat-h { font-family: var(--font-display); font-weight: 500; font-size: clamp(1.5rem, 1.1rem + 1.4vw, 2.3rem); line-height: 1.12; margin: 0 0 .55em; }
+  .br-feat-p { color: var(--c-muted); margin: 0 0 1.2em; font-size: .98rem; }
+  .br-more { font-weight: 700; font-size: .82rem; letter-spacing: .12em; text-transform: uppercase; color: var(--c-mint); }
+
+  .br-list { list-style: none; margin: 0; padding: 0; display: grid; }
+  .br-item { border-top: 1px solid rgba(21, 37, 28, .16); }
+  .br-item:last-child { border-bottom: 1px solid rgba(21, 37, 28, .16); }
+  .br-item-link { display: grid; grid-template-columns: 112px 1fr; gap: 18px; padding: 22px 0; align-items: start; }
+  @media (min-width: 560px) { .br-item-link { grid-template-columns: 150px 1fr; gap: 22px; } }
+  .br-thumb { aspect-ratio: 4 / 3; border-radius: 12px; overflow: hidden; }
+  .br-thumb :global(img) { width: 100%; height: 100%; object-fit: cover; transition: transform .6s var(--ease); }
+  .br-item-link:hover .br-thumb :global(img) { transform: scale(1.06); }
+  .br-item .br-date { color: var(--c-green); margin-bottom: 6px; }
+  .br-item-h { font-family: var(--font-display); font-weight: 600; font-size: clamp(1.05rem, 1rem + .3vw, 1.25rem); line-height: 1.25; margin: 0 0 .4em; }
+  .br-item-link:hover .br-item-h { color: var(--c-green); }
+  .br-item-p { margin: 0; color: var(--c-muted-dark); font-size: .9rem; line-height: 1.5; }
+  @media (max-width: 559px) { .br-item-p { display: none; } }
+  .br :focus-visible { outline: 2px solid var(--c-forest); outline-offset: 4px; }
+</style>
+
+<script>
+  import '../scripts/sections/berita';
+</script>

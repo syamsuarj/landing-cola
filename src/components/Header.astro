@@ -1,19 +1,29 @@
 ---
+import { Image } from 'astro:assets';
+import logoApn from '../assets/agrinas/header-logo-agrinas-light.webp';
+import logoDanantara from '../assets/agrinas/header-logo-danantara-light.webp';
+
 const links = [
-  { href: '#sejarah', t: 'Sejarah' },
-  { href: '#produk', t: 'Produk' },
-  { href: '#indonesia', t: 'Indonesia' },
-  { href: '#faq', t: 'FAQ' },
-  { href: '#cta', t: 'Penutup' },
+  { href: '#beranda', t: 'Beranda' },
+  { href: '#tentang', t: 'Tentang Kami' },
+  { href: '#bisnis', t: 'Bisnis' },
+  { href: '#karir', t: 'Karir' },
+  { href: '#kemitraan', t: 'Procurement' },
+  { href: '#berita', t: 'Berita' },
+  { href: '#kontak', t: 'Kontak' },
 ];
 ---
 <header class="site-head" id="top">
   <div class="container bar">
-    <a href="#utama" class="brand">
-      <span class="mark" aria-hidden="true"></span>
-      <span class="name">Dunia Cola</span>
-      <span class="tag">demo</span>
-    </a>
+    <div class="brand">
+      <a class="logo-danantara" href="https://www.danantaraindonesia.co.id/" target="_blank" rel="noopener">
+        <Image src={logoDanantara} alt="Danantara Indonesia (tautan eksternal)" width={160} height={40} loading="eager" />
+      </a>
+      <span class="sep" aria-hidden="true"></span>
+      <a class="logo-apn" href="#beranda">
+        <Image src={logoApn} alt="Agrinas Palma Nusantara — ke beranda" width={152} height={44} loading="eager" />
+      </a>
+    </div>
     <button class="menu-btn" type="button" aria-expanded="false" aria-controls="nav-utama">
       <span class="menu-label">Menu</span>
       <span class="menu-icon" aria-hidden="true"><i></i><i></i></span>
@@ -24,6 +34,7 @@ const links = [
           <li><a href={l.href}><span class="idx" aria-hidden="true">0{i + 1}</span>{l.t}</a></li>
         ))}
       </ul>
+      <span class="logo-stripe nav-stripe" aria-hidden="true"></span>
     </nav>
   </div>
 </header>
@@ -34,43 +45,46 @@ const links = [
     border-bottom: 1px solid transparent;
     transition: background-color .4s var(--ease), border-color .4s var(--ease);
   }
-  .site-head.scrolled { background: rgba(10, 10, 11, .92); border-bottom-color: var(--c-line); }
+  .site-head.scrolled { background: rgba(7, 21, 14, .9); border-bottom-color: var(--c-line); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); }
   .site-head.open { background: var(--c-ink); border-bottom-color: var(--c-line); }
   .bar { display: flex; align-items: center; justify-content: space-between; gap: 1rem; min-height: var(--header-h); }
 
-  .brand { display: inline-flex; align-items: center; gap: .6rem; text-decoration: none; min-height: 44px; }
-  .mark { width: 12px; height: 12px; border-radius: 50%; background: var(--c-red); box-shadow: 0 0 14px 2px rgba(244, 0, 9, .6); }
-  .name { font-family: var(--font-display); text-transform: uppercase; font-size: 1.35rem; letter-spacing: .02em; line-height: 1; }
-  .tag { font-size: .66rem; font-weight: 700; letter-spacing: .16em; text-transform: uppercase; color: var(--c-muted); border: 1px solid var(--c-line); border-radius: 999px; padding: .2rem .55rem; }
+  .brand { display: flex; align-items: center; gap: clamp(.6rem, 1.4vw, 1rem); }
+  .brand a { display: inline-flex; align-items: center; min-height: 44px; }
+  .logo-danantara :global(img) { height: clamp(26px, 2.6vw, 32px); width: auto; }
+  .logo-apn :global(img) { height: clamp(32px, 3.2vw, 40px); width: auto; }
+  .sep { width: 1px; height: 28px; background: rgba(244, 245, 240, .35); }
 
-  .nav ul { display: flex; gap: clamp(1rem, 2.4vw, 2.2rem); list-style: none; margin: 0; padding: 0; }
+  .nav ul { display: flex; gap: clamp(.9rem, 1.8vw, 1.8rem); list-style: none; margin: 0; padding: 0; }
   .nav a {
-    display: inline-flex; align-items: baseline; gap: .4rem; min-height: 44px; align-items: center;
-    text-decoration: none; font-size: .9rem; font-weight: 600; letter-spacing: .02em; color: var(--c-cream);
-    position: relative;
+    display: inline-flex; align-items: center; gap: .4rem; min-height: 44px;
+    text-decoration: none; font-size: .86rem; font-weight: 600; letter-spacing: .01em; color: var(--c-cream);
+    position: relative; white-space: nowrap;
   }
   .nav a::after {
-    content: ""; position: absolute; left: 0; right: 0; bottom: 8px; height: 1px; background: var(--c-red);
+    content: ""; position: absolute; left: 0; right: 0; bottom: 8px; height: 1.5px; background: var(--c-mint);
     transform: scaleX(0); transform-origin: left; transition: transform .35s var(--ease);
   }
+  .nav a:hover, .nav a:focus-visible { color: var(--c-mint); }
   .nav a:hover::after, .nav a:focus-visible::after { transform: scaleX(1); }
-  .idx { font-size: .68rem; color: var(--c-muted); font-variant-numeric: tabular-nums; }
+  .idx { display: none; font-size: .68rem; color: var(--c-muted); font-variant-numeric: tabular-nums; }
+  .nav-stripe { display: none; }
 
   .menu-btn { display: none; }
 
-  @media (max-width: 760px) {
-    /* Tanpa JS: menu tampil sebagai baris link di bawah brand */
+  @media (max-width: 1023px) {
+    /* Tanpa JS: menu tampil sebagai baris link di bawah logo */
     .bar { flex-wrap: wrap; align-content: flex-start; }
     .brand { height: var(--header-h); }
     .nav { width: 100%; }
     .nav ul { flex-wrap: wrap; gap: 0 1.1rem; padding-bottom: .4rem; }
     :global(html:not(.js)) .site-head { position: relative; background: var(--c-ink); }
 
-    /* Dengan JS: tombol Menu + panel */
+    /* Dengan JS: tombol Menu + panel layar penuh */
     :global(html.js) .menu-btn {
-      display: inline-flex; align-items: center; gap: .7rem; min-height: 44px; padding: 0 .2rem 0 .9rem;
-      background: none; border: 1px solid var(--c-line); border-radius: 999px; color: var(--c-cream);
-      font: 700 .8rem/1 var(--font-body); letter-spacing: .14em; text-transform: uppercase; cursor: pointer;
+      display: inline-flex; align-items: center; gap: .5rem; min-height: 44px; padding: 0 .2rem 0 .9rem;
+      background: rgba(7, 21, 14, .35); border: 1px solid var(--c-line); border-radius: 999px; color: var(--c-cream);
+      font: 700 .74rem/1 var(--font-body); letter-spacing: .14em; text-transform: uppercase; cursor: pointer;
     }
     .menu-icon { position: relative; width: 36px; height: 36px; }
     .menu-icon i { position: absolute; left: 10px; right: 10px; height: 1.5px; background: currentColor; transition: transform .35s var(--ease); }
@@ -79,10 +93,24 @@ const links = [
     .open .menu-icon i:last-child { transform: translateY(-3.5px) rotate(-45deg); }
 
     :global(html.js) .nav { display: none; }
-    :global(html.js) .open .nav { display: block; height: calc(100svh - var(--header-h)); padding-top: 1.5rem; }
-    :global(html.js) .open .nav ul { flex-direction: column; gap: .2rem; }
-    :global(html.js) .open .nav a { font-family: var(--font-display); text-transform: uppercase; font-size: clamp(2.6rem, 13vw, 4rem); font-weight: 400; line-height: 1.05; gap: .8rem; }
+    :global(html.js) .open .nav {
+      display: flex; flex-direction: column; justify-content: space-between;
+      height: calc(100svh - var(--header-h)); padding: 1.5rem 0 2rem; overflow-y: auto;
+    }
+    :global(html.js) .open .nav ul { flex-direction: column; gap: .1rem; }
+    :global(html.js) .open .nav a {
+      font-family: var(--font-display); font-size: clamp(2rem, 8.5vw, 3.2rem); font-weight: 500;
+      line-height: 1.12; gap: .9rem; letter-spacing: -.01em;
+    }
     :global(html.js) .open .nav a::after { display: none; }
-    :global(html.js) .open .idx { font-family: var(--font-body); font-size: .8rem; }
+    :global(html.js) .open .idx { display: inline; font-family: var(--font-body); font-size: .78rem; font-weight: 700; color: var(--c-mint); }
+    :global(html.js) .open .nav-stripe { display: block; max-width: 160px; margin-top: 1.5rem; }
+  }
+  @media (max-width: 420px) {
+    .sep { height: 22px; }
+    .logo-danantara :global(img) { height: 22px; }
+    .logo-apn :global(img) { height: 28px; }
+    :global(html.js) .menu-btn .menu-label { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+    :global(html.js) .menu-btn { padding: 0 .2rem; }
   }
 </style>

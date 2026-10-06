@@ -1,0 +1,121 @@
+---
+// T1c-2 (Programmer D) — Kemitraan / Pengadaan. Teks resmi: docs/reference/t1c-content.md
+// (beranda bagian PENGADAAN + https://agrinaspalma.co.id/procurement).
+import { Image } from 'astro:assets';
+import fotoIps from '../assets/agrinas/kemitraan-ips.webp';
+
+const alur = [
+  'Manajemen vendor',
+  'Perencanaan & permintaan pengadaan',
+  'Penyusunan & persetujuan HPS',
+  'Pelaksanaan pengadaan',
+  'Pemilihan penyedia barang & jasa',
+  'Penerbitan SPPBJ',
+  'Penyusunan & pengelolaan kontrak',
+  'Pemantauan status & progres',
+];
+---
+<section id="kemitraan" class="km grain" aria-labelledby="judul-kemitraan">
+  <div class="container km-inner">
+    <div class="km-copy">
+      <p class="eyebrow" data-km-reveal>Pengadaan · Mitra &amp; Pemasok</p>
+      <h2 id="judul-kemitraan" class="display-l km-title" data-km-reveal>
+        Integrated <span class="accent">Procurement System</span>
+      </h2>
+      <p class="lead km-lead" data-km-reveal>
+        Seluruh proses pengadaan barang dan jasa PT Agrinas Palma Nusantara (Persero) dijalankan melalui satu platform terpadu. Vendor dan unit kerja internal mengakses melalui pintu yang sama dengan proses yang lebih terstruktur dan transparan.
+      </p>
+      <p class="muted km-p" data-km-reveal>
+        Dikelola secara profesional, transparan, dan akuntabel — berlandaskan komitmen penerapan Good Corporate Governance (GCG) agar setiap proses pengadaan berjalan efektif, efisien, transparan, dan berkelanjutan.
+      </p>
+      <div class="km-cta" data-km-reveal>
+        <a class="btn" href="https://ips.agrinaspalma.co.id/vendors" target="_blank" rel="noopener">Masuk ke IPS Vendor <span aria-hidden="true">↗</span></a>
+        <a class="btn-ghost" href="https://agrinaspalma.co.id/procurement" target="_blank" rel="noopener">Informasi Pengadaan <span aria-hidden="true">↗</span></a>
+      </div>
+      <a class="km-doc" href="https://drive.google.com/file/d/1WkG9X5bYLpdb0w65CQVwaVRTjDHeVmwy/view?usp=sharing" target="_blank" rel="noopener" data-km-reveal>
+        Unduh alur registrasi vendor <span aria-hidden="true">→</span>
+      </a>
+    </div>
+
+    <div class="km-visual">
+      <figure class="km-photo" data-km-photo>
+        <Image
+          src={fotoIps}
+          alt="Integrated Procurement System – Agrinas Palma Nusantara"
+          widths={[480, 800, 1200, 1672]}
+          sizes="(min-width: 960px) 46vw, 92vw"
+          loading="lazy"
+        />
+      </figure>
+      <div class="km-flow" data-km-flow>
+        <p class="km-flow-k">Satu sistem end-to-end</p>
+        <ol class="km-steps">
+          {alur.map((s, i) => (
+            <li data-km-step><span class="km-n" aria-hidden="true">{String(i + 1).padStart(2, '0')}</span>{s}</li>
+          ))}
+        </ol>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .km {
+    background:
+      radial-gradient(60% 50% at 100% 0%, rgba(26, 127, 55, .25), transparent 70%),
+      var(--c-ink-2);
+    padding-block: clamp(88px, 12vw, 160px);
+  }
+  .km > * { position: relative; z-index: 2; }
+  .km-inner {
+    display: grid; gap: clamp(40px, 6vw, 88px);
+    grid-template-columns: 1fr;
+    align-items: start;
+  }
+  @media (min-width: 960px) { .km-inner { grid-template-columns: 1.05fr 1fr; } }
+  .km-title { margin: .1em 0 .45em; }
+  .km-lead { color: var(--c-cream); max-width: 36rem; }
+  .km-p { max-width: 34rem; font-size: .98rem; }
+  .km-cta { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 28px; }
+  .km-doc {
+    display: inline-flex; gap: .5em; margin-top: 22px; min-height: 44px; align-items: center;
+    color: var(--c-mint); font-weight: 600; text-decoration: none;
+    border-bottom: 1px solid rgba(161, 219, 179, .4);
+  }
+  .km-doc:hover { border-color: var(--c-mint); }
+
+  .km-visual { position: relative; }
+  .km-photo {
+    margin: 0; border-radius: var(--radius); overflow: hidden; position: relative;
+    aspect-ratio: 1672 / 1538;
+  }
+  .km-photo :global(img) { width: 100%; height: 100%; object-fit: cover; }
+  .km-photo::after {
+    content: ""; position: absolute; inset: 0;
+    background: linear-gradient(180deg, rgba(7, 21, 14, .1) 30%, rgba(7, 21, 14, .85));
+  }
+  .km-flow {
+    position: relative; margin: -120px 16px 0; padding: 22px 24px;
+    background: rgba(14, 34, 24, .92); backdrop-filter: blur(8px);
+    border: 1px solid rgba(161, 219, 179, .18); border-radius: 16px;
+  }
+  .km-flow-k {
+    font-family: var(--font-display); font-style: italic; color: var(--c-mint);
+    font-size: 1.25rem; margin: 0 0 12px;
+  }
+  .km-steps {
+    list-style: none; margin: 0; padding: 0;
+    display: grid; grid-template-columns: 1fr; gap: 2px 20px;
+    font-size: .9rem;
+  }
+  @media (min-width: 560px) { .km-steps { grid-template-columns: 1fr 1fr; } }
+  .km-steps li {
+    display: flex; gap: 10px; align-items: baseline; padding: 7px 0;
+    border-bottom: 1px solid rgba(244, 245, 240, .08);
+  }
+  .km-n { font-weight: 700; font-size: .72rem; letter-spacing: .1em; color: var(--c-mint); }
+</style>
+
+<script>
+  import '../scripts/sections/kemitraan';
+</script>
