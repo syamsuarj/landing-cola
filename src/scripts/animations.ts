@@ -57,6 +57,18 @@ if (header) {
   window.matchMedia(MENU_MQ).addEventListener('change', (e) => { if (e.matches) setOpen(false); });
 }
 
+/* ---------- V3 (T2-fix2): fokus keyboard langsung terlihat ----------
+ * Akar masalah: html{scroll-behavior:smooth} juga berlaku untuk scroll-into-view akibat fokus Tab. Dari link
+ * hero ke indeks Bisnis jaraknya ±17.000px (section di antaranya tanpa elemen fokus) → animasi ±1,5 s, selama itu
+ * elemen terfokus di luar layar. Selama navigasi Tab, scroll fokus dibuat instan (class html.kb-nav). */
+let kbTimer = 0;
+document.addEventListener('keydown', (e) => {
+  if (e.key !== 'Tab') return;
+  root.classList.add('kb-nav');
+  clearTimeout(kbTimer);
+  kbTimer = window.setTimeout(() => root.classList.remove('kb-nav'), 200);
+}, true);
+
 /* ---------- Hero: adegan ter-pin 3 babak ---------- */
 const scene = document.querySelector<HTMLElement>('[data-hero-scene]');
 if (scene && !reduced && root.classList.contains('motion')) {

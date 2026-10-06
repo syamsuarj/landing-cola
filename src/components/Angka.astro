@@ -29,12 +29,13 @@ const fmt = (v: number, d = 0) => v.toLocaleString('id-ID', { minimumFractionDig
       {stats.map((s) => (
         <li class:list={['ag-card', { 'ag-wide': s.wide }]} data-ag-card>
           <p class="ag-value">
-            <span class="sr-only">{fmt(s.value, s.decimals)}{s.unit ? ` ${s.unit}` : ''}</span>
+            <span class="sr-only">{s.static ? String(s.value) : fmt(s.value, s.decimals)}{s.unit ? ` ${s.unit}` : ''}</span>
             <span
               class="ag-num"
               aria-hidden="true"
               data-ag-count={s.static ? undefined : s.value}
               data-ag-decimals={s.decimals ?? 0}
+              data-ag-final={s.static ? undefined : fmt(s.value, s.decimals)}
             >{s.static ? String(s.value) : fmt(s.value, s.decimals)}</span>
             {s.unit && <span class="ag-unit" aria-hidden="true">{s.unit}</span>}
           </p>
@@ -72,6 +73,9 @@ const fmt = (v: number, d = 0) => v.toLocaleString('id-ID', { minimumFractionDig
     font-size: clamp(2.75rem, 7vw, 5.5rem); color: var(--c-forest);
     font-variant-numeric: tabular-nums;
   }
+  /* V1 (T2-fix2): cadangkan lebar nilai akhir selama counter berjalan (0 → nilai) agar unit tidak
+     pindah baris di tengah animasi → tinggi kartu/dokumen tetap, anchor di bawahnya tidak bergeser. */
+  .ag-num[data-ag-final]::after { content: attr(data-ag-final); display: block; height: 0; overflow: hidden; visibility: hidden; }
   .ag-wide .ag-num { font-size: clamp(2.4rem, 9.5vw, 6.5rem); color: var(--c-green); }
   .ag-unit { font-family: var(--font-display); font-style: italic; font-size: clamp(1.1rem, 1rem + 1vw, 2rem); color: var(--c-green); }
   .ag-label { margin: auto 0 .35rem; font-weight: 600; font-size: clamp(.95rem, .9rem + .2vw, 1.1rem); line-height: 1.4; color: var(--c-forest); }

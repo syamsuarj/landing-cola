@@ -32,7 +32,7 @@ Format baris (satu append `>>`): `| <section> | <file> | <url sumber> | PT Agrin
 | keterbukaan | src/assets/agrinas/keterbukaan-ar-2025.jpg | https://cms.agrinaspalma.app/uploads/large_Cover_260723_AR_Agrinas_2025_1cc37d38fa/large_Cover_260723_AR_Agrinas_2025_1cc37d38fa.png | PT Agrinas Palma Nusantara | aset resmi |
 | keterbukaan | src/assets/agrinas/keterbukaan-sr-2025.jpg | https://cms.agrinaspalma.app/uploads/large_SR_2025_APN_cover_a3542f5b5f/large_SR_2025_APN_cover_a3542f5b5f.png | PT Agrinas Palma Nusantara | aset resmi |
 | kepemimpinan | src/assets/agrinas/kepemimpinan-ghani.webp | https://cms.agrinaspalma.app/uploads/medium_Mohammad_Abdul_Ghani_f43a80c402/medium_Mohammad_Abdul_Ghani_f43a80c402.webp | PT Agrinas Palma Nusantara | aset resmi |
-| kepemimpinan | src/assets/agrinas/kepemimpinan-kusdi.webp | https://cms.agrinaspalma.app/uploads/small_Kusdi_Sastro_Kidjan_c7abb3ec59/small_Kusdi_Sastro_Kidjan_c7abb3ec59.webp | PT Agrinas Palma Nusantara | aset resmi |
+| kepemimpinan | src/assets/agrinas/kepemimpinan-kusdi.webp | https://cms.agrinaspalma.app/uploads/medium_Kusdi_Sastro_Kidjan_c7abb3ec59/medium_Kusdi_Sastro_Kidjan_c7abb3ec59.webp | PT Agrinas Palma Nusantara | aset resmi |
 | kepemimpinan | src/assets/agrinas/kepemimpinan-tuhu.webp | https://cms.agrinaspalma.app/uploads/small_Tuhu_Bangun_8ddb29cfaf/small_Tuhu_Bangun_8ddb29cfaf.webp | PT Agrinas Palma Nusantara | aset resmi |
 | kepemimpinan | src/assets/agrinas/kepemimpinan-nyoman.webp | https://cms.agrinaspalma.app/uploads/small_I_Nyoman_Suparta_fa3b589222/small_I_Nyoman_Suparta_fa3b589222.webp | PT Agrinas Palma Nusantara | aset resmi |
 | kepemimpinan | src/assets/agrinas/kepemimpinan-erry.jpg | https://cms.agrinaspalma.app/uploads/medium_Whats_App_Image_2026_06_29_at_10_38_18_AM_84ea7a6708/medium_Whats_App_Image_2026_06_29_at_10_38_18_AM_84ea7a6708.jpeg | PT Agrinas Palma Nusantara | aset resmi |
@@ -42,7 +42,7 @@ Format baris (satu append `>>`): `| <section> | <file> | <url sumber> | PT Agrin
 | kepemimpinan | src/assets/agrinas/kepemimpinan-nofil.webp | https://cms.agrinaspalma.app/uploads/small_Nofil_Anoverta_e7d4e02425/small_Nofil_Anoverta_e7d4e02425.webp | PT Agrinas Palma Nusantara | aset resmi |
 | kepemimpinan | src/assets/agrinas/kepemimpinan-gagah.webp | https://cms.agrinaspalma.app/uploads/Gagah_Guntur_Aribowo_75d3ad8ddd/Gagah_Guntur_Aribowo_75d3ad8ddd.webp | PT Agrinas Palma Nusantara | aset resmi (versi asli; situs memakai thumbnail_) |
 | kepemimpinan | src/assets/agrinas/kepemimpinan-cucu.webp | https://cms.agrinaspalma.app/uploads/Cucu_Somantri_2d6b99ff04/Cucu_Somantri_2d6b99ff04.webp | PT Agrinas Palma Nusantara | aset resmi (versi asli; situs memakai thumbnail_) |
-| kepemimpinan | src/assets/agrinas/kepemimpinan-seger.webp | https://cms.agrinaspalma.app/uploads/small_Seger_Budiardjo_eb4bebfcb2/small_Seger_Budiardjo_eb4bebfcb2.webp | PT Agrinas Palma Nusantara | aset resmi |
+| kepemimpinan | src/assets/agrinas/kepemimpinan-seger.webp | https://cms.agrinaspalma.app/uploads/medium_Seger_Budiardjo_eb4bebfcb2/medium_Seger_Budiardjo_eb4bebfcb2.webp | PT Agrinas Palma Nusantara | aset resmi |
 | bisnis | src/assets/agrinas/bisnis-tbs.webp | https://agrinaspalma.co.id/images/business/tbs.webp | PT Agrinas Palma Nusantara | aset resmi |
 | bisnis | src/assets/agrinas/bisnis-cpo.webp | https://agrinaspalma.co.id/images/business/cpo.webp | PT Agrinas Palma Nusantara | aset resmi |
 | bisnis | src/assets/agrinas/bisnis-cpko.webp | https://agrinaspalma.co.id/images/business/cpko.webp | PT Agrinas Palma Nusantara | aset resmi |
@@ -52,3 +52,6 @@ Format baris (satu append `>>`): `| <section> | <file> | <url sumber> | PT Agrin
 | bisnis | src/assets/agrinas/bisnis-engineering.webp | https://agrinaspalma.co.id/images/business/engineering.webp | PT Agrinas Palma Nusantara | aset resmi |
 | bisnis | src/assets/agrinas/bisnis-georesources.webp | https://agrinaspalma.co.id/images/business/geoResources.webp | PT Agrinas Palma Nusantara | aset resmi |
 | bisnis | src/assets/agrinas/bisnis-support.webp | https://agrinaspalma.co.id/images/business/support.webp | PT Agrinas Palma Nusantara | aset resmi (Laboratorium Geoteknik) |
+| favicon | public/favicon.ico | https://agrinaspalma.co.id/images/branding/logo_apn2.webp | PT Agrinas Palma Nusantara | aset resmi (logo APN, diperkecil/dikonversi untuk ikon situs) |
+| favicon | public/favicon-192.png | https://agrinaspalma.co.id/images/branding/logo_apn2.webp | PT Agrinas Palma Nusantara | aset resmi (logo APN, diperkecil/dikonversi untuk ikon situs) |
+| favicon | public/apple-touch-icon.png | https://agrinaspalma.co.id/images/branding/logo_apn2.webp | PT Agrinas Palma Nusantara | aset resmi (logo APN, diperkecil/dikonversi untuk ikon situs) |

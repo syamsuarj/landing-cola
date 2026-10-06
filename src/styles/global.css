@@ -62,7 +62,8 @@ h1, h2, h3, h4 { line-height: 1.1; margin: 0 0 .5em; font-weight: 600; text-wrap
 p { margin: 0 0 1em; text-wrap: pretty; }
 a { color: inherit; }
 ::selection { background: var(--c-mint); color: var(--c-ink); }
-section { scroll-margin-top: var(--header-h); }
+section, body > footer { scroll-margin-top: var(--header-h); }
+html.kb-nav { scroll-behavior: auto !important; } /* V3: scroll akibat fokus Tab instan (animations.ts); !important krn GSAP menaruh inline scroll-behavior:smooth */
 
 /* ---------- Layout ---------- */
 .container {

@@ -1,5 +1,5 @@
 // Kemitraan (#kemitraan): reveal teks, zoom-out halus foto IPS, langkah alur muncul berurutan.
-import { gsap, reducedMotion, revealAll, unhideOnFocus } from './reveal-d';
+import { gsap, ScrollTrigger, reducedMotion, revealAll, unhideOnFocus } from './reveal-d';
 
 const section = document.getElementById('kemitraan');
 
@@ -17,9 +17,23 @@ if (section && !reducedMotion()) {
 
   const flow = section.querySelector<HTMLElement>('[data-km-flow]');
   const steps = section.querySelectorAll<HTMLElement>('[data-km-step]');
+  // V0 (T2): dulu satu timeline dipicu oleh puncak kartu (top 85%) lalu 8 langkah menyusul berbasis WAKTU
+  // (kartu 0,9 s → langkah mulai 0,4 s + stagger) — langkah bawah (05–08) baru muncul ±1–1,3 s setelah
+  // trigger, padahal saat itu kartu sudah tergulir lewat (scroll cepat / harness: langkah tak pernah terlihat
+  // di semua mode, tidak khusus no-webgl). Kini kartu dan tiap langkah punya trigger posisi sendiri:
+  // langkah muncul saat langkah itu sendiri masuk viewport, dan durasi kartu dipendekkan.
   if (flow) {
-    gsap.timeline({ scrollTrigger: { trigger: flow, start: 'top 85%', once: true } })
-      .from(flow, { y: 48, opacity: 0, duration: 0.9, ease: 'power3.out' })
-      .from(steps, { y: 14, opacity: 0, duration: 0.5, ease: 'power2.out', stagger: 0.06 }, '-=0.5');
+    gsap.from(flow, {
+      y: 32, opacity: 0, duration: 0.6, ease: 'power3.out',
+      scrollTrigger: { trigger: flow, start: 'top 92%', once: true },
+    });
+  }
+  if (steps.length) {
+    gsap.set(steps, { y: 14, opacity: 0 });
+    ScrollTrigger.batch(steps, {
+      start: 'top bottom-=24',
+      once: true,
+      onEnter: (batch) => gsap.to(batch, { y: 0, opacity: 1, duration: 0.45, ease: 'power2.out', stagger: 0.05, overwrite: true }),
+    });
   }
 }

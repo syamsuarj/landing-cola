@@ -4,7 +4,8 @@ import bg from '../assets/agrinas/hero-sawit1.webp';
 
 // Berita terbaru (judul dari beranda & /news resmi, diambil 2026-10-06)
 const newsTitle = 'Dukung E20, Agrinas Palma dan IPB University Kembangkan Bioetanol Multifeedstock';
-const newsHref = 'https://agrinaspalma.co.id/news/' + encodeURIComponent(newsTitle);
+// encodeURI (bukan encodeURIComponent): koma harus tetap ',' — '%2C' membuka halaman "Berita Tidak Ditemukan" (K1)
+const newsHref = 'https://agrinaspalma.co.id/news/' + encodeURI(newsTitle);
 ---
 <section class="hero grain" id="beranda" aria-labelledby="judul-hero">
   <div class="scene" data-hero-scene>
@@ -71,7 +72,7 @@ const newsHref = 'https://agrinaspalma.co.id/news/' + encodeURIComponent(newsTit
     <div class="act act-3" data-act="3">
       <p class="eyebrow"><span class="num">03</span> Semangat Patriot</p>
       <h2 class="display-l">Patriot&nbsp;· Loyal&nbsp;· <span class="accent">Profesional</span></h2>
-      <p class="body">Kemakmuran bumi Nusantara, semangat patriot, loyalitas kepada nusa, dan dedikasi profesional dalam setiap langkah bisnis.</p>
+      <p class="body">Dengan semangat Patriot, Loyal, Profesional, PT Agrinas Palma Nusantara (Persero) berperan aktif menciptakan kemandirian energi sekaligus membuka lapangan kerja dan menghadirkan manfaat nyata bagi masyarakat.</p>
       <p class="ctas"><a class="btn" href="#tentang">Tentang Agrinas</a><a class="btn-ghost" href="#bisnis">Lini Bisnis</a></p>
     </div>
 
