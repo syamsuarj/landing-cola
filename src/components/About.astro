@@ -2,10 +2,10 @@
 import { Image } from 'astro:assets';
 import fotoApotek from '../assets/photos/sejarah-apotek.jpg';
 
-// Koreksi fakta sesuai QA-T4B.md (#1 1894/1899, #2 tanpa/rendah kalori, #7 Zero Sugar 2017)
+// Koreksi fakta sesuai QA-T4B.md (#1 1894/1899, #2 tanpa/rendah kalori, #7 Zero Sugar; QA-T6 K7 2016–2017)
 const events = [
   { y: '1886', k: 'Lahir di Atlanta', t: 'Apoteker John Pemberton meracik sirup Coca-Cola di Atlanta, Georgia, dan menjualnya sebagai minuman tonik di apotek.' },
-  { y: '1888', k: 'Era Candler', t: 'Asa Candler mulai mengambil alih hak atas minuman ini dan di tahun-tahun berikutnya mengembangkan pemasarannya secara luas.' },
+  { y: '1888', k: 'Era Candler', t: 'Asa Candler mulai mengambil alih hak atas minuman ini dan pada tahun-tahun berikutnya mengembangkan pemasarannya secara luas.' },
   { y: '1892', k: 'Perusahaan berdiri', t: 'Candler mendirikan The Coca-Cola Company di Georgia.' },
   { y: '1894', k: 'Botol pertama', t: 'Joseph Biedenharn di Vicksburg, Mississippi, pertama kali membotolkan Coca-Cola, sehingga bisa dinikmati di luar kedai minuman. Pembotolan berskala luas dimulai pada 1899.' },
   { y: '1915', k: 'Botol kontur', t: 'Desain botol kontur dibuat oleh Root Glass Company agar mudah dikenali, bahkan dalam gelap atau saat pecah.' },
@@ -13,7 +13,7 @@ const events = [
   { y: '1971', k: 'Iklan legendaris', t: 'Iklan "I\'d Like to Buy the World a Coke" ditayangkan dan menjadi salah satu iklan paling diingat.' },
   { y: '1982', k: 'Diet Coke', t: 'Diet Coke diperkenalkan sebagai varian tanpa/rendah kalori.' },
   { y: '1985', k: 'New Coke', t: 'Formula baru ("New Coke") diluncurkan lalu rasa klasik kembali sebagai Coca-Cola Classic setelah banyak penggemar bereaksi.' },
-  { y: '2005', k: 'Tanpa gula', t: 'Coca-Cola Zero, varian tanpa gula, diluncurkan di Amerika Serikat, kemudian dipasarkan di banyak negara dan menjadi Coca-Cola Zero Sugar pada 2017.' },
+  { y: '2005', k: 'Tanpa gula', t: 'Coca-Cola Zero, varian tanpa gula, diluncurkan di Amerika Serikat, kemudian dipasarkan secara internasional; sejak 2016–2017 varian ini berganti nama menjadi Coca-Cola Zero Sugar di banyak negara (di AS pada 2017).' },
 ];
 const pad = (n: number) => String(n).padStart(2, '0');
 ---

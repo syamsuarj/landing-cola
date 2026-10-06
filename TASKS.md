@@ -37,7 +37,7 @@ AC: semua AC T3 diuji nyata (build, console log browser langsung, WebGL render v
 
 Catatan implementasi T3 (Programmer): gsap 3.15 + three 0.186 (lazy-load hero3d, chunk ~540kB, dimuat setelah load+4dtk atau interaksi pertama). Fallback SVG bila reduced-motion/WebGL tidak ada. FAQ memakai <details> native. Lihat ringkasan laporan untuk hasil verifikasi & hal belum terverifikasi.
 
-## T5 - Redesign total "Premium sinematik" [P1, est 8 jam] — Status: IN PROGRESS, dipecah ke T5a/T5b/T5c (paralel)
+## T5 - Redesign total "Premium sinematik" [P1, est 8 jam] — Status: Ready for QA (T5a/T5b/T5c semua Ready for QA)
 Keputusan user (2026-10-05): visual & layout dirombak total; konten/teks tetap + koreksi fakta dari QA-T4B.md; aset boleh foto stok bebas lisensi (Unsplash/Pexels) + 3D/SVG sendiri. Arah visual dipilih PM: Premium sinematik (gelap hitam–merah, tipografi raksasa, 3D jadi bintang, gaya halaman produk Apple).
 AC:
 - Palet: dasar hampir hitam (mis. #0A0A0B), merah utama #F40009 tetap dipakai sebagai aksen/blok, merah gelap untuk kedalaman, krem/putih untuk teks. Grain/noise halus, glow/gradien radial. Kontras teks >= 4.5:1.
@@ -51,7 +51,7 @@ AC:
 - npm run build sukses; console 0 error/warn; Lighthouse mobile Perf >= 85 & A11y >= 95 (build produksi).
 - Programmer wajib cek visual sendiri: screenshot tiap section di 1280 dan 375, nilai kritis (tidak kosong, tidak tumpang tindih, tidak terlihat seperti template), perbaiki sebelum lapor.
 
-## T6 - Verifikasi QA T5 [P1, est 2 jam] — Status: BLOCKED by T5 (QA)
+## T6 - Verifikasi QA T5 [P1, est 2 jam] — Status: DONE (FAIL → diperbaiki di T8/T10, lulus di T9 konten + T11) (QA-2 visual/interaksi → QA-T6-visual.md; QA-3 konten/lisensi → QA-T6-konten.md; teknis otomatis PASS via qa/run.mjs --prod)
 AC: semua AC T5 diuji nyata, termasuk review visual tiap section (screenshot 375/768/1280), pin & scroll animation, lisensi foto di CREDITS.md, koreksi konten diterapkan, BUG-A hilang.
 
 ### Pembagian paralel T5 (diputuskan PM 18:30 atas permintaan user) — AC T5 di atas tetap berlaku untuk semua
@@ -95,11 +95,29 @@ Catatan Programmer C:
 - Diverifikasi (dev :3000, Chrome headless via playwright-core qa/): scrollWidth = viewport di 375/768/1280 saat load & setelah scroll penuh; 0 elemen tersembunyi di section T5c (normal, reduced-motion, tanpa JS); marquee mati saat reduced-motion (3 kartu, transform none, tombol tersembunyi); FAQ Enter/Space/Tab OK; newsletter valid/invalid OK tanpa navigasi; `npm run build` sukses. Screenshot: ~/workspace/projects/t5c-screens/.
 - Console dev: satu-satunya error adalah 504 "Outdated Optimize Dep" pada astro dev-toolbar (artefak Vite dev server, bukan dari kode T5c; hilang setelah restart dev server — tidak saya restart).
 
-## T6-prep - Siapkan harness QA otomatis [P1] — QA-1 — Status: IN PROGRESS
+## T6-prep - Siapkan harness QA otomatis [P1] — QA-1 — Status: Done (PM verifikasi 19:03: `node qa/run.mjs --prod` PASS 7/7, 276 dtk; mode dev lambat >25 mnt/timeout — pakai --prod)
 Buat qa/ (bukan kode produksi): script yang bisa dijalankan ulang untuk build, cek overflow 375/768/1280 (saat load & setelah scroll), console error/warn, screenshot per section per lebar, reduced-motion/no-JS/no-WebGL, Lighthouse mobile+desktop, cek CREDITS.md vs file foto. Output ringkasan JSON/MD. Uji harness pada versi saat ini.
 
 ## T6 - QA paralel setelah T5a/b/c selesai: QA-1 teknis (pakai harness), QA-2 visual/UX review per section, QA-3 konten + lisensi foto.
 
-## T7 - Publish ke GitHub [P2] — PM — Status: WAITING (jalan setelah T6 PASSED)
+## T7 - Publish ke GitHub [P2] — PM — Status: DONE (push final setelah T11 PASS; sebelumnya PARTIAL) — snapshot WIP cb00749 di-push ke main 2026-10-05 19:02 atas permintaan user; push final setelah T6 PASSED
 Repo: https://github.com/syamsuarj/landing-cola (PUBLIC, dibuat 2026-10-05 atas persetujuan user, masih kosong).
 Langkah setelah QA lulus: git init; .gitignore (node_modules, dist, .astro, qa/out*, qa/node_modules, screenshot/scratch QA & programmer); scan secret sebelum commit; commit awal TANPA trailer Co-authored-by; branch main; push. Jangan deploy.
+
+## T8 - Putaran perbaikan T6 [P1, est 1.5 jam] — Status: Ready for QA (T8a/b/c selesai 08:45; build PM OK)
+Sumber: QA-T6-konten.md (VERDICT FAIL, K1 blocker) + QA-T6-visual.md (V1 major, V2 minor; QA-2 terputus — interaksi/keyboard/resize belum tuntas).
+Keputusan PM: K1 foto DIGANTI (bukan blur); K2 & K3 foto diganti; riwayat git cb00749 TIDAK ditulis ulang (opsi A); K9 trade dress & V3 = selera, tidak dikerjakan.
+- T8a Programmer A (T5a files): V2 scroll-cue hero, K15 favicon netral, K12 README, K14 bagian file T5a. — Status: Ready for QA (2026-10-06 08:30). V2: `.scroll-cue` hanya tampil ≥1200 px (Hero.astro); bbox Playwright 375x812/768x1024/820x1180/1024x768/1199/1200/1280x800/1440/1920: 0 overlap dgn lead/btn. K15: favicon.svg + favicon.ico (16/32/48) diganti monogram "D" krem + titik merah di kotak gelap (desain sendiri, bukan disc/pita); Layout menautkan .ico + .svg. K12: README penafian diselaraskan (tanpa logo resmi; foto Unsplash → CREDITS.md; status = putaran T8; klaim "tanpa logo resmi" bergantung K1/T8b). K14: Footer "Disclaimer"→"Penafian", Header menu "Mulai"→"Penutup". K10 (tautan footer) TIDAK dikerjakan (di luar scope).
+- T8b Programmer B (T5b files): K1 ganti foto botol tanpa label/logo, K5, K6, K7, K14 bagian file T5b, baris CREDITS sendiri. — Status: **Ready for QA** (2026-10-06). K1: `botol-kontur-gelap.jpg` dihapus → `src/assets/photos/botol-kaca-gelap.jpg` (Unsplash 3R6NdOhAMP8, Sixteen Miles Out @sixteenmilesout; napi premium=false plus=false sponsorship=false; dicek vision: tanpa teks/label/logo/orang), 1600×2400 112 KB, alt+caption jujur ("botol kaca generik tanpa merek, bukan botol kontur"). K5 buah (polong) kakao + paten 16 Nov 1915/produksi 1916. K6 paragraf pembuka diperbaiki (Coca-Cola ditiru Koka-Nola/Toka-Cola; pembotol menantang perusahaan kaca … "botol yang:") + `<cite>` pada kutipan. K7 Zero Sugar 2016–2017 (AS 2017). K14 About "pada tahun-tahun", Products Original desc, "kola"→"cola". Build OK; `node qa/run.mjs --prod` PASS (7/7). Screenshot: `qa-t8b-shots/botol-1280.png`, `botol-375.png`, `botol-375-2.png`.
+- T8c Programmer C (T5c files): V1 gallery.ts refresh, K2, K3 ganti foto, K4 alt, K8 newsletter no-JS, K14 bagian file T5c, baris CREDITS sendiri. — Status: Ready for QA (2026-10-06 08:45). V1: refresh per-gambar dihapus; `node qa/v1-anchor-nav.mjs` 14/14 PASS (1280+375, nav/hero/footer, cache kosong, diff -1..0 px; kode lama 8/14 FAIL). K2→galeri-nobar-rumah.jpg (HHsq_3FF2W4), K3→galeri-makan-bersama.jpg (YW8UShT0zg0), keduanya Vitaly Gariev, Unsplash License (premium/plus=false), dicek vision: tanpa logo/anak/alkohol; file lama dihapus. K4 alt 4 orang. K8: tombol `disabled` sampai cta.ts aktif + input tanpa `name` + `<noscript>` (cek statis dist; uji runtime JS-off belum dijalankan). K14: Indonesia "Umumnya tersedia"/"antardaerah", FAQ "cara terbaik menyimpannya", Gallery "Unsplash License", Sustainability "05 · Lingkungan". K13 (crop) tidak dikerjakan — crop alternatif memunculkan papan "OBJEK PAJAK" & wajah lebih dominan. `npm run build` OK, `node qa/run.mjs --prod` 7/7 PASS.
+- T9 QA re-test setelah T8: verifikasi semua ID + sisa scope QA-2 (interaksi, keyboard, resize) + `node qa/run.mjs --prod`.
+
+## T9 - QA re-test T8 [P1] — Status: DONE 09:01 — konten PASS (K1–K15 fixed, harness 7/7); visual FAIL: W3 major, W1/W2 minor; V1/V2 FIXED — QA-A konten/lisensi+harness → QA-T9-konten.md; QA-B V1/V2+interaksi → QA-T9-visual.md
+
+## T10 - Fix W3/W1/W2 [P1, est 1 jam] — Programmer D — Status: Ready for QA. W3 akar masalah: revert gsap.matchMedia melepas pin-spacer (scrollY terjepit) lalu ScrollTrigger._refreshAll menggulir ke 0 untuk mengukur & tak memulihkan posisi → fix `src/scripts/keep-scroll.ts` (jangkar section+progres, dipulihkan setelah 'refresh' dgn scroll-behavior auto); f-rotate y=9000→8966/7531/10709→9000, f-rotate-section 10/10 (section sama). W1 inert di luar header + loop Tab di panel menu (Esc/fokus kembali tetap). W2 FAQ focusin → reveal progress(1) + scroll-margin-bottom 12px utk fokus. Uji: build ✓, w1-w2 ALL PASS, c-kbd 0 CHECK, d-scroll-resize ok, v1-anchor-nav 14/14, `run.mjs --prod --out qa/out-t10` PASS (LH m P98/d P100, A100). Detail: T10-notes.md. Lalu T11 QA re-test.
+
+## T11 - QA re-test T10 (W1/W2/W3 + regresi) [P1] — Status: PASSED 10:13 (W1/W2/W3 FIXED, runner 7/7, LH mobile P99) → QA-T11.md
+
+## T12 - Minor open dari QA-T11 [P3] — Status: BACKLOG
+- X2: ~1 dtk setelah ubah lebar, input pengguna (klik nav/wheel) ditarik balik oleh keep-scroll.ts → batalkan freeze saat wheel/keydown/touchmove/klik anchor.
+- X1: perangkat sentuh >=900px, perubahan tinggi saja melintasi 700px (products.ts min-height:700px) → lompat ke atas. Jarang terjadi di perangkat nyata.

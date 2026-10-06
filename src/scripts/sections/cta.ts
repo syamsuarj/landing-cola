@@ -9,6 +9,8 @@ const form = document.getElementById('news-form') as HTMLFormElement | null;
 const msg = document.getElementById('news-msg');
 if (form && msg && !form.dataset.bound) {
   form.dataset.bound = '1';
+  // Tombol dirender `disabled` (tanpa JS form tidak terkirim & email tidak masuk URL); aktifkan di sini.
+  form.querySelector<HTMLButtonElement>('[data-news-btn]')?.removeAttribute('disabled');
   form.addEventListener('submit', (e) => {
     e.preventDefault();
     const email = form.querySelector<HTMLInputElement>('input[type=email]');

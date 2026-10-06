@@ -135,6 +135,8 @@ section { scroll-margin-top: var(--header-h); }
 }
 .skip:focus { left: 8px; top: 8px; }
 :focus-visible { outline: 2px solid var(--c-cream); outline-offset: 3px; }
+/* T10: saat fokus keyboard menggulir elemen ke tepi bawah, sisakan ruang agar focus ring (offset 3px) tidak terpotong */
+:where(a, button, summary, input, select, textarea) { scroll-margin-bottom: 12px; }
 
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }

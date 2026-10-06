@@ -26,9 +26,8 @@ if (section && !reduced) {
         y: 0, opacity: 1, scale: 1, duration: 1, ease: 'power3.out', stagger: 0.1, overwrite: true,
       }),
     });
-    // Gambar lazy mengubah tinggi masonry -> posisi trigger perlu dihitung ulang
-    section.querySelectorAll('img').forEach((img) => {
-      if (!img.complete) img.addEventListener('load', () => ScrollTrigger.refresh(), { once: true });
-    });
+    // Sengaja TIDAK ada ScrollTrigger.refresh() per gambar: foto astro:assets sudah punya
+    // width/height sehingga tinggi masonry tidak berubah saat foto termuat. Refresh di tengah
+    // smooth scroll (anchor nav) memanggil scrollTo dan membatalkan scroll tersebut (QA V1).
   }
 }

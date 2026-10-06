@@ -11,15 +11,16 @@ import tuang from '../assets/photos/cta-tuang-cola.jpg';
         <p class="cta-lead">Cari varian favoritmu di toko atau minimarket terdekat dan bagikan momen kebersamaan.</p>
         <a class="cta-btn" href="#produk">Pilih Varian Favoritmu <span aria-hidden="true">→</span></a>
 
-        <form class="news" id="news-form" novalidate>
+        <form class="news" id="news-form" action="#" novalidate>
           <h3 class="news-h">Buletin demo</h3>
           <p class="news-note">Formulir ini hanya contoh tampilan statis. Tidak ada data yang dikirim atau disimpan.</p>
           <div class="news-row">
             <label for="email" class="sr-only">Alamat email</label>
-            <input id="email" name="email" type="email" placeholder="nama@contoh.com" autocomplete="email" required aria-describedby="news-msg" />
-            <button type="submit" class="news-btn">Berlangganan</button>
+            <input id="email" type="email" placeholder="nama@contoh.com" autocomplete="email" required aria-describedby="news-msg" />
+            <button type="submit" class="news-btn" disabled data-news-btn>Berlangganan</button>
           </div>
           <p id="news-msg" role="status" aria-live="polite" class="news-msg"></p>
+          <noscript><p class="news-msg">Formulir demo ini memerlukan JavaScript. Tanpa JavaScript tombol tidak aktif dan tidak ada data yang dikirim.</p></noscript>
         </form>
       </div>
 
@@ -108,6 +109,9 @@ import tuang from '../assets/photos/cta-tuang-cola.jpg';
     transition: background-color .3s var(--ease);
   }
   .news-btn:hover { background: #000; }
+  /* Tombol nonaktif sampai cta.ts dimuat: tanpa JS form tidak bisa dikirim (email tidak masuk URL). */
+  .news-btn:disabled { opacity: .6; cursor: not-allowed; }
+  .news-btn:disabled:hover { background: var(--c-ink); }
   .news-msg { min-height: 1.6em; margin: .8rem 0 0; font-weight: 700; color: #fff; }
 
   .cta-art { margin: 0; position: relative; min-height: 320px; }

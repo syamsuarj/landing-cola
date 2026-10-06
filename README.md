@@ -2,9 +2,9 @@
 
 Landing page **demo non-resmi** untuk memperkenalkan Coca-Cola, dibuat dengan [Astro](https://astro.build), [GSAP](https://gsap.com) (ScrollTrigger), dan [Three.js](https://threejs.org).
 
-> **Disclaimer:** Proyek ini adalah demo desain/edukasi dan **tidak berafiliasi, disponsori, atau disetujui oleh The Coca-Cola Company**. "Coca-Cola" dan merek terkait adalah merek dagang milik The Coca-Cola Company. Tidak ada logo resmi yang digunakan; objek 3D dibuat secara prosedural.
+> **Penafian:** Proyek ini adalah demo desain/edukasi **non-resmi** dan **tidak berafiliasi, disponsori, atau disetujui oleh The Coca-Cola Company**. "Coca-Cola" dan merek terkait adalah merek dagang milik The Coca-Cola Company. Tidak ada logo resmi yang dipakai sebagai aset: ilustrasi botol (SVG) dan objek 3D dibuat sendiri secara prosedural, favicon adalah monogram "D" buatan sendiri, dan foto stok berasal dari Unsplash (Unsplash License) — lihat [CREDITS.md](./CREDITS.md).
 
-> **Status:** work in progress (redesign "Premium sinematik" sedang dikerjakan dan belum lulus QA).
+> **Status:** lulus QA (konten, lisensi foto, visual & interaksi, Lighthouse). Catatan minor yang masih terbuka ada di `TASKS.md` (X1, X2).
 
 ## Menjalankan
 
@@ -27,4 +27,4 @@ Aksesibilitas: menghormati `prefers-reduced-motion`, konten tetap terbaca tanpa 
 
 ## Kredit foto
 
-Foto dari Unsplash (Unsplash License). Daftar lengkap di [CREDITS.md](./CREDITS.md).
+Semua foto stok diunduh dari Unsplash dan dipakai di bawah [Unsplash License](https://unsplash.com/license); disimpan lokal (tanpa hotlink). Nama fotografer dan tautan tiap foto ada di [CREDITS.md](./CREDITS.md). Unsplash License tidak mencakup hak atas merek dagang yang mungkin tampak di foto.

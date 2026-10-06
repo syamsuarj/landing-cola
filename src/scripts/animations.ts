@@ -6,6 +6,7 @@
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { heroState } from './hero-state';
+import './keep-scroll';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -20,17 +21,35 @@ if (header) {
   window.addEventListener('scroll', onScroll, { passive: true });
 
   const btn = header.querySelector<HTMLButtonElement>('.menu-btn');
+  const brand = header.querySelector<HTMLElement>('.brand');
+  const navLinks = Array.from(header.querySelectorAll<HTMLAnchorElement>('.nav a'));
+  // W1: saat panel layar penuh terbuka, semua di luar header (skip link, main, footer) + brand dibuat inert
+  // agar fokus tidak bisa pindah ke konten yang tertutup panel.
+  const outside = () => [
+    ...Array.from(document.body.children).filter((el) => el !== header && el.tagName !== 'SCRIPT'),
+    ...(brand ? [brand] : []),
+  ] as HTMLElement[];
   const setOpen = (open: boolean) => {
     header.classList.toggle('open', open);
     btn?.setAttribute('aria-expanded', String(open));
     const label = btn?.querySelector('.menu-label');
     if (label) label.textContent = open ? 'Tutup' : 'Menu';
     document.body.style.overflow = open ? 'hidden' : '';
+    outside().forEach((el) => el.toggleAttribute('inert', open));
   };
   btn?.addEventListener('click', () => setOpen(!header.classList.contains('open')));
-  header.querySelectorAll('.nav a').forEach((a) => a.addEventListener('click', () => setOpen(false)));
+  navLinks.forEach((a) => a.addEventListener('click', () => setOpen(false)));
   document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape' && header.classList.contains('open')) { setOpen(false); btn?.focus(); }
+    if (!header.classList.contains('open')) return;
+    if (e.key === 'Escape') { setOpen(false); btn?.focus(); return; }
+    // W1: Tab / Shift+Tab berputar di dalam panel (tombol Tutup + link)
+    if (e.key === 'Tab' && btn) {
+      const ring: HTMLElement[] = [btn, ...navLinks];
+      const i = ring.indexOf(document.activeElement as HTMLElement);
+      const next = i === -1 ? (e.shiftKey ? ring.length - 1 : 0) : (i + (e.shiftKey ? -1 : 1) + ring.length) % ring.length;
+      e.preventDefault();
+      ring[next].focus();
+    }
   });
   window.matchMedia('(min-width: 761px)').addEventListener('change', (e) => { if (e.matches) setOpen(false); });
 }

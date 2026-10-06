@@ -1,26 +1,26 @@
 ---
 import { Image } from 'astro:assets';
 import piknik from '../assets/photos/galeri-piknik.jpg';
-import nobar from '../assets/photos/galeri-nonton-bareng.jpg';
-import makan from '../assets/photos/galeri-makan-keluarga.jpg';
+import nobar from '../assets/photos/galeri-nobar-rumah.jpg';
+import makan from '../assets/photos/galeri-makan-bersama.jpg';
 import ultah from '../assets/photos/galeri-ulang-tahun.jpg';
 import jalan from '../assets/photos/galeri-perjalanan.jpg';
 import olahraga from '../assets/photos/galeri-olahraga.jpg';
 
 const tiles = [
-  { t: 'Makan malam keluarga', img: makan, alt: 'Keluarga dengan anak-anak makan bersama di meja makan sambil tersenyum', by: 'Tyson' },
+  { t: 'Makan bersama', img: makan, alt: 'Empat sahabat dewasa tertawa sambil berbagi piza di meja kafe, dengan cangkir teh di depan mereka', by: 'Vitaly Gariev' },
   { t: 'Piknik akhir pekan', img: piknik, alt: 'Sekelompok teman duduk santai berpiknik di taman', by: 'Vitaly Gariev' },
-  { t: 'Nonton bareng', img: nobar, alt: 'Tribun stadion penuh penonton dengan bendera merah', by: 'Ahmet Kurt' },
+  { t: 'Nonton bareng', img: nobar, alt: 'Enam teman di ruang keluarga menonton pertandingan di televisi dengan tegang sambil menyantap popcorn dan keripik', by: 'Vitaly Gariev' },
   { t: 'Olahraga bersama', img: olahraga, alt: 'Pertandingan sepak bola di stadion dengan tribun penonton', by: 'Lamina Amedo' },
   { t: 'Pesta ulang tahun', img: ultah, alt: 'Kue ulang tahun dengan lilin menyala dalam ruangan gelap', by: 'Waldemar Brandt' },
-  { t: 'Perjalanan santai', img: jalan, alt: 'Foto hitam putih dua orang di dalam mobil saat perjalanan', by: 'Odile' },
+  { t: 'Perjalanan santai', img: jalan, alt: 'Foto hitam-putih empat sahabat dalam perjalanan: dua orang di kursi belakang mobil dan dua lainnya berpelukan di samping pintu depan yang terbuka, berlatar pegunungan', by: 'Odile' },
 ];
 ---
 <section id="galeri" class="gal-sec" aria-labelledby="judul-galeri">
   <div class="container">
     <div class="gal-head" data-gal-head>
       <h2 id="judul-galeri" class="display-l gal-title">Galeri <span class="serif gal-title-s">Momen</span></h2>
-      <p class="gal-intro">Foto stok suasana (Unsplash, lisensi bebas) tentang momen kebersamaan. Bukan foto atau materi resmi.</p>
+      <p class="gal-intro">Foto stok suasana (Unsplash, Unsplash License) tentang momen kebersamaan. Bukan foto atau materi resmi.</p>
     </div>
 
     <ul class="gal-grid">

@@ -33,3 +33,8 @@ qa-t5b-shots/
 qa/*.log
 lh-*.json
 lh-*.html
+
+# QA run outputs & tool temp files
+qa/out-*/
+qa-t8b-shots/
+.hermes-tmp*

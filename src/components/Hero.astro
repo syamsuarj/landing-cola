@@ -143,6 +143,11 @@ import Bottle from './Bottle.astro';
   }
   @keyframes cue { 0% { transform: scaleY(0); transform-origin: top; } 50% { transform: scaleY(1); transform-origin: top; } 51% { transform-origin: bottom; } 100% { transform: scaleY(0); transform-origin: bottom; } }
 
+  /* Indikator "Gulir" hanya di layar lebar: < 1200 px kotaknya bertabrakan dengan paragraf lead babak 1 (QA V2) */
+  @media (max-width: 1199px) {
+    :global(html.motion) .scroll-cue { display: none; }
+  }
+
   /* ---------- Mobile ---------- */
   @media (max-width: 760px) {
     .object { width: 70vw; height: 44svh; top: 56svh; }
@@ -160,7 +165,6 @@ import Bottle from './Bottle.astro';
     :global(html.motion) .act-3 .ctas { margin-top: 1.2rem; flex-wrap: nowrap; gap: .6rem; }
     :global(html.motion) .act-3 .ctas a { padding-inline: 1.1rem; font-size: .88rem; }
     :global(html.motion) .progress { top: auto; bottom: 1.1rem; right: var(--gutter); }
-    :global(html.motion) .scroll-cue { display: none; }
     .glow { top: 42svh; }
   }
   @media (max-width: 760px) and (max-height: 700px) {
