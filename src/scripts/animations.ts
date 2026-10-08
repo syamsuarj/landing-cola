@@ -72,19 +72,20 @@ document.addEventListener('keydown', (e) => {
 /* ---------- Hero: adegan ter-pin 3 babak ---------- */
 const scene = document.querySelector<HTMLElement>('[data-hero-scene]');
 if (scene && !reduced && root.classList.contains('motion')) {
-  const obj = scene.querySelector<HTMLElement>('[data-hero-object]');
   const a1 = scene.querySelector<HTMLElement>('[data-act="1"]');
   const a2 = scene.querySelector<HTMLElement>('[data-act="2"]');
   const a3 = scene.querySelector<HTMLElement>('[data-act="3"]');
   const bgImg = scene.querySelector<HTMLElement>('[data-hero-bg]');
   const stepEl = scene.querySelector<HTMLElement>('[data-hero-step]');
   const bars = Array.from(scene.querySelectorAll<HTMLElement>('[data-bar]'));
+  const obj = scene.querySelector<HTMLElement>('[data-hero-object]');
   let lastStep = 0;
   const setStep = (p: number) => {
     const step = p < 0.36 ? 1 : p < 0.7 ? 2 : 3;
     if (step === lastStep) return;
     lastStep = step;
     if (stepEl) stepEl.textContent = `0${step}`;
+    if (obj) obj.dataset.step = String(step); // T12a W-3: CSS menggeser SVG fallback di babak 2
     bars.forEach((b, i) => b.classList.toggle('on', i < step));
   };
   setStep(0);
@@ -99,8 +100,16 @@ if (scene && !reduced && root.classList.contains('motion')) {
     const cue = scene.querySelector('.scroll-cue');
     const mm = gsap.matchMedia();
     mm.add(
-      { desk: '(min-width: 761px)', mob: '(max-width: 760px)' },
+      // T12a R-1: tinggi ≤500 px (lanskap ponsel) → TANPA timeline/pin: CSS Hero.astro menampilkan babak 1–3 statis
+      // berurutan (scroll biasa). matchMedia me-revert pin/gsap.set saat lintas kondisi (rotasi 375×812 ↔ 812×375).
+      { desk: '(min-width: 761px) and (min-height: 501px)', mob: '(max-width: 760px) and (min-height: 501px)', short: '(max-height: 500px)' },
       (ctx) => {
+        if (ctx.conditions?.short) {
+          heroState.progress = 0; lastStep = 0; setStep(0);
+          // posisi trigger section lain harus dihitung ulang dari tata letak statis (bukan pin-spacer lama)
+          requestAnimationFrame(() => ScrollTrigger.refresh());
+          return;
+        }
         const desk = Boolean(ctx.conditions?.desk);
         gsap.set([a2, a3], { autoAlpha: 0, y: 48 });
         const tl = gsap.timeline({
@@ -176,15 +185,16 @@ if (art && stage && !reduced && hasWebGL()) {
     started = true;
     events.forEach((ev) => window.removeEventListener(ev, boot));
     import('./hero3d')
-      .then(({ initHero3D }) => {
-        // tampilkan stage dulu agar canvas punya ukuran nyata; kembalikan ke SVG bila gagal
-        art.classList.add('is-3d');
-        if (!initHero3D(stage, heroState)) art.classList.remove('is-3d');
-      })
+      // X3: init bertahap (async); stage ditampilkan (is-3d) tepat sebelum render pertama agar kanvas punya
+      // ukuran nyata; kembalikan ke SVG bila gagal.
+      .then(({ initHero3D }) => initHero3D(stage, heroState, () => art.classList.add('is-3d')))
+      .then((ok) => { if (!ok) art.classList.remove('is-3d'); })
       .catch(() => { art.classList.remove('is-3d'); /* fallback SVG tetap tampil */ });
   };
   events.forEach((ev) => window.addEventListener(ev, boot, { once: true, passive: true }));
-  const later = () => window.setTimeout(boot, 3500);
+  // X3: setelah load + jeda, mulai saat main thread idle (bukan timer buta)
+  const ric = (window as unknown as { requestIdleCallback?: (cb: () => void, o?: { timeout: number }) => number }).requestIdleCallback;
+  const later = () => window.setTimeout(() => (ric ? ric(boot, { timeout: 2000 }) : boot()), 3500);
   if (document.readyState === 'complete') later(); else window.addEventListener('load', later, { once: true });
 }
 

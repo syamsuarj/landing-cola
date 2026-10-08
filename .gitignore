@@ -38,3 +38,8 @@ lh-*.html
 qa/out-*/
 qa-t8b-shots/
 .hermes-tmp*
+
+# preview bundles & stray outputs
+qa/qa/
+qa/t7b-preview/out.js
+qa/t7b-preview/shots/

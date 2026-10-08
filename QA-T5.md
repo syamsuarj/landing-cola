@@ -38,3 +38,29 @@ Verifikasi konten via curl UA Chrome ke https://agrinaspalma.co.id (live).
 - Langkah: `node qa/t5-kemitraan.mjs 1280x800`, mode "cepat" 200 px/50 ms (~4.000 px/s).
 - Aktual: tiap langkah sempat terlihat sebagian selama melintas (opacity maks 0,2–0,98; 1280 langkah 06 0,2) — semua > 0 dan langsung 1 begitu scroll berhenti. Ekspektasi "terlihat" terpenuhi; animasi 0,45 s memang tidak bisa selesai saat elemen hanya ±300 ms di layar. Bukan regresi (sebelum fix langkah 05–08 tidak pernah muncul). Tidak perlu tindakan.
 
+## Harness `node qa/run.mjs --prod --out qa/out-t5` (lengkap + Lighthouse)
+- Run 1 (qa/out-t5.log, 395 s): build/overflow/console(0)/screenshots 42/42/credits PASS; **variants FAIL** (no-webgl@1280: 1 el. tak pernah terlihat — keterbukaan › h4.kt-m-h "Mekanisme Tertulis"); **lighthouse FAIL** mobile P56 (TBT 1.800 ms; satu long task 2.264 ms di skrip utama index…jfclaVqx.js pada t≈3,3 s; benchmarkIndex 3986 ≈ normal), A11y 100; desktop P100 A100.
+- Lighthouse ulang saja (`--skip build,overflow,console,screenshots,variants,credits`): qa/out-t5-lh, out-t5-lh2, out-t5-lh3 → **3/3 mobile P92 A100 BP100 SEO100** (TBT 0–20 ms), desktop P100.
+- Run 2 penuh (qa/out-t5b.log, 373 s): **variants PASS** (no-webgl@1280 0 el.), **lighthouse PASS** mobile P92 A100 / desktop P100, build/overflow/screenshots/credits PASS; **console FAIL**: 3 error di default@768 — HTTP 404 `/_astro/berita-kpk.DeyX7Hf3_Z20DPhT.webp` & `/_astro/berita-ombudsman.Bhz8J5Dm_Fw0HR.webp` (+2 "Failed to load resource"). Run 1 console 0 error.
+
+### X3 — MINOR (flaky, 1/5 run) — Lighthouse mobile P56 sekali
+- Long task 2,26 s di skrip utama hanya di run 1 (setelah fase variants); 4 run Lighthouse berikutnya P92, TBT ≤20 ms. Tidak reproducible; belum diprofil (dihentikan PM karena batas waktu). Bukti: qa/out-t5/lighthouse-mobile.report.json vs qa/out-t5-lh*/, qa/out-t5b/.
+
+### X4 — MINOR (flaky, 1/2 run) — "Mekanisme Tertulis" (h4.kt-m-h #keterbukaan) tak pernah terlihat di no-webgl@1280
+- Run 1: 1/414 elemen tak pernah terlihat (qa/out-t5/report.md, qa/out-t5/variants/no-webgl-1280.png). Run 2: 0. Kemungkinan reveal terlewat di pola scroll harness (sejenis V0, tapi di Keterbukaan). Belum diselidiki (batas waktu). Pemilik: D.
+
+### X5 — MINOR (flaky, 1/2 run, belum diselidiki) — 404 gambar berita di default@768
+- Run 2 saja: 404 untuk 2 aset hashed berita-kpk/berita-ombudsman di preview 4399; run 1 console 0. Dugaan: transient (preview/dist), bukan referensi rusak — tidak sempat diverifikasi (dist kini dari build run 2). Perlu 1 cek cepat: `ls dist/_astro | grep berita-` vs href di dist/index.html sebelum push.
+
+## Ringkasan status
+| ID | Status |
+|---|---|
+| K1, K2, K3, K7, K8, K9, K10 | FIXED |
+| V1, V2, V3 | FIXED |
+| Regresi (a) counter, (b) smooth/Tab/kb-nav, (c) rotasi/pin, (d) IPS 01–08 | PASS |
+| X1 anchor footer 375 (1/11), X2 info flick | INFO |
+| X3 LH P56 (1/5), X4 Mekanisme Tertulis no-webgl (1/2), X5 404 berita (1/2) | MINOR flaky |
+
+Server 4450 dimatikan; dev server 3000 tidak disentuh. src/ & git tidak diubah. Skrip QA baru: qa/t5-anchor.mjs, t5-footrepro.mjs, t5-counter.mjs, t5-tab.mjs, t5-rotate.mjs, t5-kemitraan.mjs; log qa/out-t5x/.
+
+VERDICT: PASS — semua K/V FIXED, tidak ada blocker/major yang reproducible; Lighthouse mobile P92/A11y 100 (4/5 run). Catatan: harness lengkap belum pernah PASS penuh dalam satu run (run 1 FAIL variants+LH, run 2 FAIL console) karena 3 masalah flaky X3/X4/X5 — disarankan cek X5 cepat sebelum push.

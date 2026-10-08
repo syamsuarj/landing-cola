@@ -20,7 +20,7 @@ Format baris (satu append `>>`): `| <section> | <file> | <url sumber> | PT Agrin
 | visimisi | src/assets/agrinas/visimisi-asset5.webp | https://agrinaspalma.co.id/images/backgrounds/asset5.webp | PT Agrinas Palma Nusantara | aset resmi |
 | header | src/assets/agrinas/header-logo-agrinas-light.webp | https://agrinaspalma.co.id/images/branding/logo_2.webp | PT Agrinas Palma Nusantara | aset resmi (varian teks terang untuk latar gelap; dipakai juga di footer) |
 | header | src/assets/agrinas/header-logo-danantara-light.webp | https://agrinaspalma.co.id/images/branding/danantara.webp | PT Agrinas Palma Nusantara | aset resmi (logo Danantara Indonesia; varian terang untuk latar gelap; dipakai juga di footer) |
-| hero | src/assets/agrinas/hero-sawit1.webp | https://agrinaspalma.co.id/images/backgrounds/sawit1.webp | PT Agrinas Palma Nusantara | aset resmi |
+| hero | src/assets/agrinas/hero-sawit1-blur.webp | https://agrinaspalma.co.id/images/backgrounds/sawit1.webp | PT Agrinas Palma Nusantara | aset resmi (turunan: 55% bawah, diperkecil ke 480px, blur + duotone; latar hero) |
 | kemitraan | src/assets/agrinas/kemitraan-ips.webp | https://agrinaspalma.co.id/images/ips-login-bg.webp | PT Agrinas Palma Nusantara | aset resmi |
 | karir | src/assets/agrinas/karir-talenta.webp | https://agrinaspalma.co.id/images/backgrounds/karir.webp | PT Agrinas Palma Nusantara | aset resmi |
 | berita | src/assets/agrinas/berita-e20.jpg | https://cms.agrinaspalma.app/uploads/new/63c4aa23-dfb6-4fdc-a1a7-7a7dc77973d9/WhatsApp_Image_2026-10-04_at_12.32.41_PM__1_.jpeg | PT Agrinas Palma Nusantara | aset resmi |

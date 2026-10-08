@@ -3,6 +3,8 @@
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
+import { revealEach } from './reveal-d';
+
 gsap.registerPlugin(ScrollTrigger);
 
 const section = document.getElementById('tentang');
@@ -11,12 +13,8 @@ const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 if (section && !reduced) {
   const q = (s: string) => Array.from(section.querySelectorAll<HTMLElement>(s));
 
-  q('[data-tt-reveal]').forEach((el) => {
-    gsap.from(el, {
-      y: 36, opacity: 0, duration: 0.9, ease: 'power3.out',
-      scrollTrigger: { trigger: el, start: 'top 90%', once: true },
-    });
-  });
+  // X4/T6: reveal dipicu posisi tiap elemen (batch), durasi pendek — tanpa delay waktu berjenjang.
+  revealEach(q('[data-tt-reveal]'), { y: 28 });
 
   const main = section.querySelector<HTMLElement>('[data-tt-photo] img');
   if (main) {
@@ -37,10 +35,6 @@ if (section && !reduced) {
     }
   });
 
-  q('[data-tt-block]').forEach((el, i) => {
-    gsap.from(el, {
-      y: 48, opacity: 0, duration: 0.9, ease: 'power3.out', delay: i * 0.08,
-      scrollTrigger: { trigger: el, start: 'top 88%', once: true },
-    });
-  });
+  // dulu: delay i × 0,08 s (tak terbatas) + 0,9 s → blok bawah terlambat muncul saat scroll cepat.
+  revealEach(q('[data-tt-block]'), { y: 32 });
 }

@@ -1,6 +1,5 @@
 ---
-import { Image } from 'astro:assets';
-import bg from '../assets/agrinas/hero-sawit1.webp';
+import HeroBackdrop from './HeroBackdrop.astro';
 
 // Berita terbaru (judul dari beranda & /news resmi, diambil 2026-10-06)
 const newsTitle = 'Dukung E20, Agrinas Palma dan IPB University Kembangkan Bioetanol Multifeedstock';
@@ -9,11 +8,8 @@ const newsHref = 'https://agrinaspalma.co.id/news/' + encodeURI(newsTitle);
 ---
 <section class="hero grain" id="beranda" aria-labelledby="judul-hero">
   <div class="scene" data-hero-scene>
-    <div class="bg" aria-hidden="true">
-      <Image src={bg} alt="" widths={[640, 1024, 1720]} sizes="100vw" quality={60} loading="eager" class="bg-img" data-hero-bg />
-    </div>
-    <div class="shade" aria-hidden="true"></div>
-    <div class="glow" aria-hidden="true"></div>
+    <!-- T11: latar studio gelap + kontur topografi + foto blur tipis; [data-hero-bg] ada di dalamnya -->
+    <HeroBackdrop />
 
     <!-- BABAK 1: langsung terlihat saat load -->
     <div class="act act-1" data-act="1">
@@ -38,25 +34,13 @@ const newsHref = 'https://agrinaspalma.co.id/news/' + encodeURI(newsTitle);
       </a>
     </div>
 
-    <!-- Objek utama: SVG tetes minyak sebagai fallback, diganti canvas Three.js bila tersedia -->
+    <!-- Objek utama: fallback SVG = ilustrasi diorama kebun sawit: pulau melayang membulat (atas rumput, sisi laterit,
+         bawah meruncing gelap), 3 sawit belakang + 2 depan dengan jalan panen di tengah, TBS = gerombol butir lonjong (selaras Three.js).
+         Tampil tanpa WebGL / reduced-motion / sebelum kanvas siap; diganti canvas Three.js (#hero-3d) bila tersedia.
+         Sumber: qa/out-t7c/gen-svg.py (T7c, revisi T9c). id gradient/symbol berawalan agd- agar tak bentrok. -->
     <div class="object" id="hero-art" data-hero-object>
       <div class="fallback">
-        <svg viewBox="0 0 200 260" role="img" aria-label="Ilustrasi tetes minyak sawit keemasan">
-          <defs>
-            <radialGradient id="drop-g" cx="42%" cy="62%" r="62%">
-              <stop offset="0" stop-color="#FFE7A3" />
-              <stop offset=".35" stop-color="#F2C230" />
-              <stop offset=".75" stop-color="#C77A0C" />
-              <stop offset="1" stop-color="#6B3A05" />
-            </radialGradient>
-            <linearGradient id="drop-h" x1="0" x2="0" y1="0" y2="1">
-              <stop offset="0" stop-color="#fff" stop-opacity=".85" />
-              <stop offset="1" stop-color="#fff" stop-opacity="0" />
-            </linearGradient>
-          </defs>
-          <path d="M100 8 C 128 70 178 118 178 168 a78 78 0 0 1 -156 0 C 22 118 72 70 100 8 Z" fill="url(#drop-g)" />
-          <path d="M70 120 c -14 22 -20 40 -18 62" stroke="url(#drop-h)" stroke-width="9" stroke-linecap="round" fill="none" />
-        </svg>
+        <svg viewBox="24 50 352 306" role="img" aria-label="Ilustrasi diorama kebun kelapa sawit: pulau tanah melayang dengan barisan pohon sawit berbuah dan tandan buah segar hasil panen di tepi jalan"><defs><linearGradient id="agd-grass" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#4e8a3d"/><stop offset="1" stop-color="#2a5429"/></linearGradient><linearGradient id="agd-soil" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#9a5a3e"/><stop offset=".55" stop-color="#874632"/><stop offset="1" stop-color="#5e2f22"/></linearGradient><linearGradient id="agd-rock" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#5a3022"/><stop offset=".6" stop-color="#36201a"/><stop offset="1" stop-color="#1c1210"/></linearGradient><radialGradient id="agd-shd"><stop offset="0" stop-color="#000" stop-opacity=".38"/><stop offset="1" stop-color="#000" stop-opacity="0"/></radialGradient><clipPath id="agd-clip"><path d="M367.6 172C368.8 180.9 360.7 191.3 351.3 199.4C342 207.6 326.6 214.6 311.5 220.8C296.4 226.9 279.3 232.9 260.7 236.2C242.2 239.4 220.2 240.2 200 240.1C179.8 240.1 159.4 238.5 139.5 235.9C119.7 233.2 96.1 230.2 80.9 224.1C65.7 218 53.9 208.2 48.4 199.5C42.8 190.8 46.4 180.9 47.6 172C48.8 163.1 49.4 154.2 55.7 145.8C62 137.5 71.4 128.3 85.2 121.8C99 115.3 119.1 110.4 138.3 106.8C157.4 103.2 179.4 100.2 200 100.1C220.6 100.1 244.1 102.4 262 106.5C279.9 110.7 293.5 118.5 307.2 125.1C320.9 131.7 334 138.1 344 145.9C354.1 153.7 366.4 163.1 367.6 172Z"/></clipPath><linearGradient id="agd-trunk" x1="0" x2="1"><stop offset="0" stop-color="#6b4a2a"/><stop offset=".55" stop-color="#4a3219"/><stop offset="1" stop-color="#2a1b0e"/></linearGradient><symbol id="agd-fr" overflow="visible"><path d="M0 0Q22 -21 56 9" stroke-width="1.8"/><path d="M5.5 -4.3l0.2 -8.4M5.5 -4.3l6.4 5.4M8.6 -6l7.3 -6.6M8.6 -6l5.4 8.2M11.8 -7.3l8.3 -7M11.8 -7.3l7 8.3M15.1 -8.2l10.9 -3.7M15.1 -8.2l4.8 10.5M18.5 -8.6l11.6 -2.7M18.5 -8.6l6 10.3M22.1 -8.6l12 -0.4M22.1 -8.6l3.4 11.5M25.7 -8.1l11.7 0.4M25.7 -8.1l4.4 10.9M29.4 -7.2l11 2M29.4 -7.2l1.8 11.1M33.3 -5.9l10.2 2.2M33.3 -5.9l2.7 10.1M37.2 -4.2l8.9 3M37.2 -4.2l0.6 9.4M41.2 -2l7.7 2.6M41.2 -2l1.3 8.1M45.4 0.7l6.1 2.8M45.4 0.7l-0.1 6.7M49.6 3.7l4.4 1.9M49.6 3.7l0.4 4.8M54 7.2l2.3 1.3M54 7.2l-0.2 2.6" stroke-width="1.35"/></symbol><symbol id="agd-tbs" overflow="visible"><ellipse rx="5.4" ry="8.6" fill="#2e0a1f"/><ellipse rx="1.25" ry="1.9" fill="#2e0a1f" transform="translate(2.2 7.6) rotate(-12.9)"/><ellipse rx="1.25" ry="1.9" fill="#2e0a1f" transform="translate(3.4 5.7) rotate(-20.7)"/><ellipse rx="1.25" ry="1.9" fill="#2e0a1f" transform="translate(-2.2 7.6) rotate(12.9)"/><ellipse rx="1.25" ry="1.9" fill="#2e0a1f" transform="translate(4.1 3.8) rotate(-24.8)"/><ellipse rx="1.25" ry="1.9" fill="#2e0a1f" transform="translate(4.5 1.9) rotate(-26.9)"/><ellipse rx="1.25" ry="1.9" fill="#2e0a1f" transform="translate(-3.4 5.7) rotate(20.7)"/><ellipse rx="1.25" ry="1.9" fill="#2e0a1f" transform="translate(4.6 0) rotate(-27.6)"/><ellipse rx="1.25" ry="1.9" fill="#2e0a1f" transform="translate(4.5 -1.9) rotate(-26.9)"/><ellipse rx="1.25" ry="1.9" fill="#2e0a1f" transform="translate(2.2 -7.6) rotate(-12.9)"/><ellipse rx="1.25" ry="1.9" fill="#2e0a1f" transform="translate(4.1 -3.8) rotate(-24.8)"/><ellipse rx="1.25" ry="1.9" fill="#2e0a1f" transform="translate(3.4 -5.7) rotate(-20.7)"/><ellipse rx="1.25" ry="1.9" fill="#2e0a1f" transform="translate(0 5.7) rotate(0)"/><ellipse rx="1.25" ry="1.9" fill="#8a1e22" transform="translate(-4.1 3.8) rotate(24.8)"/><ellipse rx="1.25" ry="1.9" fill="#8a1e22" transform="translate(-2.2 -7.6) rotate(12.9)"/><ellipse rx="1.25" ry="1.9" fill="#8a1e22" transform="translate(-4.5 1.9) rotate(26.9)"/><ellipse rx="1.25" ry="1.9" fill="#8a1e22" transform="translate(-3.4 -5.7) rotate(20.7)"/><ellipse rx="1.25" ry="1.9" fill="#8a1e22" transform="translate(-4.6 0) rotate(27.6)"/><ellipse rx="1.25" ry="1.9" fill="#d2481c" transform="translate(0 3.8) rotate(0)"/><ellipse rx="1.25" ry="1.9" fill="#d2481c" transform="translate(-4.5 -1.9) rotate(26.9)"/><ellipse rx="1.25" ry="1.9" fill="#d2481c" transform="translate(-4.1 -3.8) rotate(24.8)"/><ellipse rx="1.25" ry="1.9" fill="#d2481c" transform="translate(1.5 1.9) rotate(-9)"/><ellipse rx="1.25" ry="1.9" fill="#d2481c" transform="translate(0 -5.7) rotate(0)"/><ellipse rx="1.25" ry="1.9" fill="#d2481c" transform="translate(1.5 0) rotate(-9.2)"/><ellipse rx="1.25" ry="1.9" fill="#d2481c" transform="translate(-1.5 1.9) rotate(9)"/><ellipse rx="1.25" ry="1.9" fill="#d2481c" transform="translate(1.5 -1.9) rotate(-9)"/><ellipse rx="1.25" ry="1.9" fill="#f0822a" transform="translate(0 -3.8) rotate(0)"/><ellipse rx="1.25" ry="1.9" fill="#f0822a" transform="translate(-1.5 0) rotate(9.2)"/><ellipse rx="1.25" ry="1.9" fill="#f0822a" transform="translate(-1.5 -1.9) rotate(9)"/><path d="M0 -8v-3.5" stroke="#5a3a1a" stroke-width="1.4" stroke-linecap="round"/></symbol><symbol id="agd-palm" overflow="visible"><path d="M-8.5 0C-7.5 -14 -7 -28 -6.2 -38H6.2C7 -28 7.5 -14 8.5 0Z" fill="url(#agd-trunk)"/><path d="M-1 -4.0l5 -3.4M6 -4.0l-5 -3.4M-6 -8.1l4 -3.4M1 -8.1l-4 -3.4M-1 -12.2l5 -3.4M6 -12.2l-5 -3.4M-6 -16.299999999999997l4 -3.4M1 -16.299999999999997l-4 -3.4M-1 -20.4l5 -3.4M6 -20.4l-5 -3.4M-6 -24.5l4 -3.4M1 -24.5l-4 -3.4M-1 -28.599999999999998l5 -3.4M6 -28.599999999999998l-5 -3.4M-6 -32.699999999999996l4 -3.4M1 -32.699999999999996l-4 -3.4" stroke="#2a1a0e" stroke-width="1.5" stroke-linecap="round" fill="none"/><g transform="translate(0 -38)" fill="none" stroke-linecap="round"><g stroke="#1b4426"><use href="#agd-fr" transform="rotate(-78) scale(0.62)"/><use href="#agd-fr" transform="scale(-1 1) rotate(-78) scale(0.62)"/><use href="#agd-fr" transform="rotate(-55) scale(0.78)"/><use href="#agd-fr" transform="scale(-1 1) rotate(-55) scale(0.78)"/><use href="#agd-fr" transform="rotate(-38) scale(0.9)"/><use href="#agd-fr" transform="scale(-1 1) rotate(-38) scale(0.9)"/></g><g stroke="#2d6b36"><use href="#agd-fr" transform="rotate(-18) scale(1)"/><use href="#agd-fr" transform="scale(-1 1) rotate(-18) scale(1)"/><use href="#agd-fr" transform="rotate(0) scale(1.02)"/><use href="#agd-fr" transform="scale(-1 1) rotate(0) scale(1.02)"/><use href="#agd-fr" transform="rotate(14) scale(0.95)"/><use href="#agd-fr" transform="scale(-1 1) rotate(14) scale(0.95)"/><use href="#agd-fr" transform="rotate(-28) scale(0.95)"/><use href="#agd-fr" transform="scale(-1 1) rotate(-28) scale(0.92)"/></g><use href="#agd-tbs" x="-7" y="8"/><use href="#agd-tbs" x="7.5" y="9"/><use href="#agd-tbs" x="0" y="5" transform="scale(.85)"/><g stroke="#4a9a4c"><use href="#agd-fr" transform="rotate(30) scale(0.8)"/><use href="#agd-fr" transform="scale(-1 1) rotate(30) scale(0.8)"/><use href="#agd-fr" transform="rotate(48) scale(0.62)"/><use href="#agd-fr" transform="scale(-1 1) rotate(50) scale(0.6)"/></g></g></symbol></defs><ellipse cx="204" cy="342" rx="120" ry="12" fill="url(#agd-shd)"/><path d="M367.6 196C352 236 318 262 290 274L276 292C258 306 236 316 214 334C200 322 182 312 168 296L132 282C96 268 56 246 47.6 196Z" fill="url(#agd-rock)"/><path d="M290 274C266 282 238 290 214 300M132 282C156 290 186 298 214 300M276 292C254 300 232 306 214 314" stroke="#120a08" stroke-opacity=".35" stroke-width="1.4" fill="none"/><path d="M367.6 172C364.9 176.6 360.7 191.3 351.3 199.4C342 207.6 326.6 214.6 311.5 220.8C296.4 226.9 279.3 232.9 260.7 236.2C242.2 239.4 220.2 240.2 200 240.1C179.8 240.1 159.4 238.5 139.5 235.9C119.7 233.2 96.1 230.2 80.9 224.1C65.7 218 53.9 208.2 48.4 199.5C42.8 190.8 47.7 176.6 47.6 172L47.6 196C47.7 200.6 42.8 214.8 48.4 223.5C53.9 232.2 65.7 242 80.9 248.1C96.1 254.2 119.7 257.2 139.5 259.9C159.4 262.5 179.8 264.1 200 264.1C220.2 264.2 242.2 263.4 260.7 260.2C279.3 256.9 296.4 250.9 311.5 244.8C326.6 238.6 342 231.6 351.3 223.4C360.7 215.3 364.9 200.6 367.6 196Z" fill="url(#agd-soil)"/><path d="M367.6 183C364.9 187.6 360.7 202.3 351.3 210.4C342 218.6 326.6 225.6 311.5 231.8C296.4 237.9 279.3 243.9 260.7 247.2C242.2 250.4 220.2 251.2 200 251.1C179.8 251.1 159.4 249.5 139.5 246.9C119.7 244.2 96.1 241.2 80.9 235.1C65.7 229 53.9 219.2 48.4 210.5C42.8 201.8 47.7 187.6 47.6 183M351.3 217.4C344.7 221 326.6 232.6 311.5 238.8C296.4 244.9 279.3 250.9 260.7 254.2C242.2 257.4 220.2 258.2 200 258.1C179.8 258.1 159.4 256.5 139.5 253.9C119.7 251.2 96.1 248.2 80.9 242.1C65.7 236 53.8 221.6 48.4 217.5" stroke="#c88a62" stroke-opacity=".28" stroke-width="1.3" fill="none"/><path d="M367.6 172C364.9 176.6 360.7 191.3 351.3 199.4C342 207.6 326.6 214.6 311.5 220.8C296.4 226.9 279.3 232.9 260.7 236.2C242.2 239.4 220.2 240.2 200 240.1C179.8 240.1 159.4 238.5 139.5 235.9C119.7 233.2 96.1 230.2 80.9 224.1C65.7 218 53.9 208.2 48.4 199.5C42.8 190.8 47.7 176.6 47.6 172L47.6 177C47.7 181.6 42.8 195.8 48.4 204.5C53.9 213.2 65.7 223 80.9 229.1C96.1 235.2 119.7 238.2 139.5 240.9C159.4 243.5 179.8 245.1 200 245.1C220.2 245.2 242.2 244.4 260.7 241.2C279.3 237.9 296.4 231.9 311.5 225.8C326.6 219.6 342 212.6 351.3 204.4C360.7 196.3 364.9 181.6 367.6 177Z" fill="#2c5a2a"/><path d="M367.6 172C368.8 180.9 360.7 191.3 351.3 199.4C342 207.6 326.6 214.6 311.5 220.8C296.4 226.9 279.3 232.9 260.7 236.2C242.2 239.4 220.2 240.2 200 240.1C179.8 240.1 159.4 238.5 139.5 235.9C119.7 233.2 96.1 230.2 80.9 224.1C65.7 218 53.9 208.2 48.4 199.5C42.8 190.8 46.4 180.9 47.6 172C48.8 163.1 49.4 154.2 55.7 145.8C62 137.5 71.4 128.3 85.2 121.8C99 115.3 119.1 110.4 138.3 106.8C157.4 103.2 179.4 100.2 200 100.1C220.6 100.1 244.1 102.4 262 106.5C279.9 110.7 293.5 118.5 307.2 125.1C320.9 131.7 334 138.1 344 145.9C354.1 153.7 366.4 163.1 367.6 172Z" fill="url(#agd-grass)"/><g clip-path="url(#agd-clip)"><path d="M30 123.6L370 198.4L370 216.4L30 141.6Z" fill="#a8603c"/><path d="M30 123.6L370 198.4M30 141.6L370 216.4" stroke="#74361f" stroke-width="1.2"/></g><path d="M47.6 172C49 167.6 49.4 154.2 55.7 145.8C62 137.5 71.4 128.3 85.2 121.8C99 115.3 119.1 110.4 138.3 106.8C157.4 103.2 179.4 100.2 200 100.1C220.6 100.1 244.1 102.4 262 106.5C279.9 110.7 293.5 118.5 307.2 125.1C320.9 131.7 334 138.1 344 145.9C354.1 153.7 363.7 167.6 367.6 172" stroke="#a1dbb3" stroke-opacity=".45" stroke-width="1.2" fill="none"/><path d="M367.6 172C364.9 176.6 360.7 191.3 351.3 199.4C342 207.6 326.6 214.6 311.5 220.8C296.4 226.9 279.3 232.9 260.7 236.2C242.2 239.4 220.2 240.2 200 240.1C179.8 240.1 159.4 238.5 139.5 235.9C119.7 233.2 96.1 230.2 80.9 224.1C65.7 218 53.9 208.2 48.4 199.5C42.8 190.8 47.7 176.6 47.6 172" stroke="#f2c230" stroke-opacity=".55" stroke-width="1.2" fill="none"/><g><ellipse cx="116" cy="118.6" rx="19" ry="9" fill="#123a1c" fill-opacity=".5"/><ellipse cx="112" cy="116.6" rx="10" ry="4.6" fill="#7d3a20"/><ellipse cx="208" cy="136.9" rx="19" ry="9" fill="#123a1c" fill-opacity=".5"/><ellipse cx="204" cy="134.9" rx="10" ry="4.6" fill="#7d3a20"/><ellipse cx="298" cy="159.7" rx="19" ry="9" fill="#123a1c" fill-opacity=".5"/><ellipse cx="294" cy="157.7" rx="10" ry="4.6" fill="#7d3a20"/><ellipse cx="154" cy="195" rx="19" ry="9" fill="#123a1c" fill-opacity=".5"/><ellipse cx="150" cy="193" rx="10" ry="4.6" fill="#7d3a20"/><ellipse cx="262" cy="217.8" rx="19" ry="9" fill="#123a1c" fill-opacity=".5"/><ellipse cx="258" cy="215.8" rx="10" ry="4.6" fill="#7d3a20"/></g><ellipse cx="314" cy="201.6" rx="11" ry="3.2" fill="#2a120a" fill-opacity=".45"/><ellipse cx="339" cy="204.1" rx="11" ry="3.2" fill="#2a120a" fill-opacity=".45"/><use href="#agd-tbs" transform="translate(312 195.6) rotate(62) scale(1.35)"/><use href="#agd-tbs" transform="translate(337 198.1) rotate(-38) scale(1.2)"/><use href="#agd-palm" transform="translate(112 116.6) scale(-0.9 0.9)"/><use href="#agd-palm" transform="translate(204 134.9) scale(0.95 0.95)"/><use href="#agd-palm" transform="translate(294 157.7) scale(-0.9 0.9)"/><use href="#agd-palm" transform="translate(150 193) scale(1 1)"/><use href="#agd-palm" transform="translate(258 215.8) scale(-0.97 0.97)"/><g fill="#f2c230"><circle cx="48" cy="120" r="1.8" opacity="0.7"/><circle cx="352" cy="112" r="1.4" opacity="0.6"/><circle cx="340" cy="280" r="2" opacity="0.5"/><circle cx="70" cy="262" r="1.3" opacity="0.55"/><circle cx="300" cy="60" r="1.2" opacity="0.5"/><circle cx="120" cy="70" r="1.5" opacity="0.45"/></g></svg>
       </div>
       <div id="hero-3d" class="stage" aria-hidden="true"></div>
     </div>
@@ -91,19 +75,6 @@ const newsHref = 'https://agrinaspalma.co.id/news/' + encodeURI(newsTitle);
     position: relative;
     min-height: 100svh;
     padding: calc(var(--header-h) + 2.5rem) var(--gutter) 3rem;
-  }
-  .bg { position: absolute; inset: 0; z-index: 0; overflow: hidden; }
-  .bg :global(.bg-img) { width: 100%; height: 100%; object-fit: cover; object-position: 60% 50%; transform-origin: 60% 50%; }
-  .shade {
-    position: absolute; inset: 0; z-index: 0; pointer-events: none;
-    background:
-      linear-gradient(90deg, rgba(7, 21, 14, .94) 0%, rgba(7, 21, 14, .78) 38%, rgba(7, 21, 14, .45) 70%, rgba(7, 21, 14, .6) 100%),
-      linear-gradient(180deg, rgba(7, 21, 14, .55) 0%, rgba(7, 21, 14, 0) 30%, rgba(7, 21, 14, .25) 70%, var(--c-ink) 100%);
-  }
-  .glow {
-    position: absolute; z-index: 0; pointer-events: none;
-    right: 6vw; top: 50%; width: min(820px, 120vw); aspect-ratio: 1; translate: 25% -50%;
-    background: radial-gradient(closest-side, rgba(242, 194, 48, .22), rgba(26, 127, 55, .14) 50%, rgba(7, 21, 14, 0) 72%);
   }
   .container-w { max-width: var(--container); margin-inline: auto; }
 
@@ -142,17 +113,26 @@ const newsHref = 'https://agrinaspalma.co.id/news/' + encodeURI(newsTitle);
   .news:hover .news-title { text-decoration: underline; text-underline-offset: 3px; }
 
   /* ---------- Objek ---------- */
+  /* T9a: pemusatan via margin (bukan CSS `translate`): GSAP CSSPlugin melipat `translate` ke transform px sekali
+     dan cache-nya basi saat lintas 760 px (rotasi 375→812 → objek keluar layar, T-4). */
   .object {
+    --ow: min(42vw, 560px); --oh: min(78svh, 700px);
     position: absolute; z-index: 2; left: 72%; top: 50svh;
-    width: min(42vw, 560px); height: min(78svh, 700px); translate: -50% -50%;
+    width: var(--ow); height: var(--oh); margin: calc(var(--oh) / -2) 0 0 calc(var(--ow) / -2);
     pointer-events: none;
   }
   .fallback { position: absolute; inset: 0; display: grid; place-items: center; }
-  .fallback svg { height: 62%; width: auto; filter: drop-shadow(0 30px 50px rgba(0, 0, 0, .55)) drop-shadow(0 0 40px rgba(242, 194, 48, .3)); }
-  .stage { position: absolute; inset: 0; display: none; }
+  /* T7c: diorama SVG lebih lebar dari tinggi → isi lebar wadah, dibatasi tinggi; bayangan jatuh + kilau emas tipis */
+  .fallback svg { width: 100%; height: auto; max-height: 86%; overflow: visible; filter: drop-shadow(0 26px 34px rgba(0, 0, 0, .55)) drop-shadow(0 0 26px rgba(242, 194, 48, .16)); }
+  /* T7c mobile: diorama dirapatkan ke kanan agar tak menimpa tombol hero */
+  @media (max-width: 760px) { .fallback { justify-items: end; } .fallback svg { width: 76%; } }
+  /* T9a V-6: crossfade ±400 ms SVG→kanvas (stage selalu berukuran agar kanvas siap; visibility mematikan a11y/klik) */
+  .stage { position: absolute; inset: 0; opacity: 0; visibility: hidden; transition: opacity .4s var(--ease, ease), visibility 0s linear .4s; }
   .stage :global(canvas) { width: 100% !important; height: 100% !important; display: block; }
-  .object:global(.is-3d) .stage { display: block; }
-  .object:global(.is-3d) .fallback { display: none; }
+  .fallback { transition: opacity .4s var(--ease, ease), visibility 0s linear 0s; }
+  .object:global(.is-3d) .stage { opacity: 1; visibility: visible; transition: opacity .4s var(--ease, ease), visibility 0s linear 0s; }
+  .object:global(.is-3d) .fallback { opacity: 0; visibility: hidden; transition: opacity .4s var(--ease, ease), visibility 0s linear .4s; }
+  @media (prefers-reduced-motion: reduce) { .stage, .fallback, .object:global(.is-3d) .stage, .object:global(.is-3d) .fallback { transition: none; } }
 
   /* ---------- Babak 2 & 3: tampilan statis (tanpa JS / reduced-motion) ---------- */
   .act-2, .act-3 {
@@ -205,14 +185,10 @@ const newsHref = 'https://agrinaspalma.co.id/news/' + encodeURI(newsTitle);
 
   /* ---------- Tablet/Mobile ---------- */
   @media (max-width: 1023px) {
-    .object { left: 78%; width: 46vw; opacity: .9; }
-    .shade { background:
-      linear-gradient(90deg, rgba(7, 21, 14, .92) 0%, rgba(7, 21, 14, .7) 60%, rgba(7, 21, 14, .55) 100%),
-      linear-gradient(180deg, rgba(7, 21, 14, .5) 0%, rgba(7, 21, 14, .1) 30%, rgba(7, 21, 14, .3) 70%, var(--c-ink) 100%); }
+    .object { left: 78%; --ow: 46vw; opacity: .9; }
   }
   @media (max-width: 760px) {
-    .object { left: auto; right: 0; top: calc(66svh - 7.5rem); translate: 0 0; width: 56vw; height: 34svh; opacity: .75; }
-    .glow { right: -20vw; top: 70%; }
+    .object { left: auto; right: 0; top: calc(66svh - 7.5rem); margin: 0; width: 56vw; height: 34svh; opacity: .75; }
     .act1-main { padding-top: .5rem; }
     .kicker { font-size: .66rem; letter-spacing: .16em; margin-bottom: 1rem; }
     .title { font-size: clamp(2.6rem, 12.4vw, 4rem); }
@@ -236,5 +212,44 @@ const newsHref = 'https://agrinaspalma.co.id/news/' + encodeURI(newsTitle);
   @media (max-width: 760px) and (max-height: 700px) {
     .title { font-size: clamp(2.3rem, 11vw, 3.2rem); }
     :global(html.motion) .act-2 .body, :global(html.motion) .act-3 .body { font-size: .95rem; }
+  }
+  /* T9a T-3/V-2 tablet potret 761–1023: teks babak 1 selebar layar → objek di pita antara tombol dan kabar terbaru,
+     ≥16 px dari tepi kanan (tinggi pita ≈ 100svh − tombol(≈288px+42vw) − kabar(≈102px)). */
+  @media (min-width: 761px) and (max-width: 1199px) and (orientation: portrait) {
+    .object {
+      --oh: clamp(180px, calc(100svh - 390px - 42vw), 62svh);
+      left: auto; top: auto; right: 24px; bottom: calc(1.25rem + 82px); margin: 0;
+      width: min(52vw, calc(var(--oh) * 1.3)); height: var(--oh);
+    }
+  }
+  /* tablet lanskap 761–1023: rapat kanan, tak keluar viewport */
+  @media (min-width: 761px) and (max-width: 1023px) and (orientation: landscape) {
+    .object { --ow: 26vw; --oh: 34svh; left: auto; right: 16px; top: 64svh; margin: calc(var(--oh) / -2) 0 0 0; }
+  }
+  /* desktop sempit lanskap 1024–1199: kotak h1 selebar 46rem → objek dirapatkan kanan & sedikit turun */
+  @media (min-width: 1024px) and (max-width: 1199px) and (orientation: landscape) {
+    .object { --ow: 30vw; left: auto; right: 16px; top: 55svh; margin-left: 0; }
+  }
+  /* T9a T-4: layar pendek (lanskap ponsel, tinggi ≤ 500 px): teks babak 1 sudah memenuhi layar → objek disembunyikan
+     (3D ikut berhenti: IntersectionObserver tak melihat wadah). */
+  @media (max-height: 500px) { .object { display: none; } }
+  /* T12a R-1: layar pendek → tidak di-pin (animations.ts tak membuat timeline): babak 1–3 statis berurutan, semua
+     teks & tombol terlihat dan bisa di-scroll normal (menimpa aturan html.motion). */
+  @media (max-height: 500px) {
+    :global(html.motion) .scene { height: auto; min-height: 0; overflow: visible; padding: calc(var(--header-h) + 1.5rem) var(--gutter) 2.5rem; }
+    :global(html.motion) .act-1 { position: relative; inset: auto; min-height: 0; margin-inline: auto; max-width: var(--container); gap: 1.5rem; }
+    :global(html.motion) .act-2, :global(html.motion) .act-3 {
+      position: relative; top: auto; right: auto; bottom: auto; left: auto; translate: none; width: auto;
+      max-width: var(--container); margin-inline: auto; padding: 3rem 0; border-top: 1px solid var(--c-line);
+      opacity: 1; visibility: visible;
+    }
+    :global(html.motion) .act-2 { margin-top: 2.5rem; }
+    :global(html.motion) .progress, :global(html.motion) .scroll-cue { display: none; }
+    .title { font-size: clamp(2.2rem, 9svh + 2vw, 3.4rem); }
+  }
+  /* T12a W-3: no-WebGL desktop babak 2 — SVG fallback diperkecil & digeser kiri agar ≥24 px dari judul babak 2 */
+  @media (min-width: 761px) {
+    .object[data-step="2"] .fallback { transform: translateX(-40px) scale(.9); }
+    .fallback { transition: opacity .4s var(--ease, ease), visibility 0s linear 0s, transform .5s var(--ease, ease); }
   }
 </style>

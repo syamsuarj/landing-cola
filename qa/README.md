@@ -41,3 +41,6 @@ Exit code: 0 bila tidak ada FAIL, 1 bila ada FAIL (WARN/SKIP tidak menggagalkan)
 
 Hasil: `qa/out/report.md` + `qa/out/report.json` (`overall` + `checks.<id>.status` PASS/FAIL/WARN/SKIP + detail).
 Catatan: di mode dev, perubahan file oleh Programmer memicu HMR reload → dicatat sebagai warning "navigasi dokumen dibatalkan".
+
+## T7/T8 — objek 3D hero (diorama sawit)
+`node qa/t7-check.mjs [URL] [--lh] [--only lh] [--preview]` → `qa/out-t7/report.md|json`. Detail cek & keterbatasan: `QA-T7-prep.md`.
